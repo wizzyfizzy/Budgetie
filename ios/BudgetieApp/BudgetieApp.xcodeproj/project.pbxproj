@@ -101,6 +101,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C5E368702E37EA2100BCC525 /* Build configuration list for PBXNativeTarget "BudgetieApp" */;
 			buildPhases = (
+				C5B043EC2E38FB6C00438430 /* ShellScript */,
 				C5E3685E2E37EA2000BCC525 /* Sources */,
 				C5E3685F2E37EA2000BCC525 /* Frameworks */,
 				C5E368602E37EA2000BCC525 /* Resources */,
@@ -164,6 +165,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C5B043EC2E38FB6C00438430 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\necho \"SRCROOT is: ${SRCROOT}\"\ncd \"${SRCROOT}/../\" || exit  # move up one folder to ios/\nswiftlint lint\nelse\n  echo \"warning: SwiftLint not installed. Download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C5E3685E2E37EA2000BCC525 /* Sources */ = {

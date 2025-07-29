@@ -1,0 +1,26 @@
+excluded:
+  - Pods
+  - Carthage
+  - .build
+  - ios/BudgetieApp/Preview Content
+
+disabled_rules:
+  - trailing_whitespace
+  - force_cast
+  - line_length  # keep disabled if you want
+
+opt_in_rules:
+  - empty_count
+
+analyzer_rules:
+  - explicit_self
+  - unused_import
+
+custom_rules:
+  no_print:
+    regex: 'print\\('
+    message: "Avoid using print statements."
+    severity: warning
+
+included:
+  - ios/
