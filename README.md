@@ -63,6 +63,11 @@ Budgetie/
 
 ---
 
+## ✅ Code Style & Linting (SwiftLint)
+
+This project uses [SwiftLint](https://github.com/realm/SwiftLint) to enforce consistent Swift style and conventions.
+See more [here](https://github.com/wizzyfizzy/Budgetie/blob/main/docs/SwiftLint%20setup.md)
+
 ## 📷 Demo
 
 *Coming soon: screenshots, preview video, and diagrams.*
