@@ -4,13 +4,22 @@
 
 Budgetie is a modern full-stack personal finance app built with SwiftUI (Clean Architecture + Combine) and a Node.js/Express backend.
 
+Budgetie was created to simplify personal finance management through clean design and intuitive interactions. It's ideal for users who want budgeting tools without overwhelming complexity.
+
 ---
 
 ## 📁 Monorepo Structure
-Budgetie/
+```Budgetie/
 ├── ios/ # SwiftUI iOS app
-└── api/ # Node.js / Express backend
-
+│ └── BudgetieApp/ # Main app target
+│ └── Modules/ # Feature-based modules
+│ └── Tests/ # Unit/UI tests
+├── api/ # Express backend
+│ └── src/ # API logic
+│ └── .env # Env variables
+└── README.md # This file
+```
+[Read more about Project Architecture](https://github.com/wizzyfizzy/Budgetie/blob/main/docs/modules.md)
 
 ---
 
@@ -66,7 +75,7 @@ Budgetie/
 ## ✅ Code Style & Linting (SwiftLint)
 
 This project uses [SwiftLint](https://github.com/realm/SwiftLint) to enforce consistent Swift style and conventions.
-See more [here](https://github.com/wizzyfizzy/Budgetie/blob/main/docs/SwiftLint%20setup.md)
+[Read more](https://github.com/wizzyfizzy/Budgetie/blob/main/docs/SwiftLint%20setup.md)
 
 ## 📷 Demo
 
@@ -83,8 +92,10 @@ See more [here](https://github.com/wizzyfizzy/Budgetie/blob/main/docs/SwiftLint%
 
 ### Backend
 1. Navigate to `api/`
-2. Run `npm install`
-3. Start with `npm run dev`
+2. Run: 
+- `npm run dev` — Start dev server
+- `npm start` — Run in production mode
+[Read more](https://github.com/wizzyfizzy/Budgetie/blob/main/api/README.md)
 
 ---
 

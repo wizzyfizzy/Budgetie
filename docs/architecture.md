@@ -5,7 +5,7 @@ This document describes the basic structure of the project and the modular setup
 ---
 
 ## Folder Structure
-
+```
 ios/
 ├── BudgetieApp/
 │ ├── Sources/
@@ -21,9 +21,18 @@ ios/
 │ ├── Features/ # Feature modules (e.g., Auth, Profile)
 │ │ └── Auth/
 │ └── Shared/ # Shared modules (UI components, helpers, extensions)
-│ └── UIComponents/
+│ │ └── UIComponents/
+```
 
+---
 
+## Module Groups
+
+Each module belongs to one of the following groups:
+
+- Shared
+- Core
+- Feature
 
 ---
 
@@ -36,22 +45,54 @@ ios/
 
 ### Core Modules
 
-- Contain the core business logic, domain models, repositories, and services.
-- No UI code here.
-- Provide APIs used by Feature modules.
+Business logic and domain-level modules (e.g. Models, Repositories).
+Core modules should not provide screens but can provide individual view elements.
+- Located in the folder Modules-Core
+- Are able to use Shared Modules
+- Should not depend on any other Core or Feature Modules
 
 ### Feature Modules
-
-- Contain app features (e.g., Authentication, User Profile).
-- Use Core and Shared modules.
-- Should not depend on other Feature modules (avoid cyclic dependencies).
+App features like Auth, Budget, Settings. Each is self-contained
+- Located in the folder Modules-Feature
+- Should *not* use other feature modules
+- Are able to use Shared and Core Modules
 
 ### Shared Modules
-
-- Contain common UI components, extensions, helper functions, and utilities.
-- Independent and used by both Core and Feature modules.
+Reusable logic not tied to business logic (e.g. UI components, helpers, extensions). 
+- Located in the folder Modules-Shared
+- Shared modules can only depend on other Shared modules.
+- Should have abstract logic
 
 ---
+
+## Module Dependency Rules
+
+- Shared ➜ can be used anywhere
+- Core ➜ can use Shared only
+- Feature ➜ can use Core + Shared
+- 🚫 Feature ➜ cannot use another Feature module
+
+## Module Structure
+
+Each module can have:
+- `Sources/API` → Public interfaces
+- `Sources/Impl` → Internal implementation
+- `Sources/Mocks` → Reusable test mocks
+
+
+## Public / Internal
+
+Mark only the interfaces in `API` as `public`. Everything else should be `internal` or `private`.
+
+
+## External Dependencies
+
+Use a `Dependencies` struct to inject external dependencies (e.g. services, repositories).
+
+## Testing & Mocks
+
+Each module must provide mocks for its public API. These go in `Sources/Mocks`.
+
 
 ## Design Notes
 
