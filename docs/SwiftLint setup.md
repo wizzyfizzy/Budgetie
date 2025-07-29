@@ -76,16 +76,6 @@ swift_version: 5.7
 
 ```sh
 if which swiftlint >/dev/null; then
-  echo "SRCROOT is: ${SRCROOT}"
-  cd "${SRCROOT}/../" || exit  # navigate to the project root
-  swiftlint lint
-else
-  echo "warning: SwiftLint not installed. Download from https://github.com/realm/SwiftLint"
-fi
-
-
-```
-if which swiftlint >/dev/null; then
 echo "SRCROOT is: ${SRCROOT}"
 cd "${SRCROOT}/../" || exit  # move up one folder to ios/
 swiftlint lint
