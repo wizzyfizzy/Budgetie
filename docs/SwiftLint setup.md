@@ -1,16 +1,23 @@
-# SwiftLint Setup
+# SwiftLint Configuration for Budgetie
 
-## What is SwiftLint and Why Use It?
+This document explains the SwiftLint configuration used in the **Budgetie** iOS project. SwiftLint is a linter tool that enforces Swift style and conventions.
 
-SwiftLint is a tool that helps keep your Swift code clean and consistent by enforcing coding style and best practices automatically.  
-It detects common issues like long lines, trailing spaces, unused imports, force casts, and more.  
-By using SwiftLint, you ensure that your codebase stays readable, maintainable, and less prone to bugs.
+---
+
+## 📄 What is SwiftLint?
+
+[SwiftLint](https://github.com/realm/SwiftLint) is a tool to enforce Swift style and coding conventions. It scans the Swift files and warns about:
+- Style violations
+- Bad practices
+- Unused code
+
+It helps keep the codebase consistent and clean across the team.
 
 ---
 
 ## 1. Install SwiftLint
 
-Make sure SwiftLint is installed on your machine (using Homebrew):
+Make sure SwiftLint is installed on the machine (using Homebrew):
 ```bash
 brew install swiftlint
 ```
@@ -20,47 +27,96 @@ Check the version:
 swiftlint version
 ```
 
+---
 
-## 2. Create .swiftlint.yml Configuration File
+## 2. Create `.swiftlint.yml` Configuration File
 
-Place this file at the root of your project (where .git is located).
+The `.swiftlint.yml` defines how SwiftLint should behave.
+This file should be placed at the root of the project (where .git is located).
 
-Example .swiftlint.yml:
+### 🧩 Categories Explained
 
+#### `included`
+- Defines which folders SwiftLint should scan.
+```yaml
+included:
+  - ios/
+```
+
+#### `excluded`
+- Directories that SwiftLint should ignore.
 ```yaml
 excluded:
   - Pods
   - Carthage
   - .build
   - ios/BudgetieApp/Preview Content
+```
 
+#### `disabled_rules`
+- Rules that are turned off completely.
+```yaml
 disabled_rules:
-  - line_length
   - trailing_whitespace
   - force_cast
+  - line_length
+```
 
-line_length:
-  warning: 120
-  error: 200
-  ignores_comments: true
-  ignores_urls: true
-
+#### `opt_in_rules`
+- These are **not enabled by default**, but are useful for stricter checking.
+```yaml
 opt_in_rules:
   - empty_count
+```
+
+#### `analyzer_rules`
+- Rules that use the SwiftSyntax engine. More accurate but slower.
+```yaml
+analyzer_rules:
   - explicit_self
   - unused_import
+```
 
+#### `custom_rules`
+- Custom rules defined using regular expressions.
+```yaml
 custom_rules:
   no_print:
-    regex: 'print\('
-    message: "Avoid using print statements."
+    name: "No Print Statements"
+    regex: 'print\(.*\)'
+    message: "Avoid using print statements. Use os_log or Logger instead."
     severity: warning
-
-included:
-  - ios/
-
-swift_version: 5.7
 ```
+
+---
+
+## 📌 Rule Details
+
+### ✅ opt_in_rules
+| Rule | Description |
+|------|-------------|
+| `empty_count` | Prefer `isEmpty` over `count == 0` |
+| `first_where` | Use `.first(where:)` instead of filtering then calling `.first` |
+| `yoda_condition` | Avoid writing `5 == value`; write `value == 5` instead |
+| `fatal_error_message` | Require a descriptive message in `fatalError()` |
+| `unneeded_parentheses_in_closure_argument` | Removes unnecessary parentheses in closures |
+
+### 🧠 analyzer_rules
+| Rule | Description |
+|------|-------------|
+| `explicit_self` | Require `self.` usage in closures or initializers |
+| `unused_import` | Detect unused imports |
+| `redundant_optional_initialization` | Flags `var x: Int? = nil` as redundant |
+| `prefer_self_type_over_type_of_self` | Prefer `Self` instead of `type(of: self)` |
+
+### ⛔ disabled_rules
+| Rule | Why it may be disabled |
+|------|------------------------|
+| `line_length` | SwiftUI/Combine often needs long lines |
+| `force_cast` | Sometimes useful in tests or for rapid prototyping |
+| `trailing_whitespace` | Can be noisy, especially in team environments |
+
+---
 
 
 ## 3. Add SwiftLint Run Script in Xcode
@@ -86,6 +142,8 @@ fi
 
 Disable Based on dependency analysis option in this Run Script Phase to avoid build warnings.
 
+---
+
 ## 4. Run and Fix Warnings
 From the project root folder, run SwiftLint in terminal:
 
@@ -96,3 +154,12 @@ swiftlint lint --config .swiftlint.yml
 Fix any warnings shown (like trailing commas).
 
 Then build your project in Xcode to confirm SwiftLint runs successfully during builds.
+
+---
+
+## ✅ Summary
+
+- SwiftLint helps enforce clean, consistent code.
+- Rules are grouped into included/excluded, disabled, opt-in, analyzer, and custom.
+- Custom rules like `no_print` help enforce team-specific conventions.
+- Run SwiftLint automatically in Xcode via build phases.

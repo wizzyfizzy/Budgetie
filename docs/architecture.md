@@ -7,17 +7,16 @@ This document describes the basic structure of the project and the modular setup
 ## Folder Structure
 ```
 ios/
+├── Budgetie.xcodeproj # Xcode project file for the main app
+├── Budgetie.xcworkspace
 ├── BudgetieApp/
 │ ├── Sources/
 │ │ ├── BudgetieApp.swift # App entry point (@main)
 │ │ ├── ContentView.swift # Main SwiftUI view
 │ ├── Assets.xcassets/ # Images and resources
 │ ├── Preview Content/ # SwiftUI previews
-│ └── BudgetieApp.xcodeproj # Xcode project file for the main app
-
 ├── Modules/
 │ ├── Core/ # Core modules with business logic, repos, services, etc.
-│ │ └── UserRepository/
 │ ├── Features/ # Feature modules (e.g., Auth, Profile)
 │ │ └── Auth/
 │ └── Shared/ # Shared modules (UI components, helpers, extensions)

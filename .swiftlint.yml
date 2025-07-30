@@ -1,3 +1,6 @@
+included:
+  - ios/
+
 excluded:
   - Pods
   - Carthage
@@ -7,20 +10,27 @@ excluded:
 disabled_rules:
   - trailing_whitespace
   - force_cast
-  - line_length  # keep disabled if you want
+  - force_try
+  - line_length
 
 opt_in_rules:
   - empty_count
+  - first_where
+  - fatal_error_message
+  - discouraged_optional_boolean
+  - redundant_nil_coalescing
+  - unneeded_parentheses_in_closure_argument
+  - yoda_condition
 
 analyzer_rules:
-  - explicit_self
   - unused_import
+  - explicit_self
+  - redundant_optional_initialization
+  - prefer_self_type_over_type_of_self
 
 custom_rules:
   no_print:
-    regex: 'print\\('
-    message: "Avoid using print statements."
+    name: "No Print Statements"
+    regex: 'print\(.*\)'
+    message: "Avoid using print statements. Use os_log or Logger instead."
     severity: warning
-
-included:
-  - ios/

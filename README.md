@@ -6,13 +6,21 @@ Budgetie is a modern full-stack personal finance app built with SwiftUI (Clean A
 
 Budgetie was created to simplify personal finance management through clean design and intuitive interactions. It's ideal for users who want budgeting tools without overwhelming complexity.
 
+The iOS project uses [Tuist](https://tuist.io/) to manage the Xcode project, dependencies, and modular structure.
+
 ---
 
 ## 📁 Monorepo Structure
 ```Budgetie/
 ├── ios/ # SwiftUI iOS app
 │ └── BudgetieApp/ # Main app target
-│ └── Modules/ # Feature-based modules
+│ └── Modules/
+│ │ └── Core/ # Core modules with business logic, repos, services, etc.
+│ │ │ └── UserRepository/
+│ │ └── Features/ # Feature modules (e.g., Auth, Profile)
+│ │ │ └── Auth/
+│ │ └── Shared/ # Shared modules (UI components, helpers, extensions)
+│ │ │ └── UIComponents/
 │ └── Tests/ # Unit/UI tests
 ├── api/ # Express backend
 │ └── src/ # API logic
@@ -74,8 +82,11 @@ Budgetie was created to simplify personal finance management through clean desig
 
 ## ✅ Code Style & Linting (SwiftLint)
 
-This project uses [SwiftLint](https://github.com/realm/SwiftLint) to enforce consistent Swift style and conventions.
-[Read more](https://github.com/wizzyfizzy/Budgetie/blob/main/docs/SwiftLint%20setup.md)
+This project uses [SwiftLint](https://github.com/realm/SwiftLint) to enforce consistent Swift code style across the iOS codebase.
+- SwiftLint is integrated as a *build script* via Tuist
+- Custom rules, disabled checks, and opt-in rules are configured in `.swiftlint.yml`
+- Warnings appear in Xcode during builds automatically
+[Read full SwiftLint config](https://github.com/wizzyfizzy/Budgetie/blob/main/docs/SwiftLint%20setup.md)
 
 ## 📷 Demo
 
@@ -85,10 +96,15 @@ This project uses [SwiftLint](https://github.com/realm/SwiftLint) to enforce con
 
 ## 📌 How to Run
 
-### iOS App
-1. Navigate to `ios/`
-2. Open `Budgetie.xcodeproj`
-3. Run on iPhone Simulator
+### 📱 iOS App (via Tuist)
+1. Navigate to the `ios/` folder
+2. Run:
+- `tuist install`       # Installs correct Tuist version (if needed)
+- `tuist generate`      # Generates the Xcode project/workspace
+- open Budgetie.xcworkspace
+3. Run the app on iPhone Simulator
+✅ SwiftLint will automatically run during builds via Tuist
+[Read full Tuist setup](https://github.com/wizzyfizzy/Budgetie/blob/main/docs/Tuist%20setup.md)
 
 ### Backend
 1. Navigate to `api/`
@@ -105,6 +121,3 @@ All rights reserved. This project is for portfolio and educational purposes.
 Do not reuse without permission.
 
 ---
-
-
-
