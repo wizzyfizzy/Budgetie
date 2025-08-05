@@ -7,6 +7,7 @@ let projectPackages: [Package] = [
     .remote(url: "https://github.com/airbnb/lottie-spm", requirement: .exact("4.5.2")),
     // App
     .local(path: "Modules/Features/Auth"),
+    .local(path: "Modules/Shared/DIModule"),
     .local(path: "Modules/Shared/UIComponents")
 ]
 
@@ -64,7 +65,7 @@ let project = Project(
     settings: .settings(base: ["ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES": "YES"]),
     targets: [
         Target.appTarget(name: "Budgetie",
-                         bundleId: "com.krismatzi.BudgetieApp",
+                         bundleId: "com.budgetie.BudgetieApp",
                          plist: "BudgetieApp/Info.plist",
                          sources: "BudgetieApp/Sources/**",
                          resources: "BudgetieApp/Resources/**")
