@@ -1,6 +1,6 @@
 # AppLogging
 
-**AppLogging** is a shared Swift module for safe, structured, and extensible logging in modular iOS applications.
+**AppLogging** is a shared Swift module for safe, structured, and extensible logging.
 AppLogging is compatible with `Sourcery` for auto-generating mocks of `BTLogger`.
 
 ---

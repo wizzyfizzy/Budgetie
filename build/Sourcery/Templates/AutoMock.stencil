@@ -1,0 +1,68 @@
+{# --------- MACROS --------- #}
+{% macro accessLevel level %}{% if level != 'internal' %}{{ level }}{% endif %}{% endmacro %}
+{% macro asyncModifier isAsync %}{% if isAsync == 1 %} async{% endif %}{% endmacro %}
+{% macro throwsModifier throws %}{% if throws %} throws{% endif %}{% endmacro %}
+{% macro tryModifier throws %}{% if throws %}try {% endif %}{% endmacro %}
+{% macro returnModifier returnTypeName %}{% if not returnTypeName.isVoid %} -> {{ returnTypeName }}{% endif %}{% endmacro %}
+{% macro returnKeyword returnTypeName %}{% if not returnTypeName.isVoid %}return {% endif %}{% endmacro %}
+{% macro removeEscapingFromType typeName %}{{ typeName | replace: "@escaping ","" }}{% endmacro %}
+{% macro cleanTypeName name %}{{name | replace: "<", "" | replace: ">", "" | replace: "[", "" | replace: "]", "" | replace: "(", "" | replace: ")", "" | replace: "?", "" | replace: ":", "" | replace: ",", "_" | replace: " ", "" | replace: "!", "" | replace: "&", "" | replace: ".", "" }}{% endmacro %}
+{% macro unifiedMethodName name %}{{ name | replace: "(","_" | replace: ")","" | replace: ":","_" | replace: "`","" | snakeToCamelCase | lowerFirstWord }}{% endmacro %}
+{% macro getPublisherGenericTypesString returnTypeName%}{% if returnTypeName | contains: "AnyPublisher<" %}{% call removeIllegalCharsFromName returnTypeName | replace: "AnyPublisher", "" %}{% endif %}{% endmacro %}
+{% macro uniqueMethodName methodData %}{% call unifiedMethodName methodData.selectorName %}{% if method.returnTypeName | contains: "AnyPublisher<" %}_Pub_{% call getPublisherGenericTypesString method.returnTypeName %}{% elif method.isAsync %}_Async_{% call cleanTypeName method.returnTypeName %}{% else %}_{% call cleanTypeName method.returnTypeName %}{% endif %}{% endmacro %}
+{# --------- Stub+Verify params --------- #}
+{% macro parametersForVerify parameters %}{% if parameters.count > 1 %}({% for param in parameters %}{{ param.name }}: {% call removeEscapingFromType param.typeName %}{% if not forloop.last%}, {% endif %}{% endfor %}){% elif parameters.count == 1 %}{% for param in parameters %}{% call removeEscapingFromType param.typeName %}{% endfor %}{% else %}Void{% endif %}{% endmacro %}
+{% macro parametersForStubValue parameters %}{% if parameters.count > 0 %}({% for param in parameters %}{{ param.name }}{% if not forloop.last%}, {% endif %}{% endfor %}){% else %}{% endif %}{% endmacro %}
+{% macro parametersForVerifyValue parameters %}{% if parameters.count > 0 %}({% for param in parameters %}{{ param.name }}{% if not forloop.last%}, {% endif %}{% endfor %}){% else %}(){% endif %}{% endmacro %}
+{% macro parametersForStubValue parameters %}{% if parameters.count > 0 %}({% for param in parameters %}{{ param.name }}{% if not forloop.last%}, {% endif %}{% endfor %}){% else %}{% endif %}{% endmacro %}
+{# --------- Verify Method --------- #}
+{% macro verifyMethodMock method %}
+    {% call accessLevel method.accessLevel %} func {{ method.name }}{% call asyncModifier method.isAsync %}{% call throwsModifier method.throws %}{% call returnModifier method.returnTypeName %} {
+        {% if method.isAsync %}await {% endif %}verify.{% call uniqueMethodName method %}.append({% call parametersForVerifyValue method.parameters %})
+        {% if not method.returnTypeName.isVoid or method.throws %}
+        {% call returnKeyword method.returnTypeName %}{% call tryModifier method.throws %}{% call awaitModifier method.isAsync %}stub.${% call uniqueMethodName method %}({% call parametersForStubValue method.parameters %})
+        {% endif %}
+    }
+{% endmacro %}
+{# --------- END OF MACROS --------- #}
+//
+//  Copyright © 2025 Budgetie
+//
+//  All rights reserved.
+//  No part of this software may be copied, modified, or distributed without prior written permission.
+//
+// swiftlint:disable all
+// swiftformat:disable all
+import Foundation
+import Combine
+{% for import in argument.mockTestableImports %}
+@testable import {{ import }}
+{% endfor %}
+{# --------- MOCK --------- #}
+{% for type in types.protocols where type.annotations.AutoMockable %}
+{{ type.accessLevel }} final class {{ type.name }}Mock: {{ type.name }} {
+
+    {{ type.accessLevel }} init() {}
+
+    // MARK: - Stub
+    {{ type.accessLevel }} final class Stub {
+        {% for method in type.allMethods where not method.returnTypeName.isVoid or method.throws %}
+            {{ type.accessLevel }} var {% call uniqueMethodName method %}: (({% call parametersForStub method.parameters%}){% call asyncModifier method.isAsync %}{% call throwsModifier method.throws %} -> {{ method.returnTypeName }})?
+        {% endfor %}
+    }
+
+    // MARK: - Verify
+    {{ type.accessLevel }} final class Verify {
+        {% for method in type.allMethods %}
+        {{ type.accessLevel }} var {% call uniqueMethodName method %}: [{% call parametersForVerify method.parameters %}] = []
+        {% endfor %}
+    }
+
+    {{ type.accessLevel }} let stub = Stub()
+    {{ type.accessLevel }} let verify = Verify()
+    
+    {% for method in type.allMethods %}
+        {% call verifyMethodMock method %}
+    {% endfor %}
+}
+{% endfor %}

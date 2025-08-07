@@ -1,6 +1,6 @@
 # DIModule
 
-A lightweight and flexible **Dependency Injection (DI) system** designed for Swift projects using a modular architecture. It allows **modules to register and resolve dependencies** in a clean and testable way, while also supporting property wrappers for automatic injection.
+A lightweight and flexible **Dependency Injection (DI) system**. It allows **modules to register and resolve dependencies** in a clean and testable way, while also supporting property wrappers for automatic injection.
 
 ---
 
