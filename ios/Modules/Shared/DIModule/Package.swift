@@ -10,8 +10,7 @@ let package = Package(
     ],
     products: [
         .library(name: "DIModuleAPI", targets: ["DIModuleAPI"]),
-        .library(
-            name: "DIModule", targets: ["DIModule"])
+        .library(name: "DIModule", targets: ["DIModule"])
     ],
     targets: [
         .target(

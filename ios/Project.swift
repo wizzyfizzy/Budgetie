@@ -7,9 +7,24 @@ let projectPackages: [Package] = [
     .remote(url: "https://github.com/airbnb/lottie-spm", requirement: .exact("4.5.2")),
     // App
     .local(path: "Modules/Features/Auth"),
+    .local(path: "Modules/Shared/AppLogging"),
     .local(path: "Modules/Shared/DIModule"),
     .local(path: "Modules/Shared/UIComponents")
 ]
+
+// MARK: - Dependencies
+let sharedMoldules: [TargetDependency] = [
+    .package(product: "AppLogging"),
+    .package(product: "DIModule")
+]
+
+let coreMoldules: [TargetDependency] = [
+]
+
+let featureMoldules: [TargetDependency] = [
+]
+
+let projectDependencies = sharedMoldules + coreMoldules + featureMoldules
 
 // MARK: - FileHeaderTemplate Extensions
 
@@ -38,6 +53,23 @@ let swiftLintScript = TargetScript.pre(
     name: "SwiftLint"
 )
 
+let sourceryScript = TargetScript.pre(
+    script: """
+    if which sourcery >/dev/null; then
+      echo "🔧 Running Sourcery..."
+      find Modules -type f -name .sourcery.yml | while read config; do
+        echo "📄 Found config: $config"
+        dir=$(dirname "$config")
+        echo "🔁 Running Sourcery in $dir"
+        sourcery --config "$config"
+      done
+    else
+      echo "⚠️ Sourcery not installed. Run: brew install sourcery"
+    fi
+    """,
+    name: "Sourcery"
+)
+
 // MARK: - Target Template Definitions
 
 public extension Target {
@@ -45,7 +77,8 @@ public extension Target {
                           bundleId: String,
                           plist: String,
                           sources: String,
-                          resources: String) -> Target {
+                          resources: String,
+                          dependencies: [TargetDependency] = []) -> Target {
         target(name: name,
                destinations: [.iPhone],
                product: .app,
@@ -54,7 +87,10 @@ public extension Target {
                infoPlist: .init(stringLiteral: plist),
                sources: .init(stringLiteral: sources),
                resources: .init(stringLiteral: resources),
-               scripts: [swiftLintScript])
+               scripts: [swiftLintScript,
+                        sourceryScript],
+               dependencies: projectDependencies
+        )
     }
 }
 

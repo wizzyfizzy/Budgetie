@@ -88,6 +88,46 @@ This project uses [SwiftLint](https://github.com/realm/SwiftLint) to enforce con
 - Warnings appear in Xcode during builds automatically
 [Read full SwiftLint config](https://github.com/wizzyfizzy/Budgetie/blob/main/docs/SwiftLint%20setup.md)
 
+---
+
+## 🪄 Automatic Mock Generation with Sourcery
+
+This project uses [Sourcery](https://github.com/krzysztofzablocki/Sourcery) to **automatically generate mocks** for protocol-based unit tests.
+
+Sourcery is integrated into the **Tuist build process** via a custom pre-build script that runs per module. Mocks are generated based on `@AutoMockable` annotations using a shared `AutoMock.stencil` template.
+
+🔁 **No more boilerplate mocks** — just annotate your protocols and Sourcery takes care of the rest.
+
+✅ **Benefits**:
+- Test doubles (mocks) always up-to-date with protocols  
+- Eliminates manual maintenance  
+- Modular setup scales per feature/module
+
+📁 **Each module** (e.g. `Shared/AppLogging`) includes:
+- `.sourcery.yml` configuration  
+- Output folder: `/Mocks/`  
+- Template reference: shared `AutoMock.stencil`  
+
+🧪 **Example:**
+```swift
+// Protocol
+// sourcery: AutoMockable
+protocol LoggingService {
+    func log(_ type: LoggingType, fileName: String?, _ message: LoggingMessage)
+}
+
+// Sourcery-generated mock
+class LoggingServiceMock: LoggingService {
+    var logFileName_Void = [/* tracked parameters */]
+    ...
+}
+
+🚀 Mocks are regenerated automatically on each build via Tuist.
+
+[Read more in the Sourcery docs](https://github.com/wizzyfizzy/Budgetie/blob/main/docs/Sourcery.md)
+
+---
+
 ## 📷 Demo
 
 *Coming soon: screenshots, preview video, and diagrams.*

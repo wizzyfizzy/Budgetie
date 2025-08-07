@@ -12,11 +12,11 @@ disabled_rules:
   - force_cast
   - force_try
   - line_length
+  - blanket_disable_command
 
 opt_in_rules:
   - empty_count
   - first_where
-  - fatal_error_message
   - discouraged_optional_boolean
   - redundant_nil_coalescing
   - unneeded_parentheses_in_closure_argument

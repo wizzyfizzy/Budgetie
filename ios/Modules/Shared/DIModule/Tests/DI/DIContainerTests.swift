@@ -146,4 +146,3 @@ final class DIContainerTests: XCTestCase {
 private protocol TestServiceProtocol {
     var value: String { get set }
 }
-

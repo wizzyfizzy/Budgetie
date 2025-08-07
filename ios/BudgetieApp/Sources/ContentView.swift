@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import AppLogging
 
 struct ContentView: View {
+    @Injected private var logger: BTLogger
+    
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -16,6 +19,9 @@ struct ContentView: View {
             Text("Hello, world!")
         }
         .padding()
+        .onAppear {
+            logger.log(.debug, fileName: "ContentView", "ContentView appeared ✅")
+        }
     }
 }
 

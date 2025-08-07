@@ -33,4 +33,3 @@ public func restoreFatalError() {
     fatalErrorClosure = defaultFatalErrorClosure
 }
 #endif
-

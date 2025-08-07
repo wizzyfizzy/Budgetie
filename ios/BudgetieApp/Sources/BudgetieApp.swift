@@ -9,6 +9,11 @@ import SwiftUI
 
 @main
 struct BudgetieApp: App {
+    
+    init() {
+        BTAppDI.setUp()
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

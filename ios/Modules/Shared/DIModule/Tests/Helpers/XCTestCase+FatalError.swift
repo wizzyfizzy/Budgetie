@@ -17,7 +17,7 @@ extension XCTestCase {
         let expectation = expectation(description: "Expecting fatalError to be called")
         
         // Override
-        overrideFatalError { message, _, _ in
+        overrideFatalError { _, _, _ in
             expectation.fulfill()
             /// Dummy method that returns Never. Without it we have compile errors
             repeat {
