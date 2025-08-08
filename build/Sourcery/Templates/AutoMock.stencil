@@ -1,6 +1,7 @@
 {# --------- MACROS --------- #}
 {% macro accessLevel level %}{% if level != 'internal' %}{{ level }}{% endif %}{% endmacro %}
 {% macro asyncModifier isAsync %}{% if isAsync == 1 %} async{% endif %}{% endmacro %}
+{% macro awaitModifier isAsync %}{% if isAsync == 1 %}await {% endif %}{% endmacro %}
 {% macro throwsModifier throws %}{% if throws %} throws{% endif %}{% endmacro %}
 {% macro tryModifier throws %}{% if throws %}try {% endif %}{% endmacro %}
 {% macro returnModifier returnTypeName %}{% if not returnTypeName.isVoid %} -> {{ returnTypeName }}{% endif %}{% endmacro %}
@@ -12,7 +13,7 @@
 {% macro uniqueMethodName methodData %}{% call unifiedMethodName methodData.selectorName %}{% if method.returnTypeName | contains: "AnyPublisher<" %}_Pub_{% call getPublisherGenericTypesString method.returnTypeName %}{% elif method.isAsync %}_Async_{% call cleanTypeName method.returnTypeName %}{% else %}_{% call cleanTypeName method.returnTypeName %}{% endif %}{% endmacro %}
 {# --------- Stub+Verify params --------- #}
 {% macro parametersForVerify parameters %}{% if parameters.count > 1 %}({% for param in parameters %}{{ param.name }}: {% call removeEscapingFromType param.typeName %}{% if not forloop.last%}, {% endif %}{% endfor %}){% elif parameters.count == 1 %}{% for param in parameters %}{% call removeEscapingFromType param.typeName %}{% endfor %}{% else %}Void{% endif %}{% endmacro %}
-{% macro parametersForStubValue parameters %}{% if parameters.count > 0 %}({% for param in parameters %}{{ param.name }}{% if not forloop.last%}, {% endif %}{% endfor %}){% else %}{% endif %}{% endmacro %}
+{% macro parametersForStub parameters %}{% if parameters.count > 1 %}({% for param in parameters %}{% call removeEscapingFromType param.typeName %}{% if not forloop.last%}, {% endif %}{% endfor %}){% elif parameters.count == 1 %}{% for param in parameters %}{% call removeEscapingFromType param.typeName %}{% endfor %}{% else %}{% endif %}{% endmacro %}
 {% macro parametersForVerifyValue parameters %}{% if parameters.count > 0 %}({% for param in parameters %}{{ param.name }}{% if not forloop.last%}, {% endif %}{% endfor %}){% else %}(){% endif %}{% endmacro %}
 {% macro parametersForStubValue parameters %}{% if parameters.count > 0 %}({% for param in parameters %}{{ param.name }}{% if not forloop.last%}, {% endif %}{% endfor %}){% else %}{% endif %}{% endmacro %}
 {# --------- Verify Method --------- #}
@@ -20,7 +21,10 @@
     {% call accessLevel method.accessLevel %} func {{ method.name }}{% call asyncModifier method.isAsync %}{% call throwsModifier method.throws %}{% call returnModifier method.returnTypeName %} {
         {% if method.isAsync %}await {% endif %}verify.{% call uniqueMethodName method %}.append({% call parametersForVerifyValue method.parameters %})
         {% if not method.returnTypeName.isVoid or method.throws %}
-        {% call returnKeyword method.returnTypeName %}{% call tryModifier method.throws %}{% call awaitModifier method.isAsync %}stub.${% call uniqueMethodName method %}({% call parametersForStubValue method.parameters %})
+        guard let value = stub.{% call uniqueMethodName method %}?({% call parametersForStubValue method.parameters %}) else {
+             fatalError( "'\(#function)' function called but not stubbed before. File: \(#file)")
+         }
+        {% call returnKeyword method.returnTypeName %}{% call tryModifier method.throws %}{% call awaitModifier method.isAsync %}value
         {% endif %}
     }
 {% endmacro %}
