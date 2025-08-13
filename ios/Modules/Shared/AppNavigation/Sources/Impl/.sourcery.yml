@@ -1,0 +1,11 @@
+# Mocks configuration for Onboarding target
+
+sources:
+  - ./
+templates:
+  - ../../../../../../build/Sourcery/Templates/AutoMock.stencil
+output:
+    ../../Tests/AppNavigationTests/Mocks
+args:
+  mockTestableImports: [AppNavigation]
+  mockImports: [AppNavigationAPI]

@@ -9,23 +9,31 @@ import DIModule
 import AppLogging
 import OnboardingAPI
 import Onboarding
+import AppNavigationAPI
+import AppNavigation
 
 final class BTAppDI: DIContainer {
     // Shared singleton instance of type DIContainer
     static var shared = DIContainer()
+
+    let navigationRegistry: NavigationRegistryProtocol
+    private(set) var navigationContext: NavigationContext
     
     // Flag to check if the DI is "empty", with no registrations
     let isEmpty: Bool
     
     init(isEmpty: Bool = false) {
         self.isEmpty = isEmpty
+        navigationRegistry = NavigationRegistryFactoryImpl.make()
+        navigationContext = NavigationContext(registry: navigationRegistry)
+
         super.init()
-        
+
         // setUp the shared in this instance
         BTAppDI.shared = self
-        
+
         if !isEmpty {
-            initOnboarding()
+            registerAppNavigationModules()
             registerLogging()
             registerOnboarding()
         }
@@ -40,6 +48,13 @@ final class BTAppDI: DIContainer {
     // Clean up the DI container (empty state)
     static func clear() {
         shared = DIContainer()
+    }
+    
+    private func registerAppNavigationModules() {
+        
+        register(NavigationContext.self) { _ in self.navigationContext }
+        register(AppNavigateToUC.self) { _ in
+            AppNavigateToUCImpl(navigationHandler: self.navigationContext.navigationHandler)}
     }
     
     private func registerLogging() {
