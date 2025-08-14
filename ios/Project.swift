@@ -7,7 +7,32 @@ let projectPackages: [Package] = [
     .remote(url: "https://github.com/airbnb/lottie-spm", requirement: .exact("4.5.2")),
     // App
     .local(path: "Modules/Features/Auth"),
+    .local(path: "Modules/Features/Onboarding"),
+    .local(path: "Modules/Shared/AppLogging"),
+    .local(path: "Modules/Shared/AppNavigation"),
+    .local(path: "Modules/Shared/DIModule"),
     .local(path: "Modules/Shared/UIComponents")
+]
+
+// MARK: - Dependencies
+let sharedMoldules: [TargetDependency] = [
+    .package(product: "AppLogging"),
+    .package(product: "AppNavigation"),
+    .package(product: "DIModule")
+]
+
+let coreMoldules: [TargetDependency] = [
+]
+
+let featureMoldules: [TargetDependency] = [
+    .package(product: "Onboarding")
+]
+
+let projectDependencies = sharedMoldules + coreMoldules + featureMoldules
+
+let projectTestDependencies: [TargetDependency] = [
+    .target(name: "Budgetie"),
+    .package(product: "AppNavigationMocks")
 ]
 
 // MARK: - FileHeaderTemplate Extensions
@@ -37,6 +62,23 @@ let swiftLintScript = TargetScript.pre(
     name: "SwiftLint"
 )
 
+let sourceryScript = TargetScript.pre(
+    script: """
+    if which sourcery >/dev/null; then
+      echo "🔧 Running Sourcery..."
+      find Modules -type f -name .sourcery.yml | while read config; do
+        echo "📄 Found config: $config"
+        dir=$(dirname "$config")
+        echo "🔁 Running Sourcery in $dir"
+        sourcery --config "$config"
+      done
+    else
+      echo "⚠️ Sourcery not installed. Run: brew install sourcery"
+    fi
+    """,
+    name: "Sourcery"
+)
+
 // MARK: - Target Template Definitions
 
 public extension Target {
@@ -53,7 +95,24 @@ public extension Target {
                infoPlist: .init(stringLiteral: plist),
                sources: .init(stringLiteral: sources),
                resources: .init(stringLiteral: resources),
-               scripts: [swiftLintScript])
+               scripts: [swiftLintScript,
+                        sourceryScript],
+               dependencies: projectDependencies
+        )
+    }
+    
+    static func testTarget(name: String,
+                           bundleId: String,
+                           sources: String) -> Target {
+        target(name: name,
+               destinations: [.iPhone],
+               product: .unitTests,
+               bundleId: bundleId,
+               deploymentTargets: .iOS("16.0"),
+               sources: .init(stringLiteral: sources),
+               scripts: [swiftLintScript],
+               dependencies: projectTestDependencies
+        )
     }
 }
 
@@ -63,11 +122,17 @@ let project = Project(
     packages: projectPackages,
     settings: .settings(base: ["ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES": "YES"]),
     targets: [
+        // Main App Target
         Target.appTarget(name: "Budgetie",
-                         bundleId: "com.krismatzi.BudgetieApp",
+                         bundleId: "com.budgetie.BudgetieApp",
                          plist: "BudgetieApp/Info.plist",
                          sources: "BudgetieApp/Sources/**",
-                         resources: "BudgetieApp/Resources/**")
+                         resources: "BudgetieApp/Resources/**"),
+        
+        // Test target
+        Target.testTarget(name: "BudgetieTests",
+                          bundleId: "com.budgetie.BudgetieAppTest",
+                          sources: "BudgetieAppTest/**")
     ],
     fileHeaderTemplate: .appHeader,
     resourceSynthesizers: []

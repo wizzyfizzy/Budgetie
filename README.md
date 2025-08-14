@@ -27,6 +27,11 @@ The iOS project uses [Tuist](https://tuist.io/) to manage the Xcode project, dep
 │ └── .env # Env variables
 └── README.md # This file
 ```
+
+| Protocol Type | Used In                    |
+|---------------|----------------------------|
+| `API`         | App or other module        |
+| `Impl`        | Internally in module only  |
 [Read more about Project Architecture](https://github.com/wizzyfizzy/Budgetie/blob/main/docs/modules.md)
 
 ---
@@ -88,6 +93,46 @@ This project uses [SwiftLint](https://github.com/realm/SwiftLint) to enforce con
 - Warnings appear in Xcode during builds automatically
 [Read full SwiftLint config](https://github.com/wizzyfizzy/Budgetie/blob/main/docs/SwiftLint%20setup.md)
 
+---
+
+## 🪄 Automatic Mock Generation with Sourcery
+
+This project uses [Sourcery](https://github.com/krzysztofzablocki/Sourcery) to **automatically generate mocks** for protocol-based unit tests.
+
+Sourcery is integrated into the **Tuist build process** via a custom pre-build script that runs per module. Mocks are generated based on `@AutoMockable` annotations using a shared `AutoMock.stencil` template.
+
+🔁 **No more boilerplate mocks** — just annotate your protocols and Sourcery takes care of the rest.
+
+✅ **Benefits**:
+- Test doubles (mocks) always up-to-date with protocols  
+- Eliminates manual maintenance  
+- Modular setup scales per feature/module
+
+📁 **Each module** (e.g. `Shared/AppLogging`) includes:
+- `.sourcery.yml` configuration  
+- Output folder: `/Mocks/`  
+- Template reference: shared `AutoMock.stencil`  
+
+🧪 **Example:**
+```swift
+// Protocol
+// sourcery: AutoMockable
+protocol LoggingService {
+    func log(_ type: LoggingType, fileName: String?, _ message: LoggingMessage)
+}
+
+// Sourcery-generated mock
+class LoggingServiceMock: LoggingService {
+    var logFileName_Void = [/* tracked parameters */]
+    ...
+}
+```
+
+🚀 Mocks are regenerated automatically on each build via Tuist.
+[Read more in the Sourcery docs](https://github.com/wizzyfizzy/Budgetie/blob/main/docs/Sourcery.md)
+
+---
+
 ## 📷 Demo
 
 *Coming soon: screenshots, preview video, and diagrams.*
@@ -100,6 +145,7 @@ This project uses [SwiftLint](https://github.com/realm/SwiftLint) to enforce con
 1. Navigate to the `ios/` folder
 2. Run:
 - `tuist install`       # Installs correct Tuist version (if needed)
+- `tuist clean`         # clears all Tuist-generated data to reset the project’s state 
 - `tuist generate`      # Generates the Xcode project/workspace
 - open Budgetie.xcworkspace
 3. Run the app on iPhone Simulator
@@ -112,6 +158,69 @@ This project uses [SwiftLint](https://github.com/realm/SwiftLint) to enforce con
 - `npm run dev` — Start dev server
 - `npm start` — Run in production mode
 [Read more](https://github.com/wizzyfizzy/Budgetie/blob/main/api/README.md)
+
+---
+
+## 🔌 Dependency Injection with `@Injected`
+
+We use the `@Injected` property wrapper to resolve dependencies from the shared `BTAppDI` container.
+
+example
+```swift
+@Injected private var logger: BTLogger
+```
+
+This resolves the BTLogger implementation at runtime using our custom dependency injection system (DIModule + BTAppDI).
+
+🔁 Dependencies are registered once, globally.
+✅ Safe to use across all modules.
+🧪 Easy to mock in tests by re-registering.
+
+All modules can use `@Injected` as long as the type is registered in `BTAppDI`.
+
+📌 Make sure to call `BTAppDI.setUp()` on app launch to initialize dependencies.
+
+
+### 🔁 Registering Dependencies – Best Practices
+**🧩 Case 1: Impl used internally in module**
+* ✅ Register locally in module’s DIContainer (FeatureXDI)
+* ❌ Don’t expose or register in BTAppDI
+
+```swift
+final class MyServiceImpl: MyService { ... }
+
+// FeatureXDI.swift
+register(MyService.self) { _ in MyServiceImpl() }
+```
+
+**🧩 Case 2: API used externally (by app or other module)**
+* ✅ Register the protocol to BTAppDI or the consuming module’s DI.
+* ✅ Optionally register mock/stub in tests or preview DI.
+
+```swift
+// BTAppDI.swift
+register(MyService.self) { _ in MyServiceImpl() }
+```
+
+### 🗂️ Quick Reference: Where to Register Dependencies
+
+| Protocol Type | Used In                    | Register In                      |
+|---------------|----------------------------|----------------------------------|
+| `API`         | App or other module        | `BTAppDI` or consumer DI         |
+| `Impl`        | Internally in module only  | Module’s own `DIContainer`       |
+
+
+## 📘 Quick Guide: Adding a New Module to AppNavigation
+[Check here](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Shared/AppNavigation/README.md)
+
+---
+
+## 📝 Modules:
+### Shared: 
+- [AppLogging](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Shared/AppLogging/README.md) for extensible logging
+- [DIModule](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Shared/DIModule/README.md). Dependency Injection (DI) system that allows mainApp and modules to register and resolve dependencies
+- [AppNavigation](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Shared/AppNavigation/README.md) is a navigation system
+
 
 ---
 
