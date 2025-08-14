@@ -18,6 +18,7 @@ public final class NavigationContext: ObservableObject {
     public init(registry: NavigationRegistryProtocol) {
         self.registry = registry
     }
+    
     public var navigationHandler: (NavigationData, NavigationType) -> Void {
         { [weak self] data, type in
             guard let self,

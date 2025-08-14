@@ -30,6 +30,11 @@ let featureMoldules: [TargetDependency] = [
 
 let projectDependencies = sharedMoldules + coreMoldules + featureMoldules
 
+let projectTestDependencies: [TargetDependency] = [
+    .target(name: "Budgetie"),
+    .package(product: "AppNavigationMocks")
+]
+
 // MARK: - FileHeaderTemplate Extensions
 
 extension FileHeaderTemplate {
@@ -81,8 +86,7 @@ public extension Target {
                           bundleId: String,
                           plist: String,
                           sources: String,
-                          resources: String,
-                          dependencies: [TargetDependency] = []) -> Target {
+                          resources: String) -> Target {
         target(name: name,
                destinations: [.iPhone],
                product: .app,
@@ -96,6 +100,20 @@ public extension Target {
                dependencies: projectDependencies
         )
     }
+    
+    static func testTarget(name: String,
+                           bundleId: String,
+                           sources: String) -> Target {
+        target(name: name,
+               destinations: [.iPhone],
+               product: .unitTests,
+               bundleId: bundleId,
+               deploymentTargets: .iOS("16.0"),
+               sources: .init(stringLiteral: sources),
+               scripts: [swiftLintScript],
+               dependencies: projectTestDependencies
+        )
+    }
 }
 
 let project = Project(
@@ -104,11 +122,17 @@ let project = Project(
     packages: projectPackages,
     settings: .settings(base: ["ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES": "YES"]),
     targets: [
+        // Main App Target
         Target.appTarget(name: "Budgetie",
                          bundleId: "com.budgetie.BudgetieApp",
                          plist: "BudgetieApp/Info.plist",
                          sources: "BudgetieApp/Sources/**",
-                         resources: "BudgetieApp/Resources/**")
+                         resources: "BudgetieApp/Resources/**"),
+        
+        // Test target
+        Target.testTarget(name: "BudgetieTests",
+                          bundleId: "com.budgetie.BudgetieAppTest",
+                          sources: "BudgetieAppTest/**")
     ],
     fileHeaderTemplate: .appHeader,
     resourceSynthesizers: []

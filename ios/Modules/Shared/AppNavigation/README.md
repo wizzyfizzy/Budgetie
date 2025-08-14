@@ -71,7 +71,7 @@ private func registerAppNavigationModules() {
 
 ---
 
-## Creating a New Module with Navigation
+## 📘 Quick Guide: Adding a New Module to AppNavigation
 
 ### 1. Define NavigationData
 
@@ -82,7 +82,7 @@ public struct MyFeatureNavData: NavigationData {
 }
 ```
 
-### 2. Register the View
+### 2. Create a ViewProvider in the Feature Module to register the View 
 
 ```swift
 public enum MyFeatureNavigationViewProvider {
@@ -94,7 +94,7 @@ public enum MyFeatureNavigationViewProvider {
 }
 ```
 
-### 3. Call in App DI
+### 3. Register the View in Main App DI (BTAppDI)
 
 ```swift
 MyFeatureNavigationViewProvider.register(in: navigationRegistry)
@@ -120,6 +120,15 @@ NavigationStack(path: $navContext.path) {
         .interactiveDismissDisabled(true) // Optional: disable dismiss
 }
 ```
+
+## 5️⃣ Summary / Best Practices
+┌────────────────────────────────────────────────────────────────────────────────────────────────────┐
+|            Step                    |                        Purpose                                |
+|    Create `NavigationData`         |  Type-safe parameters for view navigation                     |
+|    Create `ViewProvider`           |  Each module registers its views without main app knowledge   |
+|    Register in `BTAppDI`           |  Provide a shared NavigationRegistry and navigation use case  |
+|    Use `navigateToUC.execute`      |  Push or present the view via NavigationStack or Sheet        |
+└────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
 ---
 

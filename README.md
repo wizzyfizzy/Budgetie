@@ -209,12 +209,18 @@ register(MyService.self) { _ in MyServiceImpl() }
 | `API`         | App or other module        | `BTAppDI` or consumer DI         |
 | `Impl`        | Internally in module only  | Module’s own `DIContainer`       |
 
+
+## 📘 Quick Guide: Adding a New Module to AppNavigation
+[Check here](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Shared/AppNavigation/README.md)
+
 ---
 
 ## 📝 Modules:
 ### Shared: 
 - [AppLogging](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Shared/AppLogging/README.md) for extensible logging
 - [DIModule](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Shared/DIModule/README.md). Dependency Injection (DI) system that allows mainApp and modules to register and resolve dependencies
+- [AppNavigation](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Shared/AppNavigation/README.md) is a navigation system
+
 
 ---
 
