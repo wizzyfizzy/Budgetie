@@ -32,6 +32,7 @@ The iOS project uses [Tuist](https://tuist.io/) to manage the Xcode project, dep
 |---------------|----------------------------|
 | `API`         | App or other module        |
 | `Impl`        | Internally in module only  |
+
 [Read more about Project Architecture](https://github.com/wizzyfizzy/Budgetie/blob/main/docs/modules.md)
 
 ---
@@ -91,6 +92,7 @@ This project uses [SwiftLint](https://github.com/realm/SwiftLint) to enforce con
 - SwiftLint is integrated as a *build script* via Tuist
 - Custom rules, disabled checks, and opt-in rules are configured in `.swiftlint.yml`
 - Warnings appear in Xcode during builds automatically
+
 [Read full SwiftLint config](https://github.com/wizzyfizzy/Budgetie/blob/main/docs/SwiftLint%20setup.md)
 
 ---
@@ -209,6 +211,8 @@ register(MyService.self) { _ in MyServiceImpl() }
 | `API`         | App or other module        | `BTAppDI` or consumer DI         |
 | `Impl`        | Internally in module only  | Module’s own `DIContainer`       |
 
+
+---
 
 ## 📘 Quick Guide: Adding a New Module to AppNavigation
 [Check here](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Shared/AppNavigation/README.md)
