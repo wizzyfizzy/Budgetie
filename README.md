@@ -222,8 +222,9 @@ register(MyService.self) { _ in MyServiceImpl() }
 ## 📝 Modules:
 ### Shared: 
 - [AppLogging](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Shared/AppLogging/README.md) for extensible logging
-- [DIModule](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Shared/DIModule/README.md). Dependency Injection (DI) system that allows mainApp and modules to register and resolve dependencies
 - [AppNavigation](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Shared/AppNavigation/README.md) is a navigation system
+- [DIModule](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Shared/DIModule/README.md). Dependency Injection (DI) system that allows mainApp and modules to register and resolve dependencies
+- [UIComponents](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Shared/UIComponents/README.md) is a collection of generic UI components and UI utilities
 
 
 ---
