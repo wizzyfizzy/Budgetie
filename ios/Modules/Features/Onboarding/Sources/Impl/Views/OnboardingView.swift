@@ -57,13 +57,12 @@ public struct OnboardingView: View {
             
             HStack(spacing: Spacing.spaceM) {
                 if !viewModel.isLastStep {
-                    Button(viewModel.textButtonSkip) {
+                    TextButton(text: viewModel.textButtonSkip) {
                         withAnimation {
                             viewModel.skipOnboarding()
                             dismiss()
                         }
                     }
-                    .foregroundColor(.btGray)
                     .frame(maxWidth: .infinity)
                 }
                 

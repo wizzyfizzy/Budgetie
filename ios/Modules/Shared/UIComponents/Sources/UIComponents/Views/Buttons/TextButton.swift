@@ -7,18 +7,16 @@
 
 import SwiftUI
 
-/// A reusable SwiftUI button with gradient background, optional image, and built-in pressed/disabled states.
+/// A reusable SwiftUI text button with no background, optional image, and built-in pressed/disabled states.
 ///
 /// It supports:
-/// - Customizable corner radius
-/// - Micro shadow
-/// - Disabled state (gray)
+/// - Disabled state
 /// - Pressed state
 /// - Optional image next to the label
 ///
 /// Example usage:
 ///
-/// GradientButton(
+/// TextButton(
 ///     text: "Start",
 ///     image: Image(systemName: "play.fill"),
 ///     isEnabled: $canTapButton
@@ -26,7 +24,7 @@ import SwiftUI
 ///     doSomething()
 /// }
 ///
-public struct GradientButton: View {
+public struct TextButton: View {
     
     /// Binding to enable or disable the button
     @Binding var isEnabled: Bool
@@ -43,9 +41,6 @@ public struct GradientButton: View {
     /// Optional image displayed next to the label
     let text: String
     
-    /// Corner radius of the button
-    let cornerRadius: CGFloat = CornerRadius.spaceM
-    
     public init(isEnabled: Binding<Bool> = .constant(true),
                 image: Image? = nil,
                 text: String,
@@ -57,10 +52,6 @@ public struct GradientButton: View {
     }
     
     public var body: some View {
-        let background = LinearGradient(colors: gradientColors,
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing)
-        
         Button(action: {
             if isEnabled {
                 action()
@@ -72,16 +63,15 @@ public struct GradientButton: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: IconSize.spaceM, height: IconSize.spaceM)
-                        .foregroundColor(.btWhite)
+                        .foregroundColor(.btGray)
                 }
                 Text(text)
                     .font(.appButton)
-                    .foregroundColor(.btWhite)
+                    .foregroundColor(.btGray)
             }
             .frame(maxWidth: .infinity)
             .frame(height: ButtonSize.heightMd)
-            .background(background)
-            .cornerRadius(cornerRadius)
+            .background(Color.clear)
             .shadow(.medium)
             .scaleEffect(isPressed ? 0.98 : 1.0)
         })
@@ -98,13 +88,5 @@ public struct GradientButton: View {
                     isPressed = false
                 }
         )
-    }
-    
-    private var gradientColors: [Color] {
-        if !isEnabled {
-            return [Color.btGray, Color.btLightGrey]
-        } else {
-            return [Color.btDarkGreen, Color.btGreen]
-        }
     }
 }
