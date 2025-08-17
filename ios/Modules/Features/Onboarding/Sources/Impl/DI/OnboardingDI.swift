@@ -29,7 +29,7 @@ final class OnboardingDI: DIContainer {
         registerRepo()
         registerUceCases()
         
-        if let dependencies {
+        if dependencies != nil {
             registerLogging()
         }
 

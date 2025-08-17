@@ -15,8 +15,9 @@ public final class OnboardingVM: ObservableObject {
     @Injected private var completeOnboardingUC: CompleteOnboardingUC
     @Injected private var logger: BTLogger
 
-    private var timer: Timer?
-
+    private var timerCancellable: AnyCancellable?
+    private let fileName = "OnboardingVM"
+    
     public init() { }
     
     let onboardingSteps = [
@@ -36,35 +37,39 @@ public final class OnboardingVM: ObservableObject {
     }
     
     func skipOnboarding() {
-        logger.log(.debug, fileName: "OnboardingVM", "Tracking Action: \(TrackingAction.tapSkip) for \(TrackingValue.onboardingStep): \(currentStep)")
+        trackAction(TrackingAction.tapSkip)
     }
     
     func completeOnboarding() {
-        logger.log(.debug, fileName: "OnboardingVM", "Tracking Action: \(TrackingAction.tapCompleted)")
+        trackAction(TrackingAction.tapCompleted)
         completeOnboardingUC.execute()
     }
     
     func nextStep() {
-        logger.log(.debug, fileName: "OnboardingVM", "Tracking Action: \(TrackingAction.tapNext) for \(TrackingValue.onboardingStep): \(currentStep)")
-
+        trackAction(TrackingAction.tapNext)
         currentStep += 1
     }
     
     func trackView() {
-        logger.log(.debug, fileName: "OnboardingVM", "TrackingView: \(TrackingView.onboardingScreen)")
+        logger.log(.debug, fileName: fileName, "TrackingView: \(TrackingView.onboardingScreen)")
     }
     
     func startAutoScroll() {
-        timer = Timer.scheduledTimer(withTimeInterval: 4, repeats: true) { [weak self] _ in
-            guard let self else { return }
-            if !isLastStep {
-                logger.log(.debug, fileName: "OnboardingVM", "Tracking Action: \(TrackingAction.timer) for \(TrackingValue.onboardingStep): \(currentStep)")
-                currentStep += 1
+        timerCancellable = Timer.publish(every: 4.0, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] _ in
+                guard let self, !self.isLastStep else { return }
+                self.trackAction(TrackingAction.timer)
+                self.currentStep += 1
             }
-        }
     }
     
     func stopTimer() {
-        timer?.invalidate()
+        timerCancellable?.cancel()
+        timerCancellable = nil
+    }
+    
+    private func trackAction(_ action: TrackingAction) {
+        logger.log(.debug, fileName: fileName, "Tracking Action: \(action) for \(TrackingValue.onboardingStep): \(currentStep)")
     }
 }

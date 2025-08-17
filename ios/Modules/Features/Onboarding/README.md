@@ -28,3 +28,13 @@ It includes navigation setup, state management, persistence, and UI components.
 ### Register Onboarding in Navigation
 ```swift
 OnboardingNavigationViewProvider.register(in: registry)
+```
+
+## Demo
+
+- [Video](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Features/Onboarding/Demo/Demo.mp4)
+- [Screens with light mode and default contrast](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Features/Onboarding/Demo/Onboarding_light_default_contrast.png)
+- [Screens with light mode and high contrast](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Features/Onboarding/Demo/Onboarding_light_high_contrast.png)
+- [Screens with dark mode and default contrast](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Features/Onboarding/Demo/Onboarding_dark_default_contrast.png)
+- [Screens with dark mode and high contrast](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Features/Onboarding/Demo/Onboarding_dark_high_contrast.png)
+
