@@ -226,6 +226,9 @@ register(MyService.self) { _ in MyServiceImpl() }
 - [DIModule](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Shared/DIModule/README.md). Dependency Injection (DI) system that allows mainApp and modules to register and resolve dependencies
 - [UIComponents](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Shared/UIComponents/README.md) is a collection of generic UI components and UI utilities
 
+### Features: 
+- [Onboarding](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Features/Onboarding/README.md) provides the onboarding flow
+
 
 ---
 
