@@ -16,7 +16,7 @@ struct BudgetieApp: App {
     
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            HomeView(navContext: BTAppDI.shared.resolve(NavigationContext.self))
         }
     }
 }
