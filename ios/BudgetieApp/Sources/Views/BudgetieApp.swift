@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct BudgetieApp: App {
     @State private var showLaunch = true
-
+    
     init() {
         BTAppDI.setUp()
     }

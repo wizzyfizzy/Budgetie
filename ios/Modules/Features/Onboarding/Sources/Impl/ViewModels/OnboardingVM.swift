@@ -8,6 +8,7 @@
 import Combine
 import AppLogging
 import Foundation
+import UIComponents
 
 public final class OnboardingVM: ObservableObject {
     @Published var currentStep: Int = 0
@@ -19,18 +20,22 @@ public final class OnboardingVM: ObservableObject {
     private let fileName = "OnboardingVM"
     
     public init() { }
-    
+
     let onboardingSteps = [
         OnboardingStep(imageName: ImageKeys.imageOnboarding1, 
-                       title: "Welcome to Budgetie",
-                       description: "Monitor your monthly expenses. Master your money! Budget it with style!"),
+                       title: TextKeys.textOnboardingTitle1.localized(),
+                       description: TextKeys.textOnboardingDescription1.localized()),
         OnboardingStep(imageName: ImageKeys.imageOnboarding2,
-                       title: "Track your subscriptions",
-                       description: "Use Swift Charts to analyze your spending patterns."),
-        OnboardingStep(imageName: ImageKeys.imageOnboarding3, 
-                       title: "Learn and improve your budget",
-                       description: "Discover smarter ways to manage your budget with AI-powered tips.")
+                       title: TextKeys.textOnboardingTitle2.localized(),
+                       description: TextKeys.textOnboardingDescription2.localized()),
+        OnboardingStep(imageName: ImageKeys.imageOnboarding3,
+                       title: TextKeys.textOnboardingTitle3.localized(),
+                       description: TextKeys.textOnboardingDescription3.localized())
     ]
+    
+    let textButtonSkip = TextKeys.textButtonSkip.localized()
+    let textButtonNext = TextKeys.textButtonNext.localized()
+    let textButtonGetStarted = TextKeys.textButtonGetStarted.localized()
     
     var isLastStep: Bool {
         currentStep == onboardingSteps.count - 1

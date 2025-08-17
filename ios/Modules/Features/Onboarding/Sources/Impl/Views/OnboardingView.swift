@@ -57,7 +57,7 @@ public struct OnboardingView: View {
             
             HStack(spacing: Spacing.spaceM) {
                 if !viewModel.isLastStep {
-                    Button("Skip") {
+                    Button(viewModel.textButtonSkip) {
                         withAnimation {
                             viewModel.skipOnboarding()
                             dismiss()
@@ -67,7 +67,7 @@ public struct OnboardingView: View {
                     .frame(maxWidth: .infinity)
                 }
                 
-                GradientButton(text: viewModel.isLastStep ? "Get Started" : "Next") {
+                GradientButton(text: viewModel.isLastStep ? viewModel.textButtonGetStarted : viewModel.textButtonNext) {
                     if viewModel.isLastStep {
                         viewModel.completeOnboarding()
                         dismiss()
