@@ -14,9 +14,10 @@ let package = Package(
         .library(name: "OnboardingMocks", targets: ["OnboardingMocks"])
     ],
     dependencies: [
-        .package(name: "AppLogging", path: "../../Modules/Shared/AppLogging"),
-        .package(name: "AppNavigation", path: "../../Modules/Shared/AppNavigation"),
-        .package(name: "UIComponents", path: "../../Modules/Shared/UIComponents")
+        .package(name: "AppLogging", path: "../../Shared/AppLogging"),
+        .package(name: "AppNavigation", path: "../../Shared/AppNavigation"),
+        .package(name: "DIModule", path: "../../Shared/DIModule"),
+        .package(name: "UIComponents", path: "../../Shared/UIComponents")
     ],
     targets: [
         .target(
@@ -30,6 +31,7 @@ let package = Package(
             dependencies: [
                 "OnboardingAPI",
                 "AppLogging",
+                "DIModule",
                 "UIComponents",
                 .product(name: "AppNavigationAPI", package: "AppNavigation")
             ],
@@ -43,7 +45,9 @@ let package = Package(
         .testTarget(
             name: "OnboardingTests",
             dependencies: ["Onboarding",
-                           .product(name: "AppNavigationMocks", package: "AppNavigation")
+                           "DIModule",
+                           .product(name: "AppNavigationMocks", package: "AppNavigation"),
+                           .product(name: "AppLoggingMocks", package: "AppLogging")
             ],
             path: "Tests/OnboardingTests"
         )

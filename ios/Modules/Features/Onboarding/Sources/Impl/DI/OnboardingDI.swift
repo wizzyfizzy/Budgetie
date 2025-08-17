@@ -10,7 +10,6 @@ import AppLogging
 
 final class OnboardingDI: DIContainer {
     static var shared = DIContainer()
-    
     let isEmpty: Bool
     
     static func empty() -> OnboardingDI {
