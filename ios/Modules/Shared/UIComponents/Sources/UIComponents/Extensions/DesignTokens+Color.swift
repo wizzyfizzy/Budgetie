@@ -11,6 +11,7 @@ public extension Color {
     static let btWhite = Color("btWhite", bundle: .module)
     static let btBlack = Color("btBlack", bundle: .module)
     static let btBlue = Color("btBlue", bundle: .module)
+    static let btLightGreen = Color("btLightGreen", bundle: .module)
     static let btDarkGreen = Color("btDarkGreen", bundle: .module)
     static let btGreen = Color("btGreen", bundle: .module)
     static let btLightGrey = Color("btLightGrey", bundle: .module)

@@ -7,38 +7,41 @@
 
 import SwiftUI
 
-/// A horizontal pager indicator with dots representing pages.
+/// A horizontal  Pager view that displays a row of dots representing pages or steps in a flow.
 ///
-/// The currently selected page is highlighted with a larger, colored dot.
-/// The `Pager` observes its `PagerVM` view model for updates.
-///
-/// Example usage:
-/// ```swift
-/// Pager(viewModel: PagerVM(numberOfPages: 4))
-/// ```
-///
+/// - Features:
+///   - Highlights the current active page.
+///   - Animates transitions when the current page changes.
+///   - Fully reusable and can be bound to any external state (e.g., Onboarding ViewModel).
+
 /// - Parameters:
-///   - pagerVM: The `PagerVM` view model that controls the pager's state.
+///   - currentPage: Binding to the current active page.
+///   - numberOfPages: Total number of pages.
 ///   
+///   Example Usage:
+///   Pager(currentPage: $viewModel.currentStep,
+///        numberOfPages: viewModel.onboardingSteps.count)
+///
 public struct Pager: View {
+    @Binding var currentPage: Int
+    let numberOfPages: Int
     
-    @ObservedObject public var pagerVM: PagerVM
+    private let defaultIconSize: CGFloat = 5
+    private let selectedIconSize: CGFloat = 7
     
-    public init(viewModel: PagerVM) {
-        pagerVM = viewModel
+    public init(currentPage: Binding<Int>, numberOfPages: Int) {
+        _currentPage = currentPage
+        self.numberOfPages = numberOfPages
     }
     
-    @ViewBuilder
     public var body: some View {
-        if !pagerVM.pagerItems.isEmpty {
-            HStack(spacing: Spacing.spaceS) {
-                ForEach(pagerVM.pagerItems) { item in
-                   Circle()
-                        .frame(width: item.size, height: item.size)
-                        .scaledToFit()
-                        .foregroundColor(item.isSelected ? .btOrange : .btLightGrey)
-                }
-                .animation(.default, value: pagerVM.currentPage)
+        HStack(spacing: Spacing.spaceS) {
+            ForEach(0..<numberOfPages, id: \.self) { index in
+                Circle()
+                    .frame(width: currentPage == index ? selectedIconSize : defaultIconSize,
+                           height: currentPage == index ? selectedIconSize : defaultIconSize)
+                    .foregroundColor(currentPage == index ? .btOrange : .btLightGrey)
+                    .animation(.default, value: currentPage)
             }
         }
     }
