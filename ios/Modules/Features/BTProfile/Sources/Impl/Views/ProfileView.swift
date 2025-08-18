@@ -1,0 +1,21 @@
+//
+// Copyright © 2019 ___ORGANIZATIONNAME___
+// All rights reserved.
+//
+
+import SwiftUI
+import UIComponents
+
+public struct ProfileView: View {
+    public var body: some View {
+        VStack {
+            Spacer()
+            Text("Profile")
+                .font(.appTitle)
+                .foregroundColor(.btBlack)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .multilineTextAlignment(.center)
+            Spacer()
+        }
+    }
+}

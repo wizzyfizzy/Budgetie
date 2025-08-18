@@ -4,14 +4,14 @@
 import PackageDescription
 
 let package = Package(
-    name: "Onboarding",
+    name: "BTTransactions",
     platforms: [
         .iOS(.v16)
     ],
     products: [
-        .library(name: "OnboardingAPI", targets: ["OnboardingAPI"]),
-        .library(name: "Onboarding", targets: ["Onboarding"]),
-        .library(name: "OnboardingMocks", targets: ["OnboardingMocks"])
+        .library(name: "BTTransactionsAPI", targets: ["BTTransactionsAPI"]),
+        .library(name: "BTTransactions", targets: ["BTTransactions"]),
+        
     ],
     dependencies: [
         .package(name: "AppLogging", path: "../../Shared/AppLogging"),
@@ -21,35 +21,28 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "OnboardingAPI",
+            name: "BTTransactionsAPI",
             dependencies: [
                 .product(name: "AppNavigationAPI", package: "AppNavigation")
             ],
             path: "Sources/API"),
         .target(
-            name: "Onboarding",
+            name: "BTTransactions",
             dependencies: [
-                "OnboardingAPI",
+                "BTTransactionsAPI",
                 "AppLogging",
                 "DIModule",
                 "UIComponents",
                 .product(name: "AppNavigationAPI", package: "AppNavigation")
             ],
             path: "Sources/Impl/"),
-        .target(
-            name: "OnboardingMocks",
-            dependencies: [
-                "OnboardingAPI"
-            ],
-            path: "Sources/Mocks/"),
         .testTarget(
-            name: "OnboardingTests",
-            dependencies: ["Onboarding",
+            name: "BTTransactionsTests",
+            dependencies: ["BTTransactions",
                            "DIModule",
                            .product(name: "AppNavigationMocks", package: "AppNavigation"),
                            .product(name: "AppLoggingMocks", package: "AppLogging")
                           ],
-            path: "Tests/OnboardingTests"
-        )
+            path: "Tests/BTTransactionsTests")
     ]
 )

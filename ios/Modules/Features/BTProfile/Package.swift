@@ -4,14 +4,14 @@
 import PackageDescription
 
 let package = Package(
-    name: "Onboarding",
+    name: "BTProfile",
     platforms: [
         .iOS(.v16)
     ],
     products: [
-        .library(name: "OnboardingAPI", targets: ["OnboardingAPI"]),
-        .library(name: "Onboarding", targets: ["Onboarding"]),
-        .library(name: "OnboardingMocks", targets: ["OnboardingMocks"])
+        .library(name: "BTProfileAPI", targets: ["BTProfileAPI"]),
+        .library(name: "BTProfile", targets: ["BTProfile"]),
+        
     ],
     dependencies: [
         .package(name: "AppLogging", path: "../../Shared/AppLogging"),
@@ -21,35 +21,28 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "OnboardingAPI",
+            name: "BTProfileAPI",
             dependencies: [
                 .product(name: "AppNavigationAPI", package: "AppNavigation")
             ],
             path: "Sources/API"),
         .target(
-            name: "Onboarding",
+            name: "BTProfile",
             dependencies: [
-                "OnboardingAPI",
+                "BTProfileAPI",
                 "AppLogging",
                 "DIModule",
                 "UIComponents",
                 .product(name: "AppNavigationAPI", package: "AppNavigation")
             ],
             path: "Sources/Impl/"),
-        .target(
-            name: "OnboardingMocks",
-            dependencies: [
-                "OnboardingAPI"
-            ],
-            path: "Sources/Mocks/"),
         .testTarget(
-            name: "OnboardingTests",
-            dependencies: ["Onboarding",
+            name: "BTProfileTests",
+            dependencies: ["BTProfile",
                            "DIModule",
                            .product(name: "AppNavigationMocks", package: "AppNavigation"),
                            .product(name: "AppLoggingMocks", package: "AppLogging")
                           ],
-            path: "Tests/OnboardingTests"
-        )
+            path: "Tests/BTProfileTests")
     ]
 )

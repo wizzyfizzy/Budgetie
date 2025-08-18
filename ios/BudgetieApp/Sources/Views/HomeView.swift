@@ -8,6 +8,10 @@
 import SwiftUI
 import AppLogging
 import OnboardingAPI
+import BTMyBudgetAPI
+import BTSubscriptionsAPI
+import BTTransactionsAPI
+import BTProfileAPI
 import AppNavigationAPI
 import UIComponents
 
@@ -38,7 +42,7 @@ struct HomeView: View {
     @ViewBuilder
     var tabsView: some View {
         TabView {
-            DashboardNavigationViewProvider.buildView()
+            MyBudgetNavigationViewProvider.buildView(data: MyBudgetNavData(userId: "123"))
                 .tabItem {
                     Label {
                         Text(TextKeys.textTabTitle1.localized())
@@ -47,7 +51,7 @@ struct HomeView: View {
                             .renderingMode(.template)
                     }
                 }
-            DashboardNavigationViewProvider.buildView()
+            SubscriptionsNavigationViewProvider.buildView(data: SubscriptionsNavData(userId: "123"))
                 .tabItem {
                     Label {
                         Text(TextKeys.textTabTitle2.localized())
@@ -56,7 +60,7 @@ struct HomeView: View {
                             .renderingMode(.template)
                     }
                 }
-            DashboardNavigationViewProvider.buildView()
+            TransactionsNavigationViewProvider.buildView(data: TransactionsNavData(userId: "123"))
                 .tabItem {
                     Label {
                         Text(TextKeys.textTabTitle3.localized())
@@ -65,7 +69,7 @@ struct HomeView: View {
                             .renderingMode(.template)
                     }
                 }
-            DashboardNavigationViewProvider.buildView()
+            ProfileNavigationViewProvider.buildView(data: ProfileNavData(userId: "123"))
                 .tabItem {
                     Label {
                         Text(TextKeys.textTabTitle4.localized())

@@ -7,6 +7,10 @@ let projectPackages: [Package] = [
     .remote(url: "https://github.com/airbnb/lottie-spm", requirement: .exact("4.5.2")),
     // App
     .local(path: "Modules/Features/Auth"),
+    .local(path: "Modules/Features/BTMyBudget"),
+    .local(path: "Modules/Features/BTProfile"),
+    .local(path: "Modules/Features/BTSubscriptions"),
+    .local(path: "Modules/Features/BTTransactions"),
     .local(path: "Modules/Features/Onboarding"),
     .local(path: "Modules/Shared/AppLogging"),
     .local(path: "Modules/Shared/AppNavigation"),
@@ -26,7 +30,11 @@ let coreMoldules: [TargetDependency] = [
 ]
 
 let featureMoldules: [TargetDependency] = [
-    .package(product: "Onboarding")
+    .package(product: "Onboarding"),
+    .package(product: "BTMyBudget"),
+    .package(product: "BTProfile"),
+    .package(product: "BTSubscriptions"),
+    .package(product: "BTTransactions")
 ]
 
 let projectDependencies = sharedMoldules + coreMoldules + featureMoldules
