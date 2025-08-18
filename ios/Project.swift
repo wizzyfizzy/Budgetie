@@ -18,7 +18,8 @@ let projectPackages: [Package] = [
 let sharedMoldules: [TargetDependency] = [
     .package(product: "AppLogging"),
     .package(product: "AppNavigation"),
-    .package(product: "DIModule")
+    .package(product: "DIModule"),
+    .package(product: "UIComponents")
 ]
 
 let coreMoldules: [TargetDependency] = [

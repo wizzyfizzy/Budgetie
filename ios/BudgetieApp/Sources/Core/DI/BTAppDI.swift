@@ -7,10 +7,9 @@
 
 import DIModule
 import AppLogging
-import OnboardingAPI
-import Onboarding
 import AppNavigationAPI
 import AppNavigation
+import Onboarding
 
 final class BTAppDI: DIContainer {
     // Shared singleton instance of type DIContainer
@@ -24,6 +23,8 @@ final class BTAppDI: DIContainer {
     
     init(isEmpty: Bool = false) {
         self.isEmpty = isEmpty
+        
+        // Create a shared navigation registry for all modules
         navigationRegistry = NavigationRegistryFactoryImpl.make()
         navigationContext = NavigationContext(registry: navigationRegistry)
 
@@ -33,8 +34,10 @@ final class BTAppDI: DIContainer {
         BTAppDI.shared = self
 
         if !isEmpty {
-            registerAppNavigationModules()
+            registerAllViewsFromModules()
+            registerAppNavigation()
             registerLogging()
+            initOnboarding()
             registerOnboarding()
         }
     }
@@ -50,8 +53,12 @@ final class BTAppDI: DIContainer {
         shared = DIContainer()
     }
     
-    private func registerAppNavigationModules() {
-        
+    private func registerAllViewsFromModules() {
+        // Register all module views to this shared registry
+        OnboardingNavigationViewProvider.register(in: navigationRegistry)
+    }
+    
+    private func registerAppNavigation() {
         register(NavigationContext.self) { _ in self.navigationContext }
         register(AppNavigateToUC.self) { _ in
             AppNavigateToUCImpl(navigationHandler: self.navigationContext.navigationHandler)}
@@ -59,13 +66,5 @@ final class BTAppDI: DIContainer {
     
     private func registerLogging() {
         register(BTLogger.self) { _ in logger(module: "MainApp") }
-    }
-    
-    private func initOnboarding() {
-        OnboardingInitializer.initialize()
-    }  
-    
-    private func registerOnboarding() {
-        register(ShouldShowOnboardingUC.self) { _ in ShouldShowOnboardingUCImpl()}
     }
 }
