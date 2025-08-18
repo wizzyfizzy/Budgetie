@@ -14,24 +14,28 @@ struct LaunchScreenView: View {
     private let background = LinearGradient(colors: [Color.btLightGreen, Color.btLightYellow],
                                     startPoint: .top,
                                     endPoint: .bottom)
-    private let imageHeight: CGFloat = 400
+    private let imageHeight: CGFloat = 250
     var body: some View {
-        VStack(spacing: Spacing.spaceM) {
-            Image("launch")
-                .resizable()
-                .scaledToFit()
-                .frame(height: imageHeight)
-            Text("Master your money!")
-                .font(.appTitle)
-                .frame(alignment: .center)
-                .foregroundColor(.btBlack)
-            Text("Budget it with style!")
-                .font(.appTitle)
-                .frame(alignment: .center)
-                .foregroundColor(.btBlack)
-            Spacer()
+        ZStack {
+            background
+                .ignoresSafeArea()
+            VStack(spacing: Spacing.spaceM) {
+                Image("launch")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: imageHeight)
+                    .padding(.top, Spacing.spaceXL)
+                Text("Master your money!")
+                    .font(.appTitle)
+                    .frame(alignment: .center)
+                    .foregroundColor(.btBlack)
+                Text("Budget it with style!")
+                    .font(.appTitle)
+                    .frame(alignment: .center)
+                    .foregroundColor(.btBlack)
+                Spacer()
+            }
         }
-        .background(background)
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 withAnimation {

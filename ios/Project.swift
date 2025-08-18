@@ -97,7 +97,7 @@ public extension Target {
                sources: .init(stringLiteral: sources),
                resources: .init(stringLiteral: resources),
                scripts: [swiftLintScript,
-                        sourceryScript],
+                         sourceryScript],
                dependencies: projectDependencies
         )
     }

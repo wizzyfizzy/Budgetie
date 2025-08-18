@@ -21,20 +21,7 @@ struct HomeView: View {
 
     var body: some View {
         NavigationStack(path: $navContext.path) {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-                .foregroundColor(.btGreen)
-                .navigationDestination(for: AnyViewWrapper.self) { wrapper in
-                    wrapper.view
-                }
-            GradientButton(isEnabled: $isButtonEnabled,
-                            text: "Let's start",
-                           action: {
-                logger.log(.debug, fileName: "HomeView", "GradientButton is clicked")
-            })
-            .padding(.horizontal, Spacing.spaceL)
+            tabsView
         }
         .onAppear {
             if shouldShowOnboardingUC.execute() {
@@ -42,10 +29,53 @@ struct HomeView: View {
                 navigateToUC.execute(data: OnboardingAPI.OnboardingNavData(), type: .sheet)
             }
         }
-        .fullScreenCover(item: $navContext.sheetView) { wrapper in
+        .sheet(item: $navContext.sheetView) { wrapper in
             wrapper.view
                 .interactiveDismissDisabled(true)
         }
+    }
+    
+    @ViewBuilder
+    var tabsView: some View {
+        TabView {
+            DashboardNavigationViewProvider.buildView()
+                .tabItem {
+                    Label {
+                        Text(TextKeys.textTabTitle1.localized())
+                    } icon: {
+                        Image(ImageKeys.imageTab1)
+                            .renderingMode(.template)
+                    }
+                }
+            DashboardNavigationViewProvider.buildView()
+                .tabItem {
+                    Label {
+                        Text(TextKeys.textTabTitle2.localized())
+                    } icon: {
+                        Image(ImageKeys.imageTab2)
+                            .renderingMode(.template)
+                    }
+                }
+            DashboardNavigationViewProvider.buildView()
+                .tabItem {
+                    Label {
+                        Text(TextKeys.textTabTitle3.localized())
+                    } icon: {
+                        Image(ImageKeys.imageTab3)
+                            .renderingMode(.template)
+                    }
+                }
+            DashboardNavigationViewProvider.buildView()
+                .tabItem {
+                    Label {
+                        Text(TextKeys.textTabTitle4.localized())
+                    } icon: {
+                        Image(ImageKeys.imageTab4)
+                            .renderingMode(.template)
+                    }
+                }
+        }
+        .tint(.btGreen)
     }
 }
 
