@@ -6,7 +6,6 @@
 //
 import Foundation
 import Security
-import Security
 
 /// A lightweight wrapper around Apple's Keychain Services API.
 /// Provides methods for saving, loading, and deleting secure data such as tokens or credentials.
@@ -31,7 +30,7 @@ public enum Keychain {
         // Delete existing item before saving a new one
         try? delete(service: service, account: account)
 
-        var query: [CFString: Any] = [
+        let query: [CFString: Any] = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrService: service,
             kSecAttrAccount: account,
