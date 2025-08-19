@@ -4,13 +4,13 @@
 import PackageDescription
 
 let package = Package(
-    name: "BTSubscriptions",
+    name: "Auth",
     platforms: [
         .iOS(.v16)
     ],
     products: [
-        .library(name: "BTSubscriptionsAPI", targets: ["BTSubscriptionsAPI"]),
-        .library(name: "BTSubscriptions", targets: ["BTSubscriptions"])
+        .library(name: "AuthAPI", targets: ["AuthAPI"]),
+        .library(name: "Auth", targets: ["Auth"])
     ],
     dependencies: [
         .package(name: "AppLogging", path: "../../Shared/AppLogging"),
@@ -20,15 +20,15 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "BTSubscriptionsAPI",
+            name: "AuthAPI",
             dependencies: [
                 .product(name: "AppNavigationAPI", package: "AppNavigation")
             ],
             path: "Sources/API"),
         .target(
-            name: "BTSubscriptions",
+            name: "Auth",
             dependencies: [
-                "BTSubscriptionsAPI",
+                "AuthAPI",
                 "AppLogging",
                 "DIModule",
                 "UIComponents",
@@ -36,12 +36,12 @@ let package = Package(
             ],
             path: "Sources/Impl/"),
         .testTarget(
-            name: "BTSubscriptionsTests",
-            dependencies: ["BTSubscriptions",
+            name: "AuthTests",
+            dependencies: ["Auth",
                            "DIModule",
                            .product(name: "AppNavigationMocks", package: "AppNavigation"),
                            .product(name: "AppLoggingMocks", package: "AppLogging")
                           ],
-            path: "Tests/BTSubscriptionsTests")
+            path: "Tests/AuthTests")
     ]
 )

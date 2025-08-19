@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIComponents
 
 // sourcery: AutoMockable
 protocol OnboardingSource {

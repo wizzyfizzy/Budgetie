@@ -17,12 +17,10 @@ public struct OnboardingView: View {
     public init() {
         _viewModel = StateObject(wrappedValue: OnboardingVM())
     }
-    
-    public var body: some View {
-        let background = LinearGradient(colors: [Color.btLightGreen, Color.btLightYellow],
-                                        startPoint: .top,
-                                        endPoint: .bottom)
-        
+    private let background = LinearGradient(colors: [Color.btLightGreen, Color.btLightYellow],
+                                            startPoint: .top, endPoint: .bottom)
+
+    public var body: some View {        
         VStack {
             Spacer()
             TabView(selection: $viewModel.currentStep) {

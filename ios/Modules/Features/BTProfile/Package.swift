@@ -10,7 +10,7 @@ let package = Package(
     ],
     products: [
         .library(name: "BTProfileAPI", targets: ["BTProfileAPI"]),
-        .library(name: "BTProfile", targets: ["BTProfile"]),
+        .library(name: "BTProfile", targets: ["BTProfile"])
         
     ],
     dependencies: [

@@ -6,6 +6,7 @@
 //
 
 @testable import Onboarding
+import UIComponents
 import XCTest
 
 final class OnboardingSourceTests: XCTestCase {

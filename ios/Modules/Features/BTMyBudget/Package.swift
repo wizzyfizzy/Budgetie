@@ -10,7 +10,7 @@ let package = Package(
     ],
     products: [
         .library(name: "BTMyBudgetAPI", targets: ["BTMyBudgetAPI"]),
-        .library(name: "BTMyBudget", targets: ["BTMyBudget"]),
+        .library(name: "BTMyBudget", targets: ["BTMyBudget"])
         
     ],
     dependencies: [

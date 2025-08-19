@@ -27,7 +27,10 @@ import SwiftUI
 public struct TextButton: View {
     
     /// Binding to enable or disable the button
-    @Binding var isEnabled: Bool
+    @Binding var isEnabled: Bool  
+    
+    /// Binding to show or not the loader
+    @Binding var isLoading: Bool
     
     /// Internal state for pressed effect
     @State private var isPressed: Bool = false
@@ -38,17 +41,24 @@ public struct TextButton: View {
     /// Optional image displayed next to the label
     let image: Image?
     
-    /// Optional image displayed next to the label
+    /// Text displayed of the label
     let text: String
     
+    /// Color of image and label
+    let color: Color
+    
     public init(isEnabled: Binding<Bool> = .constant(true),
+                isLoading: Binding<Bool> = .constant(false),
                 image: Image? = nil,
                 text: String,
+                color: Color = .btGray,
                 action: @escaping () -> Void) {
         self._isEnabled = isEnabled
+        self._isLoading = isLoading
         self.action = action
         self.text = text
         self.image = image
+        self.color = color
     }
     
     public var body: some View {
@@ -58,16 +68,19 @@ public struct TextButton: View {
             }
         }, label: {
             HStack(spacing: Spacing.spaceS) {
+                if isLoading {
+                    ProgressView().padding(.trailing, Spacing.spaceS)
+                }
                 if let image {
                     image
                         .resizable()
                         .scaledToFit()
                         .frame(width: IconSize.spaceM, height: IconSize.spaceM)
-                        .foregroundColor(.btGray)
+                        .foregroundColor(color)
                 }
                 Text(text)
                     .font(.appButton)
-                    .foregroundColor(.btGray)
+                    .foregroundColor(color)
             }
             .frame(maxWidth: .infinity)
             .frame(height: ButtonSize.heightMd)

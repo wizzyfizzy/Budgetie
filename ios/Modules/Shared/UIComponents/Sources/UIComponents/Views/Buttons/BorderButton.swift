@@ -7,18 +7,18 @@
 
 import SwiftUI
 
-/// A reusable SwiftUI button with gradient background, optional image, and built-in pressed/disabled states.
+/// A reusable SwiftUI button with border, optional image, and built-in pressed/disabled states.
 ///
 /// It supports:
 /// - Customizable corner radius
-/// - Micro shadow
+/// - Customizable border
 /// - Disabled state (gray)
 /// - Pressed state
 /// - Optional image next to the label
 ///
 /// Example usage:
 ///
-/// GradientButton(
+/// BorderButton(
 ///     text: "Start",
 ///     image: Image(systemName: "play.fill"),
 ///     isEnabled: $canTapButton
@@ -26,10 +26,13 @@ import SwiftUI
 ///     doSomething()
 /// }
 ///
-public struct GradientButton: View {
+public struct BorderButton: View {
     
     /// Binding to enable or disable the button
     @Binding var isEnabled: Bool
+    
+    /// Binding to show or not the loader
+    @Binding var isLoading: Bool
     
     /// Internal state for pressed effect
     @State private var isPressed: Bool = false
@@ -43,46 +46,58 @@ public struct GradientButton: View {
     /// Text displayed in the label
     let text: String
     
-    /// Corner radius of the button
-    let cornerRadius: CGFloat = CornerRadius.spaceXL
+    /// Color of image and label
+    let color: Color
     
+    /// Corner radius of the button
+    let cornerRadius: CGFloat = CornerRadius.spaceM
+
+    /// Border width of the button
+    let borderWidth: CGFloat = 2
+
     public init(isEnabled: Binding<Bool> = .constant(true),
+                isLoading: Binding<Bool> = .constant(false),
                 image: Image? = nil,
                 text: String,
+                color: Color = .btGray,
                 action: @escaping () -> Void) {
         self._isEnabled = isEnabled
+        self._isLoading = isLoading
         self.action = action
         self.text = text
         self.image = image
+        self.color = color
     }
     
     public var body: some View {
-        let background = LinearGradient(colors: gradientColors,
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing)
-        
         Button(action: {
             if isEnabled {
                 action()
             }
         }, label: {
             HStack(spacing: Spacing.spaceS) {
+                if isLoading {
+                    ProgressView().padding(.trailing, Spacing.spaceS)
+                }
                 if let image {
                     image
                         .resizable()
                         .scaledToFit()
                         .frame(width: IconSize.spaceM, height: IconSize.spaceM)
-                        .foregroundColor(.btWhite)
+                        .foregroundColor(color)
                 }
                 Text(text)
                     .font(.appButton)
-                    .foregroundColor(.btWhite)
+                    .foregroundColor(color)
             }
             .frame(maxWidth: .infinity)
             .frame(height: ButtonSize.heightMd)
-            .background(background)
-            .cornerRadius(cornerRadius)
-            .shadow(.medium)
+            .background(Color.clear)
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                    .stroke(color, lineWidth: borderWidth)
+            )
             .scaleEffect(isPressed ? 0.98 : 1.0)
         })
         .disabled(!isEnabled)
@@ -98,13 +113,5 @@ public struct GradientButton: View {
                     isPressed = false
                 }
         )
-    }
-    
-    private var gradientColors: [Color] {
-        if !isEnabled {
-            return [Color.btGray, Color.btLightGrey]
-        } else {
-            return [Color.btDarkGreen, Color.btGreen]
-        }
     }
 }

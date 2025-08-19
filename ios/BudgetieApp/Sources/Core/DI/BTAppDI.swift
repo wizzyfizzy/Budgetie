@@ -9,7 +9,7 @@ import DIModule
 import AppLogging
 import AppNavigationAPI
 import AppNavigation
-import Onboarding
+import Auth
 import BTMyBudget
 import BTMyBudgetAPI
 import BTSubscriptions
@@ -18,6 +18,7 @@ import BTTransactions
 import BTTransactionsAPI
 import BTProfile
 import BTProfileAPI
+import Onboarding
 
 final class BTAppDI: DIContainer {
     // Shared singleton instance of type DIContainer
@@ -47,6 +48,7 @@ final class BTAppDI: DIContainer {
             registerLogging()
             initOnboarding()
             registerOnboarding()
+            initAuth()
         }
     }
     
@@ -64,6 +66,7 @@ final class BTAppDI: DIContainer {
     private func registerAllViewsFromModules() {
         // Register all module views to this shared registry for navigation
         OnboardingNavigationViewProvider.register(in: navigationRegistry)
+        LoginNavigationViewProvider.register(in: navigationRegistry)
         
         // Register all module views to builder
         MyBudgetNavigationViewProvider.register(builder: MyBudgetViewBuilderImpl())

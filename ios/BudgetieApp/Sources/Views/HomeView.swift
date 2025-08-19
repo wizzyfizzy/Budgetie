@@ -14,6 +14,7 @@ import BTTransactionsAPI
 import BTProfileAPI
 import AppNavigationAPI
 import UIComponents
+import AuthAPI
 
 struct HomeView: View {
     @Injected private var logger: BTLogger
@@ -28,17 +29,17 @@ struct HomeView: View {
             tabsView
         }
         .onAppear {
-            if shouldShowOnboardingUC.execute() {
-//                navigateToUC.execute(data: OnboardingAPI.OnboardingNavData(), type: .push)
-                navigateToUC.execute(data: OnboardingAPI.OnboardingNavData(), type: .sheet)
-            }
+            navigateToUC.execute(data: AuthAPI.LoginNavData(), type: .sheet)
+//            if shouldShowOnboardingUC.execute() {
+//                navigateToUC.execute(data: OnboardingAPI.OnboardingNavData(), type: .sheet)
+//            }
         }
         .sheet(item: $navContext.sheetView) { wrapper in
             wrapper.view
                 .interactiveDismissDisabled(true)
         }
     }
-    
+     
     @ViewBuilder
     var tabsView: some View {
         TabView {

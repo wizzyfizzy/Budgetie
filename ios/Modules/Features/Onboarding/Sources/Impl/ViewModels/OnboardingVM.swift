@@ -10,7 +10,7 @@ import AppLogging
 import Foundation
 import UIComponents
 
-public final class OnboardingVM: ObservableObject {
+final class OnboardingVM: ObservableObject {
     @Published var currentStep: Int = 0
 
     @Injected private var completeOnboardingUC: CompleteOnboardingUC
@@ -19,8 +19,6 @@ public final class OnboardingVM: ObservableObject {
     private var timerCancellable: AnyCancellable?
     private let fileName = "OnboardingVM"
     
-    public init() { }
-
     let onboardingSteps = [
         OnboardingStep(imageName: ImageKeys.imageOnboarding1, 
                        title: TextKeys.textOnboardingTitle1.localized(),
