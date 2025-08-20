@@ -1,19 +1,22 @@
 //
-// Copyright © 2019 ___ORGANIZATIONNAME___
-// All rights reserved.
+//  Copyright © 2025 Budgetie
+//
+//  All rights reserved.
+//  No part of this software may be copied, modified, or distributed without prior written permission.
 //
 
 import SwiftUI
 import UIComponents
 import AuthenticationServices
 
-public struct LoginView: View {
-    @StateObject private var loginVM: LoginVM
+struct LoginView: View {
+    @Binding var path: [AuthRoute]
+    @StateObject private var loginVM: LoginVM = LoginVM()
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var appState: AppState
-    
-    public init() {
-        _loginVM = StateObject(wrappedValue: LoginVM())
+
+    init(path: Binding<[AuthRoute]>) {
+        _path = path
     }
     
     private let background = LinearGradient(colors: [Color.btLightGreen, Color.btLightYellow],
@@ -21,16 +24,14 @@ public struct LoginView: View {
     private let imageHeight: CGFloat = 140
     private let borderWidth: CGFloat = 4
     
-    public var body: some View {
+    var body: some View {
         ZStack {
             background.ignoresSafeArea()
             ScrollView {
-                VStack(spacing: 20) {
-                    
+                VStack(spacing: Spacing.spaceXL) {
                     // MARK: Branding
                     introView
                         .padding(.top, Spacing.spaceXL)
-                    
                     // MARK: Card
                     card
                 }
@@ -61,18 +62,17 @@ public struct LoginView: View {
     
     @ViewBuilder
     var card: some View {
-        VStack(spacing: Spacing.spaceL) {
+        VStack(spacing: Spacing.spaceM) {
             // Email
-            emailTextField
+            EmailTextField(email: $loginVM.email)
             // Password
-            passwordField
+            PasswordField(password: $loginVM.password, isSecure: $loginVM.isSecure)
             // Remember Me
-            rememberMeToggle
+            RememberMeToggle(rememberMe: $loginVM.rememberMe)
             // Forgot Password
             forgotPassword
             // Error message
-            errorView
-            
+            ErrorView(errorMessage: loginVM.errorMessage)
             // Login Button
            loginButton
             // Or divider
@@ -86,109 +86,24 @@ public struct LoginView: View {
             loginVM.onAppear()
         }
         .padding(Spacing.spaceXL)
-        .background(
-            RoundedRectangle(cornerRadius: CornerRadius.spaceXL, style: .continuous)
-                .fill(.ultraThinMaterial)
-                .shadow(.medium)
-        )
-        .padding(.horizontal)
+        .modifier(CardModifier())
+        .padding(Spacing.spaceXL)
         .accessibilityElement(children: .contain)
-        
         Spacer(minLength: Spacing.spaceL)
-    }
-    
-    @ViewBuilder
-    var emailTextField: some View {
-        LabeledContent {
-            TextField("you@example", text: $loginVM.email)
-                .font(.appBody)
-                .foregroundColor(.btBlack)
-                .textContentType(.emailAddress)
-                .keyboardType(.emailAddress)
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled()
-                .submitLabel(.next)
-                .accessibilityIdentifier("login_email")
-            
-        } label: {
-            Label("Email", systemImage: "envelope.fill")
-                .font(.appBody)
-                .foregroundColor(.btBlack)
-        }
-    }
-    
-    @ViewBuilder
-    var passwordField: some View {
-        LabeledContent {
-            HStack(spacing: Spacing.spaceS) {
-                Group {
-                    if loginVM.isSecure {
-                        SecureField("••••••••", text: $loginVM.password)
-                            .textContentType(.password)
-                    } else {
-                        TextField("Enter password", text: $loginVM.password)
-                            .textContentType(.password)
-                    }
-                }
-                .submitLabel(.go)
-                .accessibilityIdentifier("login_password")
-                
-                Button {
-                    loginVM.isSecure.toggle()
-                    let announcement = loginVM.isSecure
-                    ? "Password is now hidden."
-                    : "Password is now visible."
-                    UIAccessibility.post(notification: .announcement, argument: announcement)
-                    
-                } label: {
-                    Image(systemName: loginVM.isSecure ? "eye.slash.fill" : "eye.fill")
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel(loginVM.isSecure ? "Show password" : "Hide password")
-                .accessibilityHint("Toggles password visibility")
-                .accessibilityValue(loginVM.isSecure ? "Hidden" : "Visible")
-            }
-        } label: {
-            Label("Password", systemImage: "lock.fill")
-        }
-    }
-    
-    @ViewBuilder
-    var rememberMeToggle: some View {
-        HStack {
-            Toggle(isOn: $loginVM.rememberMe) {
-                Text("Remember me")
-            }
-            .toggleStyle(.switch)
-            .foregroundColor(.btBlack)
-            .accessibilityIdentifier("login_remember")
-            .accessibilityHint("If enabled, your login will be securely stored on this device.")
-        }
     }
     
     @ViewBuilder
     var forgotPassword: some View {
         TextButton(text: "Forgot password?", color: .btBlue) {
-            //TODO:
-            // hook to navigation → e.g. navigateToUC.execute(data: ResetPasswordNavData(), type: .sheet)
-        }
-    }
-    
-    @ViewBuilder
-    var errorView: some View {
-        if let error = loginVM.errorMessage {
-            Text(error)
-                .font(.appBody)
-                .foregroundStyle(Color.btRed)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .accessibilityIdentifier("login_error")
+            path.append(.forgotPassword)
         }
     }
 
     @ViewBuilder
     var loginButton: some View {
-        BorderButton(isLoading: $loginVM.isLoading, text: "Sign In", color: .btBlue) {
+        BorderButton(isEnabled: $loginVM.isLoginButtonEnabled, isLoading: $loginVM.isLoading, text: "Sign In", color: .btBlue) {
             guard loginVM.isFormValid, !loginVM.isLoading else { return }
+            // TODO: call signIn
             loginVM.signIn()
             //                    .sink { completion in
             //                        if case .failure(let err) = completion {
@@ -234,22 +149,21 @@ public struct LoginView: View {
     
     @ViewBuilder
     var createAccount: some View {
-        HStack(spacing: Spacing.spaceXS) {
+        HStack(spacing: Spacing.spaceS) {
             Text("No account?")
                 .font(.appBody)
                 .foregroundColor(.btBlack)
             TextButton(text: "Create one", color: .btBlue) {
-                // TODO: navigate to SignUp
+                path.append(.register)
             }
-            .font(.appBody)
-            .frame(maxWidth: .infinity)
+            Spacer()
         }
-        .font(.callout)
         .padding(.top, Spacing.spaceXS)
     }
 
 }
 
 #Preview {
-    LoginView()
+    LoginView(path: .constant([]))
+        .environmentObject(AppState())
 }

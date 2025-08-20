@@ -82,7 +82,6 @@ public struct TextButton: View {
                     .font(.appButton)
                     .foregroundColor(color)
             }
-            .frame(maxWidth: .infinity)
             .frame(height: ButtonSize.heightMd)
             .background(Color.clear)
             .shadow(.medium)

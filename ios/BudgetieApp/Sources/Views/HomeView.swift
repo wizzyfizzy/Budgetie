@@ -29,7 +29,7 @@ struct HomeView: View {
             tabsView
         }
         .onAppear {
-            navigateToUC.execute(data: AuthAPI.LoginNavData(), type: .sheet)
+            navigateToUC.execute(data: AuthAPI.AuthFlowNavData(), type: .sheet)
 //            if shouldShowOnboardingUC.execute() {
 //                navigateToUC.execute(data: OnboardingAPI.OnboardingNavData(), type: .sheet)
 //            }

@@ -93,7 +93,7 @@ public struct BorderButton: View {
             .frame(maxWidth: .infinity)
             .frame(height: ButtonSize.heightMd)
             .background(Color.clear)
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
+            .contentShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                     .stroke(color, lineWidth: borderWidth)

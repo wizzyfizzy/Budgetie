@@ -11,7 +11,7 @@ public extension View {
     /// Applies a reusable shadow to the view using a ShadowToken.
     func shadow(_ token: ShadowToken) -> some View {
         self.shadow(
-            color: Color.black.opacity(token.opacity),
+            color: Color.btBlack.opacity(token.opacity),
             radius: token.radius,
             x: token.tokenX,
             y: token.tokenY

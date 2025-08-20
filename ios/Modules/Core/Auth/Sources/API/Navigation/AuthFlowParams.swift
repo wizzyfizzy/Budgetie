@@ -10,7 +10,7 @@ import SwiftUI
 
 /// Navigation data object for the Login view.
 /// Used by the navigation system to trigger builder to `LoginView`.
-public struct LoginNavData: NavigationData {
+public struct AuthFlowNavData: NavigationData {
     
     public init() { }
 }

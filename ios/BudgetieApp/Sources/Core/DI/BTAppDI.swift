@@ -66,7 +66,7 @@ final class BTAppDI: DIContainer {
     private func registerAllViewsFromModules() {
         // Register all module views to this shared registry for navigation
         OnboardingNavigationViewProvider.register(in: navigationRegistry)
-        LoginNavigationViewProvider.register(in: navigationRegistry)
+        AuthFlowNavigationViewProvider.register(in: navigationRegistry)
         
         // Register all module views to builder
         MyBudgetNavigationViewProvider.register(builder: MyBudgetViewBuilderImpl())

@@ -28,14 +28,22 @@ extension UserDefaults {
     }
     
     /// Stores or retrieves the last used email for login.
-    public static var lastEmail: String? {
-        get { UserDefaults.standard.string(forKey: Keys.lastEmailKey) }
-        set { UserDefaults.standard.setValue(newValue, forKey: Keys.lastEmailKey) }
+    public var lastEmail: String? {
+        get {
+            string(forKey: Keys.lastEmailKey)
+        }
+        set {
+            set(newValue, forKey: Keys.lastEmailKey)
+        }
     }
     
     /// Stores or retrieves the Remember Me flag.
-    public static var rememberMe: Bool {
-        get { UserDefaults.standard.bool(forKey: Keys.rememberMeKey) }
-        set { UserDefaults.standard.setValue(newValue, forKey: Keys.rememberMeKey) }
+    public var rememberMe: Bool {
+        get {
+            bool(forKey: Keys.rememberMeKey)
+        }
+        set {
+            set(newValue, forKey: Keys.rememberMeKey)
+        }
     }
 }

@@ -10,60 +10,44 @@ import Combine
 import UIComponents
 
 final class LoginVM: ObservableObject {
-    // Inputs
-    @Published var email: String = "" {
-        didSet { validateEmail() }
-    }
-    @Published var password: String = "" {
-        didSet { validatePassword() }
-    }
-    @Published var rememberMe: Bool = UserDefaults.rememberMe
-    // State
+    // MARK: - Inputs
+    @Published var email: String = ""
+    @Published var password: String = ""
+    @Published var rememberMe: Bool
+    
+    // MARK: - State
     @Published var isSecure: Bool = true
     @Published var isLoading: Bool = false
-    @Published var errorMessage: String?
+    @Published var isLoginButtonEnabled: Bool = true
+    @Published private(set) var errorMessage: String?
     
-    private var emailError: String?
-    private var passwordError: String?
-    
+    // MARK: - Dependencies
+    private let userDefaults: UserDefaults
+    private let keychainService = "com.budgetie.auth"
     private var cancellables = Set<AnyCancellable>()
-    private let service = "com.budgetie.auth"
     
-    public init() { }
+    //    private var emailError: String?
+    //    private var passwordError: String?
     
+    // MARK: - Initialization
+    init(userDefaults: UserDefaults = .standard) {
+        self.userDefaults = userDefaults
+        self.rememberMe = userDefaults.rememberMe
+        setupBindings()
+    }
+    
+    // MARK: - Computed Properties
     var isFormValid: Bool {
-        validateForm()
         return errorMessage == nil
     }
     
+    // MARK: - Public
     func onAppear() {
-        if UserDefaults.rememberMe,
-           let savedEmail = UserDefaults.lastEmail {
+        if userDefaults.rememberMe,
+           let savedEmail = userDefaults.lastEmail {
             email = savedEmail
             rememberMe = true
         }
-
-    }
-    
-    func validateForm() {
-        validateEmail()
-        validatePassword()
-        var errors: [String] = []
-        
-        if let emailError { errors.append(emailError) }
-        if let passwordError { errors.append(passwordError) }
-        
-        errorMessage = errors.isEmpty ? nil : errors.joined(separator: "\n")
-    }
-    
-    private func validateEmail() {
-        errorMessage = nil
-        emailError = !email.isValidEmail ? "Invalid email format." : nil
-    }
-    
-    private func validatePassword() {
-        errorMessage = nil
-        passwordError = password.count < 6 ? "Password should have at least 6 characters." : nil
     }
     
     // TODO: Replace with real API.
@@ -71,7 +55,7 @@ final class LoginVM: ObservableObject {
         isLoading = true
         errorMessage = nil
         let userId = "user_\(abs(email.hashValue))" // mock
-        self.saveBasedOnRememberMeToggle(userId: userId)
+        self.saveIfRememberMe(userId: userId)
         
         // Simulate network delay + validation
         return Just((email, password))
@@ -84,7 +68,7 @@ final class LoginVM: ObservableObject {
                 guard pwd.count >= 6 else { throw SignInError.invalidCredentials }
                 
                 let userId = "user_\(abs(email.hashValue))" // mock
-                self.saveBasedOnRememberMeToggle(userId: userId)
+                self.saveIfRememberMe(userId: userId)
                 return userId
             }
             .handleEvents(receiveCompletion: { [weak self] _ in
@@ -93,26 +77,7 @@ final class LoginVM: ObservableObject {
             .eraseToAnyPublisher()
     }
     
-    private func saveBasedOnRememberMeToggle(userId: String) {
-        if rememberMe {
-            // example: mock token
-            let token = "mock_token_for_\(userId)"
-
-            try? Keychain.save(
-                service: service,
-                account: email,
-                data: Data(token.utf8))
-            UserDefaults.lastEmail = email
-            UserDefaults.rememberMe = true
-        } else {
-            try? Keychain.delete(
-                service: email,
-                account: email)
-            UserDefaults.lastEmail = nil
-            UserDefaults.rememberMe = false
-        }
-    }
-
+    // MARK: - Errors
     enum SignInError: LocalizedError {
         case invalidCredentials
         var errorDescription: String? {
@@ -122,5 +87,50 @@ final class LoginVM: ObservableObject {
             }
         }
     }
+}
 
+// MARK: - Private
+private extension LoginVM {
+    
+    private func setupBindings() {
+        // Combine email + password errors
+        Publishers.CombineLatest($email, $password)
+            .map { email, password -> String? in
+                var errors: [String] = []
+                if  email.isEmpty {
+                    errors.append("Please fill in your email.")
+                } else if !email.isValidEmail {
+                    errors.append("Invalid email format.")
+                }
+                if password.count < 6 { errors.append("Password should have at least 6 characters.") }
+                return errors.isEmpty ? nil : errors.joined(separator: "\n")
+            }
+            .receive(on: RunLoop.main)
+            .sink { [weak self] combinedError in
+                guard let self else { return }
+                self.errorMessage = combinedError
+                self.isLoginButtonEnabled = combinedError == nil
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func saveIfRememberMe(userId: String) {
+        if rememberMe {
+            // example: mock token
+            let token = "mock_token_for_\(userId)"
+            
+            try? Keychain.save(
+                service: keychainService,
+                account: email,
+                data: Data(token.utf8))
+            userDefaults.lastEmail = email
+            userDefaults.rememberMe = true
+        } else {
+            try? Keychain.delete(
+                service: keychainService,
+                account: email)
+            userDefaults.lastEmail = nil
+            userDefaults.rememberMe = false
+        }
+    }
 }
