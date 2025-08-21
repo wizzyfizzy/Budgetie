@@ -105,6 +105,7 @@ public extension Target {
                infoPlist: .init(stringLiteral: plist),
                sources: .init(stringLiteral: sources),
                resources: .init(stringLiteral: resources),
+               entitlements: "Budgetie.entitlements",
                scripts: [swiftLintScript,
                          sourceryScript],
                dependencies: projectDependencies

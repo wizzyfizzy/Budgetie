@@ -8,13 +8,15 @@
 import SwiftUI
 import UIComponents
 
-struct PasswordField: View {
+struct SecureTextField: View {
     @Binding var password: String
     @Binding var isSecure: Bool
+    var textLabel: String
 
-    init(password: Binding<String>, isSecure: Binding<Bool>) {
+    init(password: Binding<String>, isSecure: Binding<Bool>, textLabel: String) {
         _password = password
         _isSecure = isSecure
+        self.textLabel = textLabel
     }
     
     var body: some View {
@@ -25,41 +27,41 @@ struct PasswordField: View {
                         SecureField("••••••••", text: $password)
                             .textContentType(.password)
                     } else {
-                        TextField("Enter password", text: $password)
+                        TextField("Enter \(textLabel)", text: $password)
                             .textContentType(.password)
                     }
                 }
                 .submitLabel(.go)
-                .accessibilityIdentifier("login_password")
+                .accessibilityIdentifier("login_\(textLabel)")
                 
                 Button {
                     isSecure.toggle()
                     let announcement = isSecure
-                    ? "Password is now hidden."
-                    : "Password is now visible."
+                    ? "\(textLabel) is now hidden."
+                    : "\(textLabel) is now visible."
                     UIAccessibility.post(notification: .announcement, argument: announcement)
                     
                 } label: {
                     Image(systemName: isSecure ? "eye.slash.fill" : "eye.fill")
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel(isSecure ? "Show password" : "Hide password")
-                .accessibilityHint("Toggles password visibility")
+                .accessibilityLabel(isSecure ? "Show password" : "Hide \(textLabel)")
+                .accessibilityHint("Toggles \(textLabel) visibility")
                 .accessibilityValue(isSecure ? "Hidden" : "Visible")
             }
         } label: {
-            Label("Password", systemImage: "lock.fill")
+            Label(textLabel, systemImage: "lock.fill")
         }
         .frame(minHeight: Spacing.spaceXL)
     }
 }
 
-struct PasswordField_Previews: PreviewProvider {
+struct SecureTextField_Previews: PreviewProvider {
     @State static var password = ""
     @State static var isSecure = true
 
     static var previews: some View {
-        PasswordField(password: $password, isSecure: $isSecure)
+        SecureTextField(password: $password, isSecure: $isSecure, textLabel: "Password")
             .previewLayout(.sizeThatFits)
             .padding()
     }

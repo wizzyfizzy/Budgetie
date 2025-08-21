@@ -14,7 +14,7 @@ extension UserDefaults {
     public enum Keys {
         public static let isOnboardingCompletedKey = "isOnboardingCompleted"
         public static let lastEmailKey = "lastEmail"
-        public static let rememberMeKey = "rememberMe"
+        public static let isUserLoggedInKey = "isUserLoggedIn"
     }
     
     /// Stores or retrieves if user completed the onboarding
@@ -37,13 +37,13 @@ extension UserDefaults {
         }
     }
     
-    /// Stores or retrieves the Remember Me flag.
-    public var rememberMe: Bool {
+    /// Stores or retrieves if User is logged in flag.
+    public var isUserLoggedIn: Bool {
         get {
-            bool(forKey: Keys.rememberMeKey)
+            bool(forKey: Keys.isUserLoggedInKey)
         }
         set {
-            set(newValue, forKey: Keys.rememberMeKey)
+            set(newValue, forKey: Keys.isUserLoggedInKey)
         }
     }
 }

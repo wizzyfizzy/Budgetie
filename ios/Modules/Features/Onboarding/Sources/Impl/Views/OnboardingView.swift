@@ -17,10 +17,8 @@ public struct OnboardingView: View {
     public init() {
         _viewModel = StateObject(wrappedValue: OnboardingVM())
     }
-    private let background = LinearGradient(colors: [Color.btLightGreen, Color.btLightYellow],
-                                            startPoint: .top, endPoint: .bottom)
 
-    public var body: some View {        
+    public var body: some View {
         VStack {
             Spacer()
             TabView(selection: $viewModel.currentStep) {
@@ -78,7 +76,7 @@ public struct OnboardingView: View {
             .padding(.bottom)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(background)
+        .background(      LinearGradient.appBackground)
         .onAppear {
             viewModel.startAutoScroll()
             viewModel.trackView()

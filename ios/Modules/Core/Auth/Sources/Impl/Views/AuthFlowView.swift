@@ -9,7 +9,7 @@ import SwiftUI
 
 enum AuthRoute: Hashable {
     case login
-    case register
+    case signUp
     case forgotPassword
 }
 
@@ -23,8 +23,8 @@ struct AuthFlowView: View {
                     switch route {
                     case .login:
                         LoginView(path: $path)
-                    case .register:
-                        RegisterView(path: $path)
+                    case .signUp:
+                        SignUpView(path: $path)
                     case .forgotPassword:
                         ForgotPasswordView(path: $path)
                     }

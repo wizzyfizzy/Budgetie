@@ -20,5 +20,6 @@ public struct CardModifier: ViewModifier {
                     .fill(.ultraThinMaterial)
                     .shadow(.medium)
             )
+            .padding(Spacing.spaceXL)
     }
 }

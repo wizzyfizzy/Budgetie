@@ -11,13 +11,10 @@ import UIComponents
 struct LaunchScreenView: View {
     @Binding var showLaunch: Bool
 
-    private let background = LinearGradient(colors: [Color.btLightGreen, Color.btLightYellow],
-                                    startPoint: .top,
-                                    endPoint: .bottom)
     private let imageHeight: CGFloat = 250
     var body: some View {
         ZStack {
-            background
+            LinearGradient.appBackground
                 .ignoresSafeArea()
             VStack(spacing: Spacing.spaceM) {
                 Image("launch")

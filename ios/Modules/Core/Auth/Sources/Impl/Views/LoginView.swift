@@ -19,28 +19,30 @@ struct LoginView: View {
         _path = path
     }
     
-    private let background = LinearGradient(colors: [Color.btLightGreen, Color.btLightYellow],
-                                            startPoint: .top, endPoint: .bottom)
     private let imageHeight: CGFloat = 140
     private let borderWidth: CGFloat = 4
     
     var body: some View {
         ZStack {
-            background.ignoresSafeArea()
+            LinearGradient.appBackground
+                .ignoresSafeArea()
             ScrollView {
                 VStack(spacing: Spacing.spaceXL) {
                     // MARK: Branding
-                    introView
+                    brandingView
                         .padding(.top, Spacing.spaceXL)
                     // MARK: Card
-                    card
+                    formCard
                 }
             }
+        }
+        .onAppear {
+            loginVM.trackView()
         }
     }
     
     @ViewBuilder
-    var introView: some View {
+    var brandingView: some View {
         VStack(spacing: Spacing.spaceS) {
             Image(ImageKeys.imageAppIconAndSlogan)
                 .resizable()
@@ -61,14 +63,12 @@ struct LoginView: View {
     }
     
     @ViewBuilder
-    var card: some View {
+    var formCard: some View {
         VStack(spacing: Spacing.spaceM) {
             // Email
-            EmailTextField(email: $loginVM.email)
+            GenericTextField(userInput: $loginVM.email, textLabel: "Email")
             // Password
-            PasswordField(password: $loginVM.password, isSecure: $loginVM.isSecure)
-            // Remember Me
-            RememberMeToggle(rememberMe: $loginVM.rememberMe)
+            SecureTextField(password: $loginVM.password, isSecure: $loginVM.isSecure, textLabel: "Password")
             // Forgot Password
             forgotPassword
             // Error message
@@ -76,18 +76,14 @@ struct LoginView: View {
             // Login Button
            loginButton
             // Or divider
-            dividerView
+            DividerView()
             // Sign in with Apple
             appleLoginButton
-            // Create account
+            // Create account section
             createAccount
-        }
-        .onAppear {
-            loginVM.onAppear()
         }
         .padding(Spacing.spaceXL)
         .modifier(CardModifier())
-        .padding(Spacing.spaceXL)
         .accessibilityElement(children: .contain)
         Spacer(minLength: Spacing.spaceL)
     }
@@ -102,16 +98,13 @@ struct LoginView: View {
     @ViewBuilder
     var loginButton: some View {
         BorderButton(isEnabled: $loginVM.isLoginButtonEnabled, isLoading: $loginVM.isLoading, text: "Sign In", color: .btBlue) {
-            guard loginVM.isFormValid, !loginVM.isLoading else { return }
-            // TODO: call signIn
-            loginVM.signIn()
+            loginVM.login()
             //                    .sink { completion in
             //                        if case .failure(let err) = completion {
             //                            loginVM.errorMessage = err.localizedDescription
             //                            UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
             //                        }
             //                    } receiveValue: { userID in
-            //                        // Persist token/ID if rememberMe
             //                    // TODO: later: Keychain)
             //                        appState.userID = userID
             //                        dismiss()
@@ -119,28 +112,19 @@ struct LoginView: View {
             //                    .store(in: &cancellableBag)
         }
             .frame(maxWidth: .infinity)
-    }
-    
-    @ViewBuilder
-    var dividerView: some View {
-        HStack {
-            Rectangle().frame(height: 1).opacity(0.2)
-            Text("or")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-            Rectangle().frame(height: 1).opacity(0.2)
-        }
+            .accessibilityIdentifier("login_button")
     }
     
     @ViewBuilder
     var appleLoginButton: some View {
-        SignInWithAppleButton(.signIn, onRequest: { _ in
-        }, onCompletion: { _ in
-            // TODO:
-            // Handle ASAuthorization; on success:
-            // appState.userID = "apple_" + someHash
-             dismiss()
-        })
+        SignInWithAppleButton(.signUp) { _ in
+        } onCompletion: { _ in
+            Task {
+                if await loginVM.loginWithApple() {
+                    dismiss()
+                }
+            }
+        }
         .signInWithAppleButtonStyle(.black)
         .frame(height: ButtonSize.heightMd)
         .clipShape(RoundedRectangle(cornerRadius: Spacing.spaceM))
@@ -154,7 +138,8 @@ struct LoginView: View {
                 .font(.appBody)
                 .foregroundColor(.btBlack)
             TextButton(text: "Create one", color: .btBlue) {
-                path.append(.register)
+                loginVM.onTapCreateAccount()
+                path.append(.signUp)
             }
             Spacer()
         }

@@ -20,7 +20,8 @@ import Combine
 ///
 /// Modules can access the current user ID or check login status via
 /// `@EnvironmentObject var appState: AppState`.
-public class AppState: ObservableObject {
+public final class AppState: ObservableObject {
+    public static let shared = AppState()
 
     /// The current logged-in user's unique identifier.
     ///

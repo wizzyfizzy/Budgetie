@@ -5,37 +5,38 @@
 //  No part of this software may be copied, modified, or distributed without prior written permission.
 //
 
-import Foundation
+import SwiftUI
 import Combine
-import AuthAPI
 import AppLogging
+import AuthAPI
 
 @MainActor
-final class LoginVM: ObservableObject {
+final class SignUpVM: ObservableObject {
     // MARK: - Dependencies
     @Injected private var saveUserSessionUC: SaveUserSessionUC
     @Injected private var logger: BTLogger
 
     // MARK: - Inputs
+    @Published var name: String = ""
     @Published var email: String = ""
     @Published var password: String = ""
+    @Published var confirmPassword: String = ""
     
     // MARK: - State
     @Published var isSecure: Bool = true
+    @Published var isSecureConfirm: Bool = true
+    @Published var agreeTerms: Bool = false
     @Published var isLoading: Bool = false
-    @Published var isLoginButtonEnabled: Bool = true
+    @Published var isSignUpButtonEnabled: Bool = false
     @Published private(set) var errorMessage: String?
-    
+        
     private var cancellables = Set<AnyCancellable>()
-    var userID: String?
-    let appleSignInManager = AppleSignInManager()
-    private let fileName = "LoginVM"
+    private let fileName = "SignUpVM"
 
     // MARK: - Initialization
     init() {
         setupBindings()
     }
-    
     // MARK: - Computed Properties
     var isFormValid: Bool {
         return errorMessage == nil
@@ -43,87 +44,87 @@ final class LoginVM: ObservableObject {
     
     // MARK: - Public
     func trackView() {
-        logger.log(.debug, fileName: fileName, "TrackingView: \(TrackingView.authSignInScreen)")
-    }
-    func onTapCreateAccount() {
-        logger.log(.debug, fileName: fileName, "TrackingView: \(TrackingAction.tapCreateAccount)")
+        logger.log(.debug, fileName: fileName, "TrackingView: \(TrackingView.authSignUpScreen)")
     }
     
-    func loginWithApple() async -> Bool {
-        trackAction(TrackingAction.tapSignInWithApple)
+    func signUp(onSuccess: @escaping (String) -> Void = { _ in }) {
+        // TODO: implement sign up API call
+        guard isFormValid, !isLoading else { return }
+        trackAction(TrackingAction.tapSignUp, email: email)
+
         isLoading = true
-        defer { isLoading = false }
-        do {
-            let cred = try await appleSignInManager.requestAuthorization()
-            // First-time sign-up: credential.email / credential.fullName available
-            // Subsequent login: they may be nil
-            // Handle register vs login flow accordingly
-            // TODO: send them to backend
-            // TODO: save them to saveUC
-            return true
-        } catch {
-            logger.log(.error, fileName: fileName, "\(error.localizedDescription)")
-            return false
+        errorMessage = nil
+        Task {
+            isLoading = true
+            defer { isLoading = false }
+            
+            do {
+                // TODO: Api call
+                try await Task.sleep(nanoseconds: 1_000_000_000) // mock delay
+                let userID = "user_\(UUID().uuidString)"
+                
+                errorMessage = nil
+                onSuccess(userID)
+            } catch {
+                errorMessage = "Sign up failed. Please try again."
+            }
         }
     }
     
-    // TODO: Replace with real API.
-    func login(onSuccess: @escaping (String) -> Void = { _ in }) {
-        guard isFormValid, !isLoading else { return }
-        trackAction(TrackingAction.tapSignIn, email: email)
-
-        isLoading = true
-        defer { isLoading = false }
-
-        errorMessage = nil
-        // TODO: call saveUC
-//        loginSuccess
-    }
-    
     // MARK: - Errors
-    enum SignInError: LocalizedError {
-        case invalidCredentials
+    enum SignUpError: LocalizedError {
+        case userAlreadyExists
         var errorDescription: String? {
             switch self {
-            case .invalidCredentials:
-                return TextKeys.textAuthErrorWrongCredentials.localized()
+            case .userAlreadyExists:
+                return "Sorry, the user already exists"
             }
         }
     }
 }
 
 // MARK: - Private
-private extension LoginVM {
+private extension SignUpVM {
     private func setupBindings() {
-        // Combine email + password errors
-        Publishers.CombineLatest($email, $password)
-            .map { email, password -> (String?, Bool) in
+        Publishers.CombineLatest4($email, $password, $confirmPassword, $agreeTerms)
+            .map { email, password, confirmPassword, agreeTerms -> (String?, Bool) in
                 var errors: [String] = []
                 if  email.isEmpty {
                     errors.append("Please fill in your email.")
                 } else if !email.isValidEmail {
                     errors.append("Invalid email format.")
                 }
+                
                 if password.count < 6 { errors.append("Password must have at least 6 characters.") }
+                
+                if password != confirmPassword { errors.append("Passwords do not match.") }
+                
+                if !agreeTerms {
+                    errors.append("Please accept Terms and conditions")
+                }
+                
                 let combinedError = errors.isEmpty ? nil : errors.joined(separator: "\n")
                 return (combinedError, combinedError == nil)
             }
             .receive(on: RunLoop.main)
-            .sink { [weak self] error, isEnabled in
+            .sink {  [weak self] error, isEnabled in
                 guard let self else { return }
                 self.errorMessage = error
-                self.isLoginButtonEnabled = isEnabled
+                self.isSignUpButtonEnabled = isEnabled
+                
             }
             .store(in: &cancellables)
     }
     
-    private func loginSuccess(userId: String, email: String?, name: String?) {
+    // TODO: Replace with real API.
+    
+    private func signUpSuccess(userId: String, email: String?, name: String?) {
         let user = UserData(id: userId, email: email, fullName: name)
         do {
             try saveUserSessionUC.execute(user: user)
-            trackAction(TrackingAction.completedSignIn, userId: user.id)
+            trackAction(TrackingAction.completedSignUp, userId: user.id)
         } catch {
-            errorMessage = "Failed to login"
+            errorMessage = "Failed to save session"
             logger.log(.error, fileName: fileName, "Failed to save session")
         }
     }

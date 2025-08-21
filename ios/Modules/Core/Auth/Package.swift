@@ -10,7 +10,9 @@ let package = Package(
     ],
     products: [
         .library(name: "AuthAPI", targets: ["AuthAPI"]),
-        .library(name: "Auth", targets: ["Auth"])
+        .library(name: "Auth", targets: ["Auth"]),
+        .library(name: "AuthMocks", targets: ["AuthMocks"])
+
     ],
     dependencies: [
         .package(name: "AppLogging", path: "../../Shared/AppLogging"),
@@ -35,6 +37,12 @@ let package = Package(
                 .product(name: "AppNavigationAPI", package: "AppNavigation")
             ],
             path: "Sources/Impl/"),
+        .target(
+            name: "AuthMocks",
+            dependencies: [
+                "AuthAPI"
+            ],
+            path: "Sources/Mocks/"),
         .testTarget(
             name: "AuthTests",
             dependencies: ["Auth",

@@ -14,4 +14,8 @@ extension BTAppDI {
         let dependencies = Auth.Dependencies(logger: { logger(module: "Auth") })
         AuthInitializer.initialize(dependencies: dependencies)
     }
+    
+    func registerAuth() {
+        register(GetUserSessionUC.self) { _ in GetUserSessionUCImpl() }
+    }
 }

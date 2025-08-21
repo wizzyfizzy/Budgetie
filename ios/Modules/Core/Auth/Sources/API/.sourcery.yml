@@ -1,0 +1,10 @@
+# Mocks configuration for Onboarding target
+
+sources:
+  - ./
+templates:
+  - ../../../../../../build/Sourcery/Templates/AutoMock.stencil
+output:
+    ../Mocks
+args:
+  mockTestableImports: [AuthAPI]

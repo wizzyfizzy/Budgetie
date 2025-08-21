@@ -11,6 +11,7 @@
 // swiftformat:disable all
 import Foundation
 import Combine
+import OnboardingAPI
 @testable import Onboarding
 internal final class CompleteOnboardingUCMock: CompleteOnboardingUC {
 

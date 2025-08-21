@@ -11,23 +11,30 @@
 /// For example, when the onboarding flow starts.
 ///
 enum TrackingView: String {
-    case authLoginScreen = "LoginScreen"
+    case authSignInScreen = "SignInScreen"
+    case authSignUpScreen = "SignUpScreen"
+    case authForgotPasswordScreen = "ForgotPasswordScreen"
 }
 
 /// Represents user actions that can be tracked.
 ///
 /// These values indicate events triggered by user interactions,
-/// such as tapping a button, completing the onboarding, or
-/// automatically advancing due to a timer.
+/// such as tapping a button, completing login, completed sign in
 enum TrackingAction: String {
-    case tapLogin = "Tap.Login"
-    case tapCancel = "Tap.Cancel"
+    case tapSignIn = "Tap.SignIn"
+    case tapForgotPassword = "Tap.ForgotPassword"
+    case tapResetPassword = "Tap.tapResetPassword"
+    case tapSignInWithApple = "Tap.SignInWithApple"
+    case tapCreateAccount = "Tap.CreateAccount"
+    case tapSignUp = "Tap.SignUp"
+    case completedSignIn = "Complete.SignIn"
+    case completedSignUp = "Complete.SignUp"
 }
 
 /// Represents contextual values that can be attached to a tracked event.
 ///
-/// These values provide additional metadata, such as the
-/// current onboarding step where the action occurred.
+/// These values provide additional metadata, such as the userId or email
 enum TrackingValue: String {
     case userId
+    case email
 }

@@ -7,95 +7,68 @@
 import Foundation
 import Security
 
-/// A lightweight wrapper around Apple's Keychain Services API.
-/// Provides methods for saving, loading, and deleting secure data such as tokens or credentials.
-public enum Keychain {
-    
-    /// Saves a value in the Keychain for the specified service and account.
-    ///
-    /// If an entry already exists, it will be deleted before saving the new value.
+/// Keys used for storing/retrieving data in the Keychain.
+/// Centralized for easy reuse across the app.
+public enum KeychainKeys {
+    /// Key for storing the currently logged-in user data.
+    public static let loggedInUser = "loggedInUser"
+}
+
+/// A utility class to perform common Keychain operations.
+/// Supports saving, loading, and deleting `Codable` objects.
+public final class KeychainManager {
+
+    /// Saves a `Codable` object securely in the Keychain under the given key.
     ///
     /// - Parameters:
-    ///   - service: A string that identifies your app's service, e.g. `"com.budgetie.auth"`.
-    ///   - account: The account identifier, e.g. `"userToken"` or a username/email.
-    ///   - data: The data to be securely stored in the Keychain.
-    ///   - accessible: The accessibility level (default: `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`).
-    /// - Throws: `KeychainError` if saving fails.
-    public static func save(
-        service: String,
-        account: String,
-        data: Data,
-        accessible: CFString = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
-    ) throws {
-        // Delete existing item before saving a new one
-        try? delete(service: service, account: account)
-
-        let query: [CFString: Any] = [
-            kSecClass: kSecClassGenericPassword,
-            kSecAttrService: service,
-            kSecAttrAccount: account,
-            kSecValueData: data,
-            kSecAttrAccessible: accessible
+    ///   - object: The `Codable` object to store.
+    ///   - key: The unique key under which the object will be saved.
+    /// - Throws: An `NSError` if the Keychain operation fails.
+    public static func save<T: Codable>(_ object: T, key: String) throws {
+        let data = try JSONEncoder().encode(object)
+        
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: key,
+            kSecValueData as String: data
         ]
-
+        
+        // Delete any existing item before saving new one
+        SecItemDelete(query as CFDictionary)
         let status = SecItemAdd(query as CFDictionary, nil)
         guard status == errSecSuccess else {
-            throw KeychainError(status: status)
+            throw NSError(domain: "KeychainError", code: Int(status), userInfo: nil)
         }
     }
-
-    /// Loads a previously saved value from the Keychain.
+    
+    /// Loads and decodes a `Codable` object from the Keychain for the given key.
     ///
     /// - Parameters:
-    ///   - service: The service string used when saving the value.
-    ///   - account: The account identifier used when saving the value.
-    /// - Returns: The stored `Data` if found.
-    /// - Throws: `KeychainError` if the item is not found or another error occurs.
-    public static func load(service: String, account: String) throws -> Data {
-        let query: [CFString: Any] = [
-            kSecClass: kSecClassGenericPassword,
-            kSecAttrService: service,
-            kSecAttrAccount: account,
-            kSecReturnData: true,
-            kSecMatchLimit: kSecMatchLimitOne
+    ///   - key: The key associated with the stored object.
+    ///   - type: The type of the object to decode.
+    /// - Returns: The decoded object if found and successfully decoded, otherwise `nil`.
+    public static func load<T: Codable>(_ key: String, as type: T.Type) -> T? {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: key,
+            kSecReturnData as String: true,
+            kSecMatchLimit as String: kSecMatchLimitOne
         ]
-
-        var item: CFTypeRef?
-        let status = SecItemCopyMatching(query as CFDictionary, &item)
-        guard status == errSecSuccess, let data = item as? Data else {
-            throw KeychainError(status: status)
-        }
-        return data
-    }
-
-    /// Deletes a value from the Keychain.
-    ///
-    /// - Parameters:
-    ///   - service: The service string used when saving the value.
-    ///   - account: The account identifier used when saving the value.
-    /// - Throws: `KeychainError` if deletion fails.
-    ///   Does **not** throw if the item was not found.
-    public static func delete(service: String, account: String) throws {
-        let query: [CFString: Any] = [
-            kSecClass: kSecClassGenericPassword,
-            kSecAttrService: service,
-            kSecAttrAccount: account
-        ]
-
-        let status = SecItemDelete(query as CFDictionary)
-        guard status == errSecSuccess || status == errSecItemNotFound else {
-            throw KeychainError(status: status)
-        }
-    }
-
-    /// A wrapper around Keychain OSStatus errors, providing human-readable messages.
-    public struct KeychainError: Error, LocalizedError {
-        /// The raw `OSStatus` code returned by Keychain Services.
-        let status: OSStatus
         
-        /// A human-readable description of the Keychain error.
-        public var errorDescription: String? {
-            (SecCopyErrorMessageString(status, nil) as String?) ?? "Keychain error \(status)"
-        }
+        var item: AnyObject?
+        let status = SecItemCopyMatching(query as CFDictionary, &item)
+        guard status == errSecSuccess, let data = item as? Data else { return nil }
+        return try? JSONDecoder().decode(T.self, from: data)
+    }
+    
+    /// Deletes the object stored in the Keychain for the given key.
+    ///
+    /// - Parameter key: The key associated with the object to delete.
+    public static func delete(_ key: String) {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: key
+        ]
+        SecItemDelete(query as CFDictionary)
     }
 }
