@@ -20,7 +20,6 @@ public protocol SecureStore {
     func delete(_ key: String)
 }
 
-
 public final class KeychainSecureStore: SecureStore {
     public init() {}
     
@@ -36,7 +35,6 @@ public final class KeychainSecureStore: SecureStore {
         KeychainManager.delete(key)
     }
 }
-
 
 /// A utility class to perform common Keychain operations.
 /// Supports saving, loading, and deleting `Codable` objects.

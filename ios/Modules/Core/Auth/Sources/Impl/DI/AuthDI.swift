@@ -37,16 +37,18 @@ final class AuthDI: DIContainer {
 
     private func registerSources() {
         register(UserSessionSource.self) { _ in UserSessionSourceImpl()}
+        register(AuthAPISource.self) { _ in AuthAPISourceImpl()}
     }
 
     private func registerRepo() {
         register(UserSessionRepo.self) { _ in UserSessionRepoImpl()}
+        register(AuthAPIRepo.self) { _ in AuthAPIRepoImpl()}
     }
     
     private func registerUceCases() {
         register(ClearUserSessionUC.self) { _ in ClearUserSessionUCImpl()}
         register(SaveUserSessionUC.self) { _ in SaveUserSessionUCImpl()}
-        register(GetUserSessionUC.self) { _ in GetUserSessionUCImpl()}
+        register(LoginUserUC.self) { _ in LoginUserUCImpl()}
     }
     
     // MARK: Register Dependencies

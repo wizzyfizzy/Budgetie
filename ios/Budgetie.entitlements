@@ -10,5 +10,10 @@
     <array>
         <string>$(AppIdentifierPrefix)$(BUNDLE_IDENTIFIER)</string>
     </array>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
 </dict>
 </plist>

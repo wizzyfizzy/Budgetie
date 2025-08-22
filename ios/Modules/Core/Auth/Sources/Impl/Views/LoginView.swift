@@ -39,6 +39,9 @@ struct LoginView: View {
         .onAppear {
             loginVM.trackView()
         }
+        .alert(isPresented: $loginVM.showError) {
+            Alert(title: Text("Authorization Error"), message: Text(loginVM.apiErrorMessage ?? ""), dismissButton: .default(Text("OK")))
+        }
     }
     
     @ViewBuilder
@@ -99,21 +102,15 @@ struct LoginView: View {
     @ViewBuilder
     var loginButton: some View {
         BorderButton(isEnabled: $loginVM.isLoginButtonEnabled, isLoading: $loginVM.isLoading, text: "Sign In", color: .btBlue) {
-            loginVM.login()
-            //                    .sink { completion in
-            //                        if case .failure(let err) = completion {
-            //                            loginVM.errorMessage = err.localizedDescription
-            //                            UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
-            //                        }
-            //                    } receiveValue: { userID in
-            //                    // TODO: later: Keychain)
-            //                        appState.userID = userID
-            //                        dismiss()
-            //                    }
-            //                    .store(in: &cancellableBag)
+            Task {
+                await loginVM.login()
+                if loginVM.shouldDismiss {
+                    dismiss()
+                }
+            }
         }
-            .frame(maxWidth: .infinity)
-            .accessibilityIdentifier("login_button")
+        .frame(maxWidth: .infinity)
+        .accessibilityIdentifier("login_button")
     }
     
     @ViewBuilder

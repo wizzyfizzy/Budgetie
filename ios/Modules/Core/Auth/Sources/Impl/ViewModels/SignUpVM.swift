@@ -106,7 +106,7 @@ private extension SignUpVM {
     // TODO: Replace with real API.
     
     private func signUpSuccess(userId: String, email: String, name: String) {
-        let user = UserData(id: userId, email: email, fullName: name)
+        let user = UserData(id: userId, email: email, name: name, token: "")
         do {
             try saveUserSessionUC.execute(user: user)
             trackAction(TrackingAction.completedSignUp, userId: user.id)

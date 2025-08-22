@@ -18,7 +18,6 @@ protocol UserSessionSource {
 
 final class UserSessionSourceImpl: UserSessionSource {
     private let userDefaults = UserDefaults.standard
-    private let accountKey = "loggedInUser"
     private let store: SecureStore
     
     init(store: SecureStore = KeychainSecureStore()) {

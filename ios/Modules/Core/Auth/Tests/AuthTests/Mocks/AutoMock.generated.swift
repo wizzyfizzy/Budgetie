@@ -13,6 +13,51 @@ import Foundation
 import Combine
 import AuthAPI
 @testable import Auth
+internal final class AuthAPIRepoMock: AuthAPIRepo {
+
+    internal init() {}
+
+    // MARK: - Stub
+    internal final class Stub {
+        internal var loginEmailPassword_Async_UserData: (((String, String)) async throws -> UserData)?
+        internal var signupNameEmailPassword_Async_UserData: (((String, String, String)) async throws -> UserData)?
+        internal var forgotPasswordEmail_Async_String: ((String) async throws -> String)?
+    }
+
+    // MARK: - Verify
+    internal final class Verify {
+        internal var loginEmailPassword_Async_UserData: [(email: String, password: String)] = []
+        internal var signupNameEmailPassword_Async_UserData: [(name: String, email: String, password: String)] = []
+        internal var forgotPasswordEmail_Async_String: [String] = []
+    }
+
+    internal let stub = Stub()
+    internal let verify = Verify()
+     func login(email: String, password: String) async throws -> UserData {
+        await verify.loginEmailPassword_Async_UserData.append((email, password))
+        if let stub = stub.loginEmailPassword_Async_UserData {
+            try await stub((email, password))
+        } else {
+            fatalError("'\\(#function)' function called but not stubbed before. File: \\(#file)")
+        }
+    }
+     func signup(name: String, email: String, password: String) async throws -> UserData {
+        await verify.signupNameEmailPassword_Async_UserData.append((name, email, password))
+        if let stub = stub.signupNameEmailPassword_Async_UserData {
+            try await stub((name, email, password))
+        } else {
+            fatalError("'\\(#function)' function called but not stubbed before. File: \\(#file)")
+        }
+    }
+     func forgotPassword(email: String) async throws -> String {
+        await verify.forgotPasswordEmail_Async_String.append((email))
+        if let stub = stub.forgotPasswordEmail_Async_String {
+            try await stub((email))
+        } else {
+            fatalError("'\\(#function)' function called but not stubbed before. File: \\(#file)")
+        }
+    }
+}
 internal final class ClearUserSessionUCMock: ClearUserSessionUC {
 
     internal init() {}
@@ -30,6 +75,56 @@ internal final class ClearUserSessionUCMock: ClearUserSessionUC {
     internal let verify = Verify()
      func execute() {
         verify.execute_Void.append(())
+    }
+}
+internal final class ForgotPasswordUCMock: ForgotPasswordUC {
+
+    internal init() {}
+
+    // MARK: - Stub
+    internal final class Stub {
+        internal var executeEmail_Async_String: ((String) async throws -> String)?
+    }
+
+    // MARK: - Verify
+    internal final class Verify {
+        internal var executeEmail_Async_String: [String] = []
+    }
+
+    internal let stub = Stub()
+    internal let verify = Verify()
+     func execute(email: String) async throws -> String {
+        await verify.executeEmail_Async_String.append((email))
+        if let stub = stub.executeEmail_Async_String {
+            try await stub((email))
+        } else {
+            fatalError("'\\(#function)' function called but not stubbed before. File: \\(#file)")
+        }
+    }
+}
+internal final class LoginUserUCMock: LoginUserUC {
+
+    internal init() {}
+
+    // MARK: - Stub
+    internal final class Stub {
+        internal var executeEmailPassword_Async_UserData: (((String, String)) async throws -> UserData)?
+    }
+
+    // MARK: - Verify
+    internal final class Verify {
+        internal var executeEmailPassword_Async_UserData: [(email: String, password: String)] = []
+    }
+
+    internal let stub = Stub()
+    internal let verify = Verify()
+     func execute(email: String, password: String) async throws -> UserData {
+        await verify.executeEmailPassword_Async_UserData.append((email, password))
+        if let stub = stub.executeEmailPassword_Async_UserData {
+            try await stub((email, password))
+        } else {
+            fatalError("'\\(#function)' function called but not stubbed before. File: \\(#file)")
+        }
     }
 }
 internal final class SaveUserSessionUCMock: SaveUserSessionUC {
@@ -52,6 +147,31 @@ internal final class SaveUserSessionUCMock: SaveUserSessionUC {
         verify.executeUser_Void.append((user))
         if let stub = stub.executeUser_Void {
             try stub((user))
+        } else {
+            fatalError("'\\(#function)' function called but not stubbed before. File: \\(#file)")
+        }
+    }
+}
+internal final class SignUpUserUCMock: SignUpUserUC {
+
+    internal init() {}
+
+    // MARK: - Stub
+    internal final class Stub {
+        internal var executeNameEmailPassword_Async_UserData: (((String, String, String)) async throws -> UserData)?
+    }
+
+    // MARK: - Verify
+    internal final class Verify {
+        internal var executeNameEmailPassword_Async_UserData: [(name: String, email: String, password: String)] = []
+    }
+
+    internal let stub = Stub()
+    internal let verify = Verify()
+     func execute(name: String, email: String, password: String) async throws -> UserData {
+        await verify.executeNameEmailPassword_Async_UserData.append((name, email, password))
+        if let stub = stub.executeNameEmailPassword_Async_UserData {
+            try await stub((name, email, password))
         } else {
             fatalError("'\\(#function)' function called but not stubbed before. File: \\(#file)")
         }

@@ -5,16 +5,15 @@
 //  No part of this software may be copied, modified, or distributed without prior written permission.
 //
 
-public struct UserData: Codable, Equatable {
+// Remote UserData retrieved from API
+public struct RUserData: Codable, Equatable {
     public let id: String
     public let email: String
     public let name: String
-    public let token: String
-    
-    public init(id: String, email: String, name: String, token: String) {
+
+    public init(id: String, email: String, name: String) {
         self.id = id
         self.email = email
         self.name = name
-        self.token = token
     }
 }

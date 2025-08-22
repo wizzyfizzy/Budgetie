@@ -13,7 +13,6 @@ import Foundation
 /// stored in the app’s string catalog.
 ///
 struct TextKeys {
-    static let textAuthErrorWrongCredentials = "auth_error_wrong_credentials"
     static let textAuthSignIn = "auth_sign_in"
     static let textAuthWelcomeBack = "auth_welcome_back"
 }
