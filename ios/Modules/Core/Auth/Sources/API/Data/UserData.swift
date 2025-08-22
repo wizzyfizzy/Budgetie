@@ -7,10 +7,10 @@
 
 public struct UserData: Codable, Equatable {
     public let id: String
-    public let email: String?
-    public let fullName: String?
+    public let email: String
+    public let fullName: String
     
-    public init(id: String, email: String?, fullName: String?) {
+    public init(id: String, email: String, fullName: String) {
         self.id = id
         self.email = email
         self.fullName = fullName

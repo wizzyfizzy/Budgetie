@@ -45,7 +45,7 @@ struct SecureTextField: View {
                     Image(systemName: isSecure ? "eye.slash.fill" : "eye.fill")
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel(isSecure ? "Show password" : "Hide \(textLabel)")
+                .accessibilityLabel(isSecure ? "Show \(textLabel)" : "Hide \(textLabel)")
                 .accessibilityHint("Toggles \(textLabel) visibility")
                 .accessibilityValue(isSecure ? "Hidden" : "Visible")
             }

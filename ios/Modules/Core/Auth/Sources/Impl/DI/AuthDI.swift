@@ -7,6 +7,7 @@
 
 import DIModule
 import AppLogging
+import AuthAPI
 
 final class AuthDI: DIContainer {
     static var shared = DIContainer()
@@ -45,6 +46,7 @@ final class AuthDI: DIContainer {
     private func registerUceCases() {
         register(ClearUserSessionUC.self) { _ in ClearUserSessionUCImpl()}
         register(SaveUserSessionUC.self) { _ in SaveUserSessionUCImpl()}
+        register(GetUserSessionUC.self) { _ in GetUserSessionUCImpl()}
     }
     
     // MARK: Register Dependencies

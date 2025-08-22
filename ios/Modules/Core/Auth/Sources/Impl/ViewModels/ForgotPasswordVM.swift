@@ -7,8 +7,8 @@
 import Foundation
 import Combine
 import AppLogging
+import UIComponents
 
-@MainActor
 final class ForgotPasswordVM: ObservableObject {
     // MARK: - Dependencies
     @Injected private var logger: BTLogger
@@ -39,6 +39,7 @@ final class ForgotPasswordVM: ObservableObject {
         logger.log(.debug, fileName: fileName, "TrackingView: \(TrackingView.authForgotPasswordScreen)")
     }
     
+    //TODO: add API
     func resetPassword(completion: @escaping (Bool) -> Void) {
         guard isFormValid, !isLoading else { return }
         trackAction(TrackingAction.tapForgotPassword, email: email)
@@ -63,22 +64,10 @@ final class ForgotPasswordVM: ObservableObject {
 private extension ForgotPasswordVM {
     
     private func setupBindings() {
-        $email
-            .removeDuplicates()
-            .map { email -> (String?, Bool) in
-                var errors: [String] = []
-                if  email.isEmpty {
-                    errors.append("Please fill in your email.")
-                } else if !email.isValidEmail {
-                    errors.append("Invalid email format.")
-                }
-                let combinedError = errors.isEmpty ? nil : errors.joined(separator: "\n")
-                return (combinedError, combinedError == nil)
-            }
-            .receive(on: RunLoop.main)
-            .sink { [weak self] error, isEnabled in
+        FormValidator.emailPublisher($email)
+            .sink { [weak self] error in
                 self?.errorMessage = error
-                self?.isResetButtonEnabled = isEnabled
+                self?.isResetButtonEnabled = error == nil
             }
             .store(in: &cancellables)
     }

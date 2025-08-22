@@ -18,7 +18,7 @@ public final class ShouldShowOnboardingUCMock: ShouldShowOnboardingUC {
 
     // MARK: - Stub
     public final class Stub {
-            public var execute_Bool: (() -> Bool)?
+        public var execute_Bool: (() -> Bool)?
     }
 
     // MARK: - Verify

@@ -9,8 +9,8 @@ import Foundation
 import Combine
 import AuthAPI
 import AppLogging
+import UIComponents
 
-@MainActor
 final class LoginVM: ObservableObject {
     // MARK: - Dependencies
     @Injected private var saveUserSessionUC: SaveUserSessionUC
@@ -28,7 +28,7 @@ final class LoginVM: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     var userID: String?
-    let appleSignInManager = AppleSignInManager()
+    var appleSignInManager = AppleSignInManager()
     private let fileName = "LoginVM"
 
     // MARK: - Initialization
@@ -47,6 +47,10 @@ final class LoginVM: ObservableObject {
     }
     func onTapCreateAccount() {
         logger.log(.debug, fileName: fileName, "TrackingView: \(TrackingAction.tapCreateAccount)")
+    }
+    
+    func onTapForgotPass() {
+        logger.log(.debug, fileName: fileName, "TrackingView: \(TrackingAction.tapForgotPassword)")
     }
     
     func loginWithApple() async -> Bool {
@@ -95,29 +99,23 @@ final class LoginVM: ObservableObject {
 // MARK: - Private
 private extension LoginVM {
     private func setupBindings() {
+        let emailVal = FormValidator.emailPublisher($email)
+        let passwordVal = FormValidator.passwordPublisher($password, confirmPassword: $password)
+
         // Combine email + password errors
-        Publishers.CombineLatest($email, $password)
-            .map { email, password -> (String?, Bool) in
-                var errors: [String] = []
-                if  email.isEmpty {
-                    errors.append("Please fill in your email.")
-                } else if !email.isValidEmail {
-                    errors.append("Invalid email format.")
-                }
-                if password.count < 6 { errors.append("Password must have at least 6 characters.") }
-                let combinedError = errors.isEmpty ? nil : errors.joined(separator: "\n")
-                return (combinedError, combinedError == nil)
+        Publishers.CombineLatest(emailVal, passwordVal)
+            .map { emailError, passwordError -> (String?) in
+                [emailError, passwordError].compactMap { $0 }.isEmpty ? nil : [emailError, passwordError].compactMap { $0 }.joined(separator: "\n")
             }
-            .receive(on: RunLoop.main)
-            .sink { [weak self] error, isEnabled in
+            .sink { [weak self] error in
                 guard let self else { return }
                 self.errorMessage = error
-                self.isLoginButtonEnabled = isEnabled
+                self.isLoginButtonEnabled = error == nil
             }
             .store(in: &cancellables)
     }
     
-    private func loginSuccess(userId: String, email: String?, name: String?) {
+    private func loginSuccess(userId: String, email: String, name: String) {
         let user = UserData(id: userId, email: email, fullName: name)
         do {
             try saveUserSessionUC.execute(user: user)

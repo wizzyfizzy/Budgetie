@@ -91,6 +91,7 @@ struct LoginView: View {
     @ViewBuilder
     var forgotPassword: some View {
         TextButton(text: "Forgot password?", color: .btBlue) {
+            loginVM.onTapForgotPass()
             path.append(.forgotPassword)
         }
     }

@@ -19,8 +19,14 @@
 {# --------- Verify Method --------- #}
 {% macro verifyMethodMock method %}
     {% call accessLevel method.accessLevel %} func {{ method.name }}{% call asyncModifier method.isAsync %}{% call throwsModifier method.throws %}{% call returnModifier method.returnTypeName %} {
-        {% if method.isAsync %}await {% endif %}verify.{% call uniqueMethodName method %}.append({% call parametersForVerifyValue method.parameters %})
-        {% if not method.returnTypeName.isVoid or method.throws %}
+        {%if method.isAsync %}await {% endif %}verify.{% call uniqueMethodName method %}.append({% call parametersForVerifyValue method.parameters %})
+        {% if method.throws %}
+        if let stub = stub.{% call uniqueMethodName method %} {
+            {% if method.isAsync %}try await {% else %}try {% endif %}stub({% call parametersForStubValue method.parameters %})
+        } else {
+            fatalError("'\\(#function)' function called but not stubbed before. File: \\(#file)")
+        }
+        {% elif not method.returnTypeName.isVoid %}
         guard let value = stub.{% call uniqueMethodName method %}?({% call parametersForStubValue method.parameters %}) else {
              fatalError( "'\(#function)' function called but not stubbed before. File: \(#file)")
          }
@@ -39,6 +45,9 @@
 // swiftformat:disable all
 import Foundation
 import Combine
+{% for import in argument.mockImports %}
+import {{ import }}
+{% endfor %}
 {% for import in argument.mockTestableImports %}
 @testable import {{ import }}
 {% endfor %}
@@ -51,7 +60,7 @@ import Combine
     // MARK: - Stub
     {{ type.accessLevel }} final class Stub {
         {% for method in type.allMethods where not method.returnTypeName.isVoid or method.throws %}
-            {{ type.accessLevel }} var {% call uniqueMethodName method %}: (({% call parametersForStub method.parameters%}){% call asyncModifier method.isAsync %}{% call throwsModifier method.throws %} -> {{ method.returnTypeName }})?
+        {{ type.accessLevel }} var {% call uniqueMethodName method %}: (({% call parametersForStub method.parameters%}){% call asyncModifier method.isAsync %}{% call throwsModifier method.throws %} -> {{ method.returnTypeName }})?
         {% endfor %}
     }
 
@@ -66,7 +75,7 @@ import Combine
     {{ type.accessLevel }} let verify = Verify()
     
     {% for method in type.allMethods %}
-        {% call verifyMethodMock method %}
+    {% call verifyMethodMock method %}
     {% endfor %}
 }
 {% endfor %}

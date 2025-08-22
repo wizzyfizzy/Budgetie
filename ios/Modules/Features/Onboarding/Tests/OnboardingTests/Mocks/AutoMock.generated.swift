@@ -38,7 +38,7 @@ internal final class OnboardingRepoMock: OnboardingRepo {
 
     // MARK: - Stub
     internal final class Stub {
-            internal var hasSeenOnboarding_Bool: (() -> Bool)?
+        internal var hasSeenOnboarding_Bool: (() -> Bool)?
     }
 
     // MARK: - Verify
@@ -66,7 +66,7 @@ internal final class OnboardingSourceMock: OnboardingSource {
 
     // MARK: - Stub
     internal final class Stub {
-            internal var hasSeenOnboarding_Bool: (() -> Bool)?
+        internal var hasSeenOnboarding_Bool: (() -> Bool)?
     }
 
     // MARK: - Verify

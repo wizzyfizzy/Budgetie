@@ -14,9 +14,33 @@ public enum KeychainKeys {
     public static let loggedInUser = "loggedInUser"
 }
 
+public protocol SecureStore {
+    func save<T: Codable>(_ object: T, key: String) throws
+    func load<T: Codable>(_ key: String, as type: T.Type) -> T?
+    func delete(_ key: String)
+}
+
+
+public final class KeychainSecureStore: SecureStore {
+    public init() {}
+    
+    public func save<T: Codable>(_ object: T, key: String) throws {
+        try KeychainManager.save(object, key: key)
+    }
+    
+    public func load<T: Codable>(_ key: String, as type: T.Type) -> T? {
+        KeychainManager.load(key, as: type)
+    }
+    
+    public func delete(_ key: String) {
+        KeychainManager.delete(key)
+    }
+}
+
+
 /// A utility class to perform common Keychain operations.
 /// Supports saving, loading, and deleting `Codable` objects.
-public final class KeychainManager {
+final class KeychainManager {
 
     /// Saves a `Codable` object securely in the Keychain under the given key.
     ///
@@ -24,7 +48,7 @@ public final class KeychainManager {
     ///   - object: The `Codable` object to store.
     ///   - key: The unique key under which the object will be saved.
     /// - Throws: An `NSError` if the Keychain operation fails.
-    public static func save<T: Codable>(_ object: T, key: String) throws {
+    static func save<T: Codable>(_ object: T, key: String) throws {
         let data = try JSONEncoder().encode(object)
         
         let query: [String: Any] = [
@@ -47,7 +71,7 @@ public final class KeychainManager {
     ///   - key: The key associated with the stored object.
     ///   - type: The type of the object to decode.
     /// - Returns: The decoded object if found and successfully decoded, otherwise `nil`.
-    public static func load<T: Codable>(_ key: String, as type: T.Type) -> T? {
+    static func load<T: Codable>(_ key: String, as type: T.Type) -> T? {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key,
@@ -64,7 +88,7 @@ public final class KeychainManager {
     /// Deletes the object stored in the Keychain for the given key.
     ///
     /// - Parameter key: The key associated with the object to delete.
-    public static func delete(_ key: String) {
+    static func delete(_ key: String) {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key

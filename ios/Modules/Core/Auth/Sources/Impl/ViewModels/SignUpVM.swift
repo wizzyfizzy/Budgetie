@@ -9,8 +9,8 @@ import SwiftUI
 import Combine
 import AppLogging
 import AuthAPI
+import UIComponents
 
-@MainActor
 final class SignUpVM: ObservableObject {
     // MARK: - Dependencies
     @Injected private var saveUserSessionUC: SaveUserSessionUC
@@ -86,39 +86,26 @@ final class SignUpVM: ObservableObject {
 // MARK: - Private
 private extension SignUpVM {
     private func setupBindings() {
-        Publishers.CombineLatest4($email, $password, $confirmPassword, $agreeTerms)
-            .map { email, password, confirmPassword, agreeTerms -> (String?, Bool) in
-                var errors: [String] = []
-                if  email.isEmpty {
-                    errors.append("Please fill in your email.")
-                } else if !email.isValidEmail {
-                    errors.append("Invalid email format.")
-                }
-                
-                if password.count < 6 { errors.append("Password must have at least 6 characters.") }
-                
-                if password != confirmPassword { errors.append("Passwords do not match.") }
-                
-                if !agreeTerms {
-                    errors.append("Please accept Terms and conditions")
-                }
-                
-                let combinedError = errors.isEmpty ? nil : errors.joined(separator: "\n")
-                return (combinedError, combinedError == nil)
+        let nameVal = FormValidator.namePublisher($name)
+        let emailVal = FormValidator.emailPublisher($email)
+        let passwordVal = FormValidator.passwordPublisher($password, confirmPassword: $confirmPassword)
+        let agreeTermsVal = FormValidator.agreeTermsPublisher($agreeTerms)
+
+        Publishers.CombineLatest4(nameVal, emailVal, passwordVal,agreeTermsVal)
+            .map { nameError, emailError, passwordError, agreeTermsError -> (String?) in
+                [nameError, emailError, passwordError, agreeTermsError].compactMap { $0 }.isEmpty ? nil : [nameError, emailError, passwordError, agreeTermsError].compactMap { $0 }.joined(separator: "\n")
             }
-            .receive(on: RunLoop.main)
-            .sink {  [weak self] error, isEnabled in
+            .sink {  [weak self] error in
                 guard let self else { return }
                 self.errorMessage = error
-                self.isSignUpButtonEnabled = isEnabled
-                
+                self.isSignUpButtonEnabled = error == nil
             }
             .store(in: &cancellables)
     }
     
     // TODO: Replace with real API.
     
-    private func signUpSuccess(userId: String, email: String?, name: String?) {
+    private func signUpSuccess(userId: String, email: String, name: String) {
         let user = UserData(id: userId, email: email, fullName: name)
         do {
             try saveUserSessionUC.execute(user: user)

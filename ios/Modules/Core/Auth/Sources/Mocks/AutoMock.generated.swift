@@ -18,7 +18,7 @@ public final class GetUserSessionUCMock: GetUserSessionUC {
 
     // MARK: - Stub
     public final class Stub {
-            public var execute_UserData: (() -> UserData?)?
+        public var execute_UserData: (() -> UserData?)?
     }
 
     // MARK: - Verify

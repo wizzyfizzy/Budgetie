@@ -7,8 +7,7 @@
 import AuthenticationServices
 import SwiftUI
 
-@MainActor
-final class AppleSignInManager: NSObject {
+class AppleSignInManager: NSObject {
     private var continuation: CheckedContinuation<ASAuthorizationAppleIDCredential, Error>?
     
     func requestAuthorization() async throws -> ASAuthorizationAppleIDCredential {

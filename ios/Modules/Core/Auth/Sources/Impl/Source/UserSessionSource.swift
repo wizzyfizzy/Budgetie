@@ -19,21 +19,26 @@ protocol UserSessionSource {
 final class UserSessionSourceImpl: UserSessionSource {
     private let userDefaults = UserDefaults.standard
     private let accountKey = "loggedInUser"
+    private let store: SecureStore
+    
+    init(store: SecureStore = KeychainSecureStore()) {
+        self.store = store
+    }
 
     func save(user: UserData) throws {
         // Save to Keychain
-        try KeychainManager.save(user, key: KeychainKeys.loggedInUser)
+        try store.save(user, key: KeychainKeys.loggedInUser)
         userDefaults.isUserLoggedIn = true
     }
     
     func loadUser() -> UserData? {
         guard userDefaults.isUserLoggedIn else { return nil }
-        return KeychainManager.load(KeychainKeys.loggedInUser, as: UserData.self)
+        return store.load(KeychainKeys.loggedInUser, as: UserData.self)
     }
     
     func clear() {
         userDefaults.isUserLoggedIn = false
         // Delete from Keychain
-        KeychainManager.delete(KeychainKeys.loggedInUser)
+        store.delete(KeychainKeys.loggedInUser)
     }
 }
