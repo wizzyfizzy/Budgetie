@@ -229,7 +229,8 @@ register(MyService.self) { _ in MyServiceImpl() }
 ### Features: 
 - [Onboarding](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Features/Onboarding/README.md) provides the onboarding flow
 
-
+### Core: 
+- [Auth](https://github.com/wizzyfizzy/Budgetie/blob/main/ios/Modules/Core/Auth/README.md) provides the authentication flow
 ---
 
 ## 📝 License
