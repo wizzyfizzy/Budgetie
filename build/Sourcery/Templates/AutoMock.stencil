@@ -9,6 +9,7 @@
 {% macro removeEscapingFromType typeName %}{{ typeName | replace: "@escaping ","" }}{% endmacro %}
 {% macro cleanTypeName name %}{{name | replace: "<", "" | replace: ">", "" | replace: "[", "" | replace: "]", "" | replace: "(", "" | replace: ")", "" | replace: "?", "" | replace: ":", "" | replace: ",", "_" | replace: " ", "" | replace: "!", "" | replace: "&", "" | replace: ".", "" }}{% endmacro %}
 {% macro unifiedMethodName name %}{{ name | replace: "(","_" | replace: ")","" | replace: ":","_" | replace: "`","" | snakeToCamelCase | lowerFirstWord }}{% endmacro %}
+{% macro removeIllegalCharsFromName name %}{{name | replace: "<", "" | replace: ">", "" | replace: "[", "" | replace: "]", "" | replace: "(", "" | replace: ")", "" | replace: "?", "" | replace: ":", "" | replace: ",", "_" | replace: " ", "" | replace: "!", "" | replace: "&", "" | replace: ".", "" }}{% endmacro %}
 {% macro getPublisherGenericTypesString returnTypeName%}{% if returnTypeName | contains: "AnyPublisher<" %}{% call removeIllegalCharsFromName returnTypeName | replace: "AnyPublisher", "" %}{% endif %}{% endmacro %}
 {% macro uniqueMethodName methodData %}{% call unifiedMethodName methodData.selectorName %}{% if method.returnTypeName | contains: "AnyPublisher<" %}_Pub_{% call getPublisherGenericTypesString method.returnTypeName %}{% elif method.isAsync %}_Async_{% call cleanTypeName method.returnTypeName %}{% else %}_{% call cleanTypeName method.returnTypeName %}{% endif %}{% endmacro %}
 {# --------- Stub+Verify params --------- #}
@@ -19,18 +20,18 @@
 {# --------- Verify Method --------- #}
 {% macro verifyMethodMock method %}
     {% call accessLevel method.accessLevel %} func {{ method.name }}{% call asyncModifier method.isAsync %}{% call throwsModifier method.throws %}{% call returnModifier method.returnTypeName %} {
-        {%if method.isAsync %}await {% endif %}verify.{% call uniqueMethodName method %}.append({% call parametersForVerifyValue method.parameters %})
-        {% if method.throws %}
+        verify.{% call uniqueMethodName method %}.append({% call parametersForVerifyValue method.parameters %})
+        {% if not method.returnTypeName.isVoid %}
+        guard let stub = stub.{% call uniqueMethodName method %} else {
+            fatalError("'\\(#function)' function called but not stubbed before. File: \\(#file)")
+        }
+        {% call returnKeyword method.returnTypeName %}{% call tryModifier method.throws %}{% call awaitModifier method.isAsync %}stub({% call parametersForStubValue method.parameters %})
+        {% elif method.throws %}
         if let stub = stub.{% call uniqueMethodName method %} {
             {% if method.isAsync %}try await {% else %}try {% endif %}stub({% call parametersForStubValue method.parameters %})
         } else {
             fatalError("'\\(#function)' function called but not stubbed before. File: \\(#file)")
         }
-        {% elif not method.returnTypeName.isVoid %}
-        guard let value = stub.{% call uniqueMethodName method %}?({% call parametersForStubValue method.parameters %}) else {
-             fatalError( "'\(#function)' function called but not stubbed before. File: \(#file)")
-         }
-        {% call returnKeyword method.returnTypeName %}{% call tryModifier method.throws %}{% call awaitModifier method.isAsync %}value
         {% endif %}
     }
 {% endmacro %}

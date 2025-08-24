@@ -1,8 +1,44 @@
 [
   {
-    "id": "207d7cd5-c62c-47d7-b560-cbbee3ab150b",
+    "id": "4c86ed5b-aa15-4dc8-b6a5-33341f34148e",
     "name": "Kris",
     "email": "kris@test.com",
-    "password": "123456"
+    "password": "$2b$10$MocyhIa4nLXwDYpTSc42LOLEr/j0TwOs8hzZdb0Lq4Sel0paByj4e"
+  },
+  {
+    "id": "18a9f796-abca-4b4d-9385-0d2e6715aef5",
+    "name": "Test",
+    "email": "test@test.gr",
+    "password": "$2b$10$wwCCp71Aad.2bawN81.6Eep6RaD7fH0slnWzxkBsSSv5Z9wyK3M7W"
+  },
+  {
+    "id": "bc0ee7f7-c954-4468-977b-bb213ad21c5f",
+    "name": "test",
+    "email": "test@test.gor",
+    "password": "$2b$10$E4nJuhpf8yqoev3U8KdCSenjaFZMYoejcLgpPPn2Y73EngF0/MUvi"
+  },
+  {
+    "id": "d66b672d-3cc5-4431-804c-52ffddb1ce1c",
+    "name": "tt",
+    "email": "testt@fm.cw",
+    "password": "$2b$10$y7ruW/QP2UwnVIqHFSWMgOYZlN28ZG.olSKcXL/Rre3KZ.JUM5.dC"
+  },
+  {
+    "id": "b5ed86b9-9007-40af-beff-4a3e9204314b",
+    "name": "test",
+    "email": "test@test.gre",
+    "password": "$2b$10$xe5GWv0/Un/WXAakhkvajeM.QaEk/zZdu07RwB9sVofZRZ3PvGbfS"
+  },
+  {
+    "id": "1a490b23-8c2d-4af2-bf6e-0f53cf314e14",
+    "name": "test",
+    "email": "test@test.gqr",
+    "password": "$2b$10$Lzzi/yUYDdYU.gbszZXbHu4LJevRpnY0GOfTHLI3l2iuwjqGDnw.y"
+  },
+  {
+    "id": "ccef253f-d555-405d-84bf-fb12387fc698",
+    "name": "test",
+    "email": "test@test.di",
+    "password": "$2b$10$KfTve2iGUxa3JZBALKy87.DN1CBoa5UCkPyLRRYaDdu2ZSulbapbK"
   }
 ]
