@@ -11,6 +11,7 @@ import UIComponents
 
 final class ForgotPasswordVM: ObservableObject {
     // MARK: - Dependencies
+    @Injected private var forgotPasswordUC: ForgotPasswordUC
     @Injected private var logger: BTLogger
 
     // MARK: - Inputs
@@ -20,6 +21,7 @@ final class ForgotPasswordVM: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var isResetButtonEnabled: Bool = true
     @Published private(set) var errorMessage: String?
+    @Published var alert: BTAlert?
 
     private var cancellables = Set<AnyCancellable>()
     private let fileName = "ForgotPasswordVM"
@@ -29,33 +31,28 @@ final class ForgotPasswordVM: ObservableObject {
         setupBindings()
     }
     
-    // MARK: - Computed Properties
-    var isFormValid: Bool {
-        return errorMessage == nil
-    }
-    
     // MARK: - Public
     func trackView() {
         logger.log(.debug, fileName: fileName, "TrackingView: \(TrackingView.authForgotPasswordScreen)")
     }
     
-    //TODO: add API
-    func resetPassword(completion: @escaping (Bool) -> Void) {
-        guard isFormValid, !isLoading else { return }
+    @MainActor
+    func forgotPassword() async {
+        guard isResetButtonEnabled, !isLoading else { return }
         trackAction(TrackingAction.tapForgotPassword, email: email)
-        Task {
-            isLoading = true
-            defer { isLoading = false }
-            
-            do {
-                // 🔹 Mock delay / replace with real API
-                try await Task.sleep(nanoseconds: 1_000_000_000)
-                errorMessage = nil
-                completion(true)
-            } catch {
-                errorMessage = "Something went wrong. Try again."
-                completion(false)
-            }
+        isLoading = true
+        defer { isLoading = false }
+        errorMessage = nil
+        
+        do {
+            let message = try await forgotPasswordUC.execute(email: email)
+            alert = .success("Success", message)
+        } catch AuthAPIError.missingFields {
+            alert = .error("Error", "Invalid email")
+            logger.log(.error, fileName: fileName, "Invalid email in forgotPassword")
+        } catch {
+            alert = .error("Error", "Something went wrong. Please try again later")
+            logger.log(.error, fileName: fileName, "\(error.localizedDescription)")
         }
     }
 }
@@ -65,9 +62,11 @@ private extension ForgotPasswordVM {
     
     private func setupBindings() {
         FormValidator.emailPublisher($email)
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] error in
-                self?.errorMessage = error
-                self?.isResetButtonEnabled = error == nil
+                guard let self else { return }
+                    self.errorMessage = error
+                    self.isResetButtonEnabled = error == nil
             }
             .store(in: &cancellables)
     }

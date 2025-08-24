@@ -8,7 +8,15 @@
 import AuthAPI
 
 // sourcery: AutoMockable
+/// Handles user sign-up.
 protocol SignUpUserUC {
+    /// Performs sign-up with user info.
+    /// - Parameters:
+    ///   - name: User name.
+    ///   - email: User email.
+    ///   - password: User password.
+    /// - Returns: Created user data.
+    /// - Throws: Errors if sign-up fails.
     func execute(name: String, email: String, password: String) async throws -> UserData
 }
 

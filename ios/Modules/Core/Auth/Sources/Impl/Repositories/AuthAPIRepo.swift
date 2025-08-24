@@ -9,9 +9,13 @@ import Foundation
 import AuthAPI
 
 // sourcery: AutoMockable
+/// Handles authentication API requests.
 protocol AuthAPIRepo {
+    /// Logs in the user.
     func login(email: String, password: String) async throws -> UserData
+    /// Signs up a new user.
     func signup(name: String, email: String, password: String) async throws -> UserData
+    /// Sends a forgot-password request.
     func forgotPassword(email: String) async throws -> String
 }
 

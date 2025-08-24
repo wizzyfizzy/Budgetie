@@ -14,6 +14,7 @@ import UIComponents
 final class SignUpVM: ObservableObject {
     // MARK: - Dependencies
     @Injected private var saveUserSessionUC: SaveUserSessionUC
+    @Injected private var signUpUserUC: SignUpUserUC
     @Injected private var logger: BTLogger
 
     // MARK: - Inputs
@@ -21,15 +22,17 @@ final class SignUpVM: ObservableObject {
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var confirmPassword: String = ""
-    
+    @Published var agreeTerms: Bool = false
+
     // MARK: - State
     @Published var isSecure: Bool = true
     @Published var isSecureConfirm: Bool = true
-    @Published var agreeTerms: Bool = false
     @Published var isLoading: Bool = false
     @Published var isSignUpButtonEnabled: Bool = false
     @Published private(set) var errorMessage: String?
-        
+    @Published var shouldDismissView: Bool = false
+    @Published var alert: BTAlert?
+
     private var cancellables = Set<AnyCancellable>()
     private let fileName = "SignUpVM"
 
@@ -37,6 +40,7 @@ final class SignUpVM: ObservableObject {
     init() {
         setupBindings()
     }
+    
     // MARK: - Computed Properties
     var isFormValid: Bool {
         return errorMessage == nil
@@ -47,38 +51,24 @@ final class SignUpVM: ObservableObject {
         logger.log(.debug, fileName: fileName, "TrackingView: \(TrackingView.authSignUpScreen)")
     }
     
-    func signUp(onSuccess: @escaping (String) -> Void = { _ in }) {
-        // TODO: implement sign up API call
+    @MainActor
+    func signUp() async {
         guard isFormValid, !isLoading else { return }
         trackAction(TrackingAction.tapSignUp, email: email)
-
         isLoading = true
+        defer { isLoading = false }
         errorMessage = nil
-        Task {
-            isLoading = true
-            defer { isLoading = false }
-            
-            do {
-                // TODO: Api call
-                try await Task.sleep(nanoseconds: 1_000_000_000) // mock delay
-                let userID = "user_\(UUID().uuidString)"
-                
-                errorMessage = nil
-                onSuccess(userID)
-            } catch {
-                errorMessage = "Sign up failed. Please try again."
-            }
-        }
-    }
-    
-    // MARK: - Errors
-    enum SignUpError: LocalizedError {
-        case userAlreadyExists
-        var errorDescription: String? {
-            switch self {
-            case .userAlreadyExists:
-                return "Sorry, the user already exists"
-            }
+        
+        do {
+            let loggedUser = try await signUpUserUC.execute(name: name, email: email, password: password)
+            signUpSuccess(userData: loggedUser)
+            shouldDismissView = true
+        } catch AuthAPIError.userExists {
+            logger.log(.error, fileName: fileName, "This user already exists, in signUp")
+            alert = .error("Sign Up failed", "This user already exists")
+        } catch {
+            logger.log(.error, fileName: fileName, "Something went wrong in signUp")
+            alert = .error("Error", "Something went wrong. Please try again later")
         }
     }
 }
@@ -91,10 +81,11 @@ private extension SignUpVM {
         let passwordVal = FormValidator.passwordPublisher($password, confirmPassword: $confirmPassword)
         let agreeTermsVal = FormValidator.agreeTermsPublisher($agreeTerms)
 
-        Publishers.CombineLatest4(nameVal, emailVal, passwordVal,agreeTermsVal)
+        Publishers.CombineLatest4(nameVal, emailVal, passwordVal, agreeTermsVal)
             .map { nameError, emailError, passwordError, agreeTermsError -> (String?) in
                 [nameError, emailError, passwordError, agreeTermsError].compactMap { $0 }.isEmpty ? nil : [nameError, emailError, passwordError, agreeTermsError].compactMap { $0 }.joined(separator: "\n")
             }
+            .receive(on: DispatchQueue.main)
             .sink {  [weak self] error in
                 guard let self else { return }
                 self.errorMessage = error
@@ -102,17 +93,14 @@ private extension SignUpVM {
             }
             .store(in: &cancellables)
     }
-    
-    // TODO: Replace with real API.
-    
-    private func signUpSuccess(userId: String, email: String, name: String) {
-        let user = UserData(id: userId, email: email, name: name, token: "")
+        
+    private func signUpSuccess(userData: UserData) {
         do {
-            try saveUserSessionUC.execute(user: user)
-            trackAction(TrackingAction.completedSignUp, userId: user.id)
+            try saveUserSessionUC.execute(user: userData)
+            trackAction(TrackingAction.completedSignUp, userId: userData.id)
         } catch {
-            errorMessage = "Failed to save session"
-            logger.log(.error, fileName: fileName, "Failed to save session")
+            logger.log(.error, fileName: fileName, "Failed to save session in signUpSuccess")
+            alert = .error("Error", "Failed to signUp. Please try again later")
         }
     }
     

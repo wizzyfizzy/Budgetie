@@ -9,16 +9,21 @@ import AuthAPI
 import UIComponents
 
 // sourcery: AutoMockable
+/// Saves the logged-in user session.
 protocol SaveUserSessionUC {
+    /// Saves the given user session.
+    /// - Parameters:
+    ///   - user: User data to save.
+    /// - Throws: Errors if saving fails.
     func execute(user: UserData) throws
 }
 
 class SaveUserSessionUCImpl: SaveUserSessionUC {
     @Injected private var repo: UserSessionRepo
-    private let appState = AppState.shared
+//    private let appState = AppState.shared
 
     func execute(user: UserData) throws {
         try repo.saveUser(user)
-        appState.userID = user.id
+//        appState.userID = user.id
     }
 }

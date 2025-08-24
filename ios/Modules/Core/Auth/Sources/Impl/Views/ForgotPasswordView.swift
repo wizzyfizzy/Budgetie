@@ -4,12 +4,6 @@
 //  All rights reserved.
 //  No part of this software may be copied, modified, or distributed without prior written permission.
 //
-//
-//  Copyright © 2025 Budgetie
-//
-//  All rights reserved.
-//  No part of this software may be copied, modified, or distributed without prior written permission.
-//
 
 import SwiftUI
 import UIComponents
@@ -17,7 +11,8 @@ import UIComponents
 struct ForgotPasswordView: View {
     @Binding var path: [AuthRoute]
     @StateObject private var forgotPasswordVM = ForgotPasswordVM()
-    
+    @Environment(\.dismiss) private var dismiss
+
     private let imageHeight: CGFloat = 140
     
     var body: some View {
@@ -35,6 +30,18 @@ struct ForgotPasswordView: View {
         }
         .onAppear {
             forgotPasswordVM.trackView()
+        }
+        .alert(item: $forgotPasswordVM.alert) { alert in
+            alert.toAlert {
+                if case .success = alert {
+                    // dismiss only for success
+//                    if !path.isEmpty {
+//                        path.removeLast()
+//                    }
+                    dismiss()
+
+                }
+            }
         }
     }
     
@@ -78,15 +85,13 @@ struct ForgotPasswordView: View {
     
     @ViewBuilder
     var resetPasswordButton: some View {
-        BorderButton(isEnabled: $forgotPasswordVM.isResetButtonEnabled,
-                     isLoading: $forgotPasswordVM.isLoading,
-                     text: "Send Reset Link",
-                     color: .btBlue) {
-            forgotPasswordVM.resetPassword { success in
-                if success {
-                    if !path.isEmpty { path.removeLast() }
-                }
-            }
+        BorderButton(
+            isEnabled: $forgotPasswordVM.isResetButtonEnabled,
+            isLoading: $forgotPasswordVM.isLoading,
+            text: "Send Reset Link",
+            color: .btBlue) {
+                KeyboardHelper.dismiss()
+                Task { await forgotPasswordVM.forgotPassword() }
         }
         .frame(maxWidth: .infinity)
     }
@@ -94,4 +99,8 @@ struct ForgotPasswordView: View {
 
 #Preview {
     ForgotPasswordView(path: .constant([.forgotPassword]))
+}
+
+private func dismissKeyboard() {
+    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
 }

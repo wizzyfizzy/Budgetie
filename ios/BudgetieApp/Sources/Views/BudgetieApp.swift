@@ -11,7 +11,7 @@ import UIComponents
 @main
 struct BudgetieApp: App {
     @State private var showLaunch = true
-    @StateObject var appState = AppState()
+//    @StateObject var appState = AppState()
 
     init() {
         BTAppDI.setUp()
@@ -23,7 +23,7 @@ struct BudgetieApp: App {
                 LaunchScreenView(showLaunch: $showLaunch)
             } else {
                 HomeView(navContext: BTAppDI.shared.resolve(NavigationContext.self))
-                    .environmentObject(appState)
+//                    .environmentObject(appState)
             }
         }
     }

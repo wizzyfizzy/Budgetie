@@ -11,14 +11,15 @@ import AuthenticationServices
 
 struct SignUpView: View {
     @Binding var path: [AuthRoute]
+    @Binding var shouldDismiss: Bool
     @StateObject private var signUpVM: SignUpVM = SignUpVM()
-    @EnvironmentObject private var appState: AppState
-    @Environment(\.dismiss) private var dismiss
-
+//    @EnvironmentObject private var appState: AppState
+    
     private let imageHeight: CGFloat = 140
 
-    init(path: Binding<[AuthRoute]>) {
+    init(path: Binding<[AuthRoute]>, shouldDismiss: Binding<Bool>) {
         _path = path
+        _shouldDismiss = shouldDismiss
     }
 
     var body: some View {
@@ -36,6 +37,9 @@ struct SignUpView: View {
         }
         .onAppear {
             signUpVM.trackView()
+        }
+        .alert(item: $signUpVM.alert) { alert in
+            alert.toAlert { }
         }
     }
     
@@ -95,9 +99,13 @@ struct SignUpView: View {
     @ViewBuilder
     var signUpButton: some View {
         BorderButton(isEnabled: $signUpVM.isSignUpButtonEnabled, isLoading: $signUpVM.isLoading, text: "Sign Up", color: .btBlue) {
-            signUpVM.signUp { userID in
-                appState.userID = userID
-                dismiss()
+            KeyboardHelper.dismiss()
+            Task {
+                await signUpVM.signUp()
+                if signUpVM.shouldDismissView {
+                    path.removeAll()
+                    shouldDismiss = true
+                }
             }
         }
             .frame(maxWidth: .infinity)
@@ -119,5 +127,5 @@ struct SignUpView: View {
 }
 
 #Preview {
-    SignUpView(path: .constant([]))
+    SignUpView(path: .constant([]), shouldDismiss: .constant(false))
 }

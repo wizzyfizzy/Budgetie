@@ -18,7 +18,7 @@ final class UserSessionSourceTests: XCTestCase {
         return (source, store)
     }
     
-    private let user = UserData(id: "123", email: "test@test.gr", fullName: "Kris")
+    private let user = UserData(id: "123", email: "test@test.gr", name: "Kris", token: "123")
     private let key = "currentUser"
 
     func testLoadUserKeychain() throws {
@@ -34,7 +34,7 @@ final class UserSessionSourceTests: XCTestCase {
         XCTAssertEqual(loadedUser, user)
         XCTAssertEqual(loadedUser?.id, "123")
         XCTAssertEqual(loadedUser?.email, "test@test.gr")
-        XCTAssertEqual(loadedUser?.fullName, "Kris")
+        XCTAssertEqual(loadedUser?.name, "Kris")
     }
     
     func testClearUserKeychain() throws {
@@ -60,7 +60,7 @@ final class UserSessionSourceTests: XCTestCase {
         XCTAssertNotNil(loadedUser)
         XCTAssertEqual(loadedUser?.id, "123")
         XCTAssertEqual(loadedUser?.email, "test@test.gr")
-        XCTAssertEqual(loadedUser?.fullName, "Kris")
+        XCTAssertEqual(loadedUser?.name, "Kris")
     }
     
     func testClearUserKeSession() throws {
@@ -75,6 +75,4 @@ final class UserSessionSourceTests: XCTestCase {
         // Assert
         XCTAssertNil(loadedUser)
     }
-    
-
 }

@@ -15,7 +15,9 @@ enum AuthRoute: Hashable {
 
 struct AuthFlowView: View {
     @State private var path: [AuthRoute] = []
-    
+    @State private var shouldDismiss: Bool = false
+    @Environment(\.dismiss) private var dismiss
+
     var body: some View {
         NavigationStack(path: $path) {
             LoginView(path: $path)
@@ -24,11 +26,17 @@ struct AuthFlowView: View {
                     case .login:
                         LoginView(path: $path)
                     case .signUp:
-                        SignUpView(path: $path)
+                        SignUpView(path: $path, shouldDismiss: $shouldDismiss)
                     case .forgotPassword:
                         ForgotPasswordView(path: $path)
                     }
                 }
         }
+        .onChange(of: shouldDismiss) { shouldDismiss in
+            if shouldDismiss {
+                dismiss()
+            }
+        }
+        
     }
 }

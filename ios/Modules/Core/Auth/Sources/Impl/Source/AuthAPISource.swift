@@ -8,30 +8,20 @@
 import Foundation
 import AuthAPI
 
-struct AuthResponse: Codable {
-    let message: String
-    let user: RUserData
-    let token: String
-}
-
-enum AuthAPIError: Error {
-    case invalidCredentials
-    case userExists
-    case userNotFound
-    case missingFields
-    case unknown
-}
-
+/// Abstracts direct network calls for authentication API.
 protocol AuthAPISource {
+    /// Signs up a user via network.
     func signup(name: String, email: String, password: String) async throws -> UserData
+    /// Logs in a user via network.
     func login(email: String, password: String) async throws -> UserData
+    /// Sends a forgot-password request via network.
     func forgotPassword(email: String) async throws -> String
 }
 
 final class AuthAPISourceImpl: AuthAPISource {
     private let baseURL = "http://127.0.0.1:8000/auth"
-    // 🔥 change it to Macs's IP when run on device
-    //    private let baseURL = "http://192.168.1.42:5000/auth"
+    // !! change it to Macs's IP when run on device
+    //  private let baseURL = "http://192.168.1.42:5000/auth"
 
     func signup(name: String, email: String, password: String) async throws -> UserData {
         let response = try await request(path: "/signup", body: ["name": name, "email": email, "password": password])
@@ -44,7 +34,7 @@ final class AuthAPISourceImpl: AuthAPISource {
     }
 
     func forgotPassword(email: String) async throws -> String {
-        try await request(path: "/forgot-password", body: ["email": email]).message
+        try await request2(path: "/forgot-password", body: ["email": email]).message
     }
 
     // MARK: - Private helper
@@ -69,6 +59,30 @@ final class AuthAPISourceImpl: AuthAPISource {
         }
 
         let result = try JSONDecoder().decode(AuthResponse.self, from: data)
+        return result
+    }
+    
+    private func request2(path: String, body: [String: Any]) async throws -> AuthResponseForgotPassword {
+        guard let url = URL(string: "\(baseURL)\(path)") else { throw URLError(.badURL) }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try JSONSerialization.data(withJSONObject: body)
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        // decode json first to see if error exists
+        if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode >= 400 {
+            let errorResp = try JSONDecoder().decode([String: String].self, from: data)
+            switch errorResp["error"] {
+            case "InvalidCredentials": throw AuthAPIError.invalidCredentials
+            case "UserExists": throw AuthAPIError.userExists
+            case "UserNotFound": throw AuthAPIError.userNotFound
+            case "MissingFields": throw AuthAPIError.missingFields
+            default: throw AuthAPIError.unknown
+            }
+        }
+
+        let result = try JSONDecoder().decode(AuthResponseForgotPassword.self, from: data)
         return result
     }
 }

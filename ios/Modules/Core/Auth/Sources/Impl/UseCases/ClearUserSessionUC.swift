@@ -8,16 +8,18 @@
 import UIComponents
 
 // sourcery: AutoMockable
+/// Handles clearing the current user session.
 protocol ClearUserSessionUC {
+    /// Clears the current user session.
     func execute()
 }
 
 class ClearUserSessionUCImpl: ClearUserSessionUC {
     @Injected private var repo: UserSessionRepo
-    private let appState = AppState.shared
+//    private let appState = AppState.shared
 
     func execute() {
         repo.clearUser()
-        appState.userID = nil
+//        appState.userID = nil
     }
 }

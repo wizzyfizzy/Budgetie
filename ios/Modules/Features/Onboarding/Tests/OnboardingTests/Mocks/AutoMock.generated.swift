@@ -51,10 +51,10 @@ internal final class OnboardingRepoMock: OnboardingRepo {
     internal let verify = Verify()
      func hasSeenOnboarding() -> Bool {
         verify.hasSeenOnboarding_Bool.append(())
-        guard let value = stub.hasSeenOnboarding_Bool?() else {
-             fatalError( "'\(#function)' function called but not stubbed before. File: \(#file)")
-         }
-        return value
+        guard let stub = stub.hasSeenOnboarding_Bool else {
+            fatalError("'\\(#function)' function called but not stubbed before. File: \\(#file)")
+        }
+        return stub()
     }
      func completeOnboarding() {
         verify.completeOnboarding_Void.append(())
@@ -79,10 +79,10 @@ internal final class OnboardingSourceMock: OnboardingSource {
     internal let verify = Verify()
      func hasSeenOnboarding() -> Bool {
         verify.hasSeenOnboarding_Bool.append(())
-        guard let value = stub.hasSeenOnboarding_Bool?() else {
-             fatalError( "'\(#function)' function called but not stubbed before. File: \(#file)")
-         }
-        return value
+        guard let stub = stub.hasSeenOnboarding_Bool else {
+            fatalError("'\\(#function)' function called but not stubbed before. File: \\(#file)")
+        }
+        return stub()
     }
      func completeOnboarding() {
         verify.completeOnboarding_Void.append(())

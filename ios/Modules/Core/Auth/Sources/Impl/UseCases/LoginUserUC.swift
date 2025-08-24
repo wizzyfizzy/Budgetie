@@ -8,7 +8,14 @@
 import AuthAPI
 
 // sourcery: AutoMockable
+/// Handles logging in a user.
 protocol LoginUserUC {
+    /// Performs login with email and password.
+    /// - Parameters:
+    ///   - email: User email.
+    ///   - password: User password.
+    /// - Returns: Logged-in user data.
+    /// - Throws: Errors if credentials are invalid or network fails.
     func execute(email: String, password: String) async throws -> UserData
 }
 

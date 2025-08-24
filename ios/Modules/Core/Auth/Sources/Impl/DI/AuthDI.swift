@@ -49,6 +49,8 @@ final class AuthDI: DIContainer {
         register(ClearUserSessionUC.self) { _ in ClearUserSessionUCImpl()}
         register(SaveUserSessionUC.self) { _ in SaveUserSessionUCImpl()}
         register(LoginUserUC.self) { _ in LoginUserUCImpl()}
+        register(SignUpUserUC.self) { _ in SignUpUserUCImpl()}
+        register(ForgotPasswordUC.self) { _ in ForgotPasswordUCImpl()}
     }
     
     // MARK: Register Dependencies

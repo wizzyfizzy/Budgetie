@@ -13,7 +13,7 @@ struct LoginView: View {
     @Binding var path: [AuthRoute]
     @StateObject private var loginVM: LoginVM = LoginVM()
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var appState: AppState
+//    @EnvironmentObject private var appState: AppState
 
     init(path: Binding<[AuthRoute]>) {
         _path = path
@@ -39,8 +39,8 @@ struct LoginView: View {
         .onAppear {
             loginVM.trackView()
         }
-        .alert(isPresented: $loginVM.showError) {
-            Alert(title: Text("Authorization Error"), message: Text(loginVM.apiErrorMessage ?? ""), dismissButton: .default(Text("OK")))
+        .alert(item: $loginVM.alert) { alert in
+            alert.toAlert { }
         }
     }
     
@@ -102,9 +102,11 @@ struct LoginView: View {
     @ViewBuilder
     var loginButton: some View {
         BorderButton(isEnabled: $loginVM.isLoginButtonEnabled, isLoading: $loginVM.isLoading, text: "Sign In", color: .btBlue) {
+            KeyboardHelper.dismiss()
             Task {
                 await loginVM.login()
-                if loginVM.shouldDismiss {
+                if loginVM.shouldDismissView {
+                    path.removeAll()
                     dismiss()
                 }
             }
@@ -148,5 +150,5 @@ struct LoginView: View {
 
 #Preview {
     LoginView(path: .constant([]))
-        .environmentObject(AppState())
+//        .environmentObject(AppState())
 }

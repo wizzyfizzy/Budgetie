@@ -26,9 +26,8 @@ final class LoginVM: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var isLoginButtonEnabled: Bool = true
     @Published private(set) var errorMessage: String?
-    @Published private(set) var apiErrorMessage: String?
-    @Published var showError: Bool = false
-    @Published var shouldDismiss: Bool = false
+    @Published var shouldDismissView: Bool = false
+    @Published var alert: BTAlert?
 
     private var cancellables = Set<AnyCancellable>()
     var userID: String?
@@ -68,8 +67,8 @@ final class LoginVM: ObservableObject {
             return await performLogin(email: credEmail, password: "AppleLogin")
         } catch {
             logger.log(.error, fileName: fileName, "\(error.localizedDescription)")
-            showError = true
-            apiErrorMessage = "Something went wrong with Apple Login. Please try again later"
+            alert = .error("Login Error", "Something went wrong with Apple Login. Please try again later")
+
             return false
         }
     }
@@ -85,30 +84,27 @@ final class LoginVM: ObservableObject {
 // MARK: - Private
 private extension LoginVM {
     private func setupBindings() {
-        let emailVal = FormValidator.emailPublisher($email)
-        let passwordVal = FormValidator.passwordPublisher($password, confirmPassword: $password)
-
-        // Combine email + password errors
-        Publishers.CombineLatest(emailVal, passwordVal)
-            .map { emailError, passwordError -> (String?) in
-                [emailError, passwordError].compactMap { $0 }.isEmpty ? nil : [emailError, passwordError].compactMap { $0 }.joined(separator: "\n")
-            }
-            .sink { [weak self] error in
-                guard let self else { return }
-                self.errorMessage = error
-                self.isLoginButtonEnabled = error == nil
-            }
-            .store(in: &cancellables)
+        Publishers.CombineLatest(
+            FormValidator.emailPublisher($email),
+            FormValidator.passwordPublisher($password, confirmPassword: $password)
+        )
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] emailError, passwordError in
+            guard let self else { return }
+            let errors = [emailError, passwordError].compactMap { $0 }
+            self.errorMessage = errors.isEmpty ? nil : errors.joined(separator: "\n")
+            self.isLoginButtonEnabled = errors.isEmpty
+        }
+        .store(in: &cancellables)
     }
-    
     private func loginSuccess(userData: UserData) {
         do {
             try saveUserSessionUC.execute(user: userData)
             trackAction(TrackingAction.completedSignIn, userId: userData.id)
-            shouldDismiss = true
+            shouldDismissView = true
         } catch {
-            apiErrorMessage = "Failed to login. Please try again later"
-            logger.log(.error, fileName: fileName, "Failed to save session")
+            alert = .error("Login Error", "Failed to login. Please try again later")
+            logger.log(.error, fileName: fileName, "Failed to save session in loginSuccess")
         }
     }
     
@@ -126,20 +122,18 @@ private extension LoginVM {
         isLoading = true
         defer { isLoading = false }
         errorMessage = nil
-        showError = false
-        apiErrorMessage = nil
         
         do {
             let loggedUser = try await loginUserUC.execute(email: email, password: password)
             loginSuccess(userData: loggedUser)
             return true
         } catch AuthAPIError.invalidCredentials {
-            showError = true
-            apiErrorMessage = "Invalid email or password"
+            alert = .error("Login Error", "Invalid email or password")
+            logger.log(.error, fileName: fileName, "Invalid email or password")
             return false
         } catch {
-            showError = true
-            apiErrorMessage = "Something went wrong"
+            alert = .error("Login Error", "Something went wrong. Please try again later")
+            logger.log(.error, fileName: fileName, "Failed to login in performLogin")
             return false
         }
     }

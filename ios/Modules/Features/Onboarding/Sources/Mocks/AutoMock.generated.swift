@@ -30,9 +30,9 @@ public final class ShouldShowOnboardingUCMock: ShouldShowOnboardingUC {
     public let verify = Verify()
     public func execute() -> Bool {
         verify.execute_Bool.append(())
-        guard let value = stub.execute_Bool?() else {
-             fatalError( "'\(#function)' function called but not stubbed before. File: \(#file)")
-         }
-        return value
+        guard let stub = stub.execute_Bool else {
+            fatalError("'\\(#function)' function called but not stubbed before. File: \\(#file)")
+        }
+        return stub()
     }
 }

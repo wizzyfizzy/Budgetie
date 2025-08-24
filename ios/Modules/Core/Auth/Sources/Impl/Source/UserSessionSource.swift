@@ -10,9 +10,13 @@ import AuthAPI
 import UIComponents
 
 // sourcery: AutoMockable
+/// Abstracts storage of user session locally (UserDefaults/Keychain).
 protocol UserSessionSource {
+    /// Saves user data.
     func save(user: UserData) throws
+    /// Loads the saved user data, if any.
     func loadUser() -> UserData?
+    /// Clears stored user data.
     func clear()
 }
 

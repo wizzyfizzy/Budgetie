@@ -17,5 +17,6 @@ extension BTAppDI {
     
     func registerAuth() {
         register(GetUserSessionUC.self) { _ in GetUserSessionUCImpl() }
+        register(IsLoggedInUC.self) { _ in IsLoggedInUCImpl() }
     }
 }
