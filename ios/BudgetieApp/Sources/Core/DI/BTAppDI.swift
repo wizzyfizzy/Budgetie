@@ -46,6 +46,8 @@ final class BTAppDI: DIContainer {
             registerAllViewsFromModules()
             registerAppNavigation()
             registerLogging()
+            registerBTRestClient()
+
             initAuth()
             registerAuth()
             initOnboarding()

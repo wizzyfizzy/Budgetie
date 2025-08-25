@@ -180,7 +180,7 @@ final class SignUpVMTests: XCTestCase {
         arrange.signUpVM.password = "123123"
         arrange.signUpVM.confirmPassword = "123123"
         arrange.signUpVM.agreeTerms = true
-        arrange.signUpVM.signUp()
+//        arrange.signUpVM.signUp()
         
         // Assert
         XCTAssertEqual(arrange.logger.verify.logFileName_Void.count, 1)

@@ -7,7 +7,9 @@
 
 import Foundation
 import AuthAPI
+import BTRestClientAPI
 
+// sourcery: AutoMockable
 /// Abstracts direct network calls for authentication API.
 protocol AuthAPISource {
     /// Signs up a user via network.
@@ -19,70 +21,50 @@ protocol AuthAPISource {
 }
 
 final class AuthAPISourceImpl: AuthAPISource {
-    private let baseURL = "http://127.0.0.1:8000/auth"
-    // !! change it to Macs's IP when run on device
-    //  private let baseURL = "http://192.168.1.42:5000/auth"
-
+    @Injected private var client: HTTPClient
+    
     func signup(name: String, email: String, password: String) async throws -> UserData {
-        let response = try await request(path: "/signup", body: ["name": name, "email": email, "password": password])
-        return UserData(id: response.user.id, email: response.user.email, name: response.user.name, token: response.token)
+        let response: RAuthResponse = try await client.request(
+            path: .signup,
+            method: .post,
+            body: ["name": name, "email": email, "password": password],
+            headers: nil,
+            errorMapping: HTTPError.self
+        )
+        return response.mapToDomain()
     }
 
     func login(email: String, password: String) async throws -> UserData {
-        let response = try await request(path: "/login", body: ["email": email, "password": password])
-        return UserData(id: response.user.id, email: response.user.email, name: response.user.name, token: response.token)
+        let response: RAuthResponse = try await client.request(
+            path: .login,
+            method: .post,
+            body: ["email": email, "password": password],
+            headers: nil,
+            errorMapping: HTTPError.self
+        )
+        return response.mapToDomain()
     }
 
     func forgotPassword(email: String) async throws -> String {
-        try await request2(path: "/forgot-password", body: ["email": email]).message
+        let response: RAuthResponseForgotPassword = try await client.request(
+            path: .forgotPassword,
+            method: .post,
+            body: ["email": email],
+            headers: nil,
+            errorMapping: HTTPError.self
+        )
+        return response.mapToDomain().message
     }
+}
 
-    // MARK: - Private helper
-    private func request(path: String, body: [String: Any]) async throws -> AuthResponse {
-        guard let url = URL(string: "\(baseURL)\(path)") else { throw URLError(.badURL) }
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = try JSONSerialization.data(withJSONObject: body)
-
-        let (data, response) = try await URLSession.shared.data(for: request)
-        // decode json first to see if error exists
-        if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode >= 400 {
-            let errorResp = try JSONDecoder().decode([String: String].self, from: data)
-            switch errorResp["error"] {
-            case "InvalidCredentials": throw AuthAPIError.invalidCredentials
-            case "UserExists": throw AuthAPIError.userExists
-            case "UserNotFound": throw AuthAPIError.userNotFound
-            case "MissingFields": throw AuthAPIError.missingFields
-            default: throw AuthAPIError.unknown
-            }
-        }
-
-        let result = try JSONDecoder().decode(AuthResponse.self, from: data)
-        return result
+extension RAuthResponse {
+    func mapToDomain() -> UserData {
+        UserData(id: user.id, email: user.email, name: user.name, token: token)
     }
-    
-    private func request2(path: String, body: [String: Any]) async throws -> AuthResponseForgotPassword {
-        guard let url = URL(string: "\(baseURL)\(path)") else { throw URLError(.badURL) }
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = try JSONSerialization.data(withJSONObject: body)
+}
 
-        let (data, response) = try await URLSession.shared.data(for: request)
-        // decode json first to see if error exists
-        if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode >= 400 {
-            let errorResp = try JSONDecoder().decode([String: String].self, from: data)
-            switch errorResp["error"] {
-            case "InvalidCredentials": throw AuthAPIError.invalidCredentials
-            case "UserExists": throw AuthAPIError.userExists
-            case "UserNotFound": throw AuthAPIError.userNotFound
-            case "MissingFields": throw AuthAPIError.missingFields
-            default: throw AuthAPIError.unknown
-            }
-        }
-
-        let result = try JSONDecoder().decode(AuthResponseForgotPassword.self, from: data)
-        return result
+extension RAuthResponseForgotPassword {
+    func mapToDomain() -> DAuthResponseForgotPassword {
+        DAuthResponseForgotPassword(message: message)
     }
 }

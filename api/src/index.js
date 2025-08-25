@@ -13,6 +13,7 @@ const authRouter = require("./routes/auth");
 
 app.use((req, res, next) => {
   console.log("[REQUEST HIT]", req.method, req.url);
+  console.log("HEADERS:", req.headers);
   next();
 });
 

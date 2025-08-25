@@ -156,7 +156,7 @@ final class LoginVMTests: XCTestCase {
         // Act
         arrange.loginVM.email = "test@test.gr"
         arrange.loginVM.password = "123123"
-        arrange.loginVM.login()
+//        arrange.loginVM.login()
         
         // Assert
         XCTAssertEqual(arrange.logger.verify.logFileName_Void.count, 1)

@@ -10,6 +10,7 @@ import Combine
 import AppLogging
 import AuthAPI
 import UIComponents
+import BTRestClientAPI
 
 final class SignUpVM: ObservableObject {
     // MARK: - Dependencies
@@ -63,7 +64,7 @@ final class SignUpVM: ObservableObject {
             let loggedUser = try await signUpUserUC.execute(name: name, email: email, password: password)
             signUpSuccess(userData: loggedUser)
             shouldDismissView = true
-        } catch AuthAPIError.userExists {
+        } catch HTTPError.userExists {
             logger.log(.error, fileName: fileName, "This user already exists, in signUp")
             alert = .error("Sign Up failed", "This user already exists")
         } catch {

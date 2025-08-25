@@ -8,6 +8,7 @@
 import DIModule
 import AppLogging
 import AuthAPI
+import BTRestClientAPI
 
 final class AuthDI: DIContainer {
     static var shared = DIContainer()
@@ -29,8 +30,8 @@ final class AuthDI: DIContainer {
         registerRepo()
         registerUceCases()
         
-        if dependencies != nil {
-            registerLogging()
+        if let dep = dependencies {
+            registerDependencies(dep)
         }
 
     }
@@ -54,7 +55,9 @@ final class AuthDI: DIContainer {
     }
     
     // MARK: Register Dependencies
-    private func registerLogging() {
+    private func registerDependencies(_ dependencies: Dependencies) {
         register(BTLogger.self) { _ in logger(module: "Auth") }
+        register(HTTPClient.self) { _ in dependencies.restClient() }
+
     }
 }

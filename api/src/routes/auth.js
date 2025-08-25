@@ -75,6 +75,7 @@ router.post("/login", async (req, res) => {
 
 router.post("/forgot-password", (req, res) => {
   const { email } = req.body;
+  console.log("REQ BODY:", req.body);
 
   if (!email) {
     return res.status(400).json({ error: "MissingFields" });

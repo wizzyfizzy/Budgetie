@@ -10,6 +10,7 @@ import Combine
 import AuthAPI
 import AppLogging
 import UIComponents
+import BTRestClientAPI
 
 final class LoginVM: ObservableObject {
     // MARK: - Dependencies
@@ -127,7 +128,7 @@ private extension LoginVM {
             let loggedUser = try await loginUserUC.execute(email: email, password: password)
             loginSuccess(userData: loggedUser)
             return true
-        } catch AuthAPIError.invalidCredentials {
+        } catch HTTPError.invalidCredentials {
             alert = .error("Login Error", "Invalid email or password")
             logger.log(.error, fileName: fileName, "Invalid email or password")
             return false

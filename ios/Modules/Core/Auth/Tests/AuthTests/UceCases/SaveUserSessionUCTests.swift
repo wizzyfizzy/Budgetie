@@ -25,7 +25,7 @@ final class SaveUserSessionUCTests: XCTestCase {
     func testExecute() throws {
         // Arrange
         let arrange = arrange()
-        let user = UserData(id: "42", email: "test@test.gr", fullName: "Kris")
+        let user = UserData(id: "42", email: "test@test.gr", name: "Kris", token: "123")
         arrange.repo.stub.saveUser_Void = { _ in return () }
 
         // Act
@@ -36,14 +36,14 @@ final class SaveUserSessionUCTests: XCTestCase {
         XCTAssertEqual(arrange.repo.verify.saveUser_Void.first, user)
         XCTAssertEqual(arrange.repo.verify.saveUser_Void.first?.id, user.id)
         XCTAssertEqual(arrange.repo.verify.saveUser_Void.first?.email, user.email)
-        XCTAssertEqual(arrange.repo.verify.saveUser_Void.first?.fullName, user.fullName)
+        XCTAssertEqual(arrange.repo.verify.saveUser_Void.first?.name, user.name)
 //        XCTAssertEqual(AppState.shared.userID, user.id)
     }
     
     func testExecute_throwError() throws {
         // Arrange
         let arrange = arrange()
-        let user = UserData(id: "42", email: "test@test.gr", fullName: "Kris")
+        let user = UserData(id: "42", email: "test@test.gr", name: "Kris", token: "123")
         arrange.repo.stub.saveUser_Void = { _ in throw NSError(domain: "Test", code: 1) }
 
         // Act + Assert

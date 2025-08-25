@@ -8,6 +8,7 @@ import Foundation
 import Combine
 import AppLogging
 import UIComponents
+import BTRestClientAPI
 
 final class ForgotPasswordVM: ObservableObject {
     // MARK: - Dependencies
@@ -47,7 +48,7 @@ final class ForgotPasswordVM: ObservableObject {
         do {
             let message = try await forgotPasswordUC.execute(email: email)
             alert = .success("Success", message)
-        } catch AuthAPIError.missingFields {
+        } catch HTTPError.missingFields {
             alert = .error("Error", "Invalid email")
             logger.log(.error, fileName: fileName, "Invalid email in forgotPassword")
         } catch {

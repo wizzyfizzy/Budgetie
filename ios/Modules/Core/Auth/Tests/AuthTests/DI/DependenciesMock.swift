@@ -7,9 +7,11 @@
 
 import Auth
 import AppLoggingMocks
+import BTRestClientMocks
 
 extension Dependencies {
     static func mock() -> Dependencies {
-        return Dependencies(logger: { BTLoggerMock() })
+        return Dependencies(logger: { BTLoggerMock() },
+                            restClient: { BTRestClientMocks() })
     }
 }

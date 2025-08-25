@@ -55,6 +55,48 @@ internal final class AuthAPIRepoMock: AuthAPIRepo {
         return try await stub((email))
     }
 }
+internal final class AuthAPISourceMock: AuthAPISource {
+
+    internal init() {}
+
+    // MARK: - Stub
+    internal final class Stub {
+        internal var signupNameEmailPassword_Async_UserData: (((String, String, String)) async throws -> UserData)?
+        internal var loginEmailPassword_Async_UserData: (((String, String)) async throws -> UserData)?
+        internal var forgotPasswordEmail_Async_String: ((String) async throws -> String)?
+    }
+
+    // MARK: - Verify
+    internal final class Verify {
+        internal var signupNameEmailPassword_Async_UserData: [(name: String, email: String, password: String)] = []
+        internal var loginEmailPassword_Async_UserData: [(email: String, password: String)] = []
+        internal var forgotPasswordEmail_Async_String: [String] = []
+    }
+
+    internal let stub = Stub()
+    internal let verify = Verify()
+     func signup(name: String, email: String, password: String) async throws -> UserData {
+        verify.signupNameEmailPassword_Async_UserData.append((name, email, password))
+        guard let stub = stub.signupNameEmailPassword_Async_UserData else {
+            fatalError("'\\(#function)' function called but not stubbed before. File: \\(#file)")
+        }
+        return try await stub((name, email, password))
+    }
+     func login(email: String, password: String) async throws -> UserData {
+        verify.loginEmailPassword_Async_UserData.append((email, password))
+        guard let stub = stub.loginEmailPassword_Async_UserData else {
+            fatalError("'\\(#function)' function called but not stubbed before. File: \\(#file)")
+        }
+        return try await stub((email, password))
+    }
+     func forgotPassword(email: String) async throws -> String {
+        verify.forgotPasswordEmail_Async_String.append((email))
+        guard let stub = stub.forgotPasswordEmail_Async_String else {
+            fatalError("'\\(#function)' function called but not stubbed before. File: \\(#file)")
+        }
+        return try await stub((email))
+    }
+}
 internal final class ClearUserSessionUCMock: ClearUserSessionUC {
 
     internal init() {}

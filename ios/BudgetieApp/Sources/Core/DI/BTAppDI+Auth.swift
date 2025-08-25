@@ -8,10 +8,12 @@
 import AuthAPI
 import Auth
 import AppLogging
+import BTRestClient
 
 extension BTAppDI {
     func initAuth() {
-        let dependencies = Auth.Dependencies(logger: { logger(module: "Auth") })
+        let dependencies = Auth.Dependencies(logger: { logger(module: "Auth") },
+                                             restClient: {GenericHTTPClient() })
         AuthInitializer.initialize(dependencies: dependencies)
     }
     

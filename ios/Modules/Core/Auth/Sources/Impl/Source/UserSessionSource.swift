@@ -21,11 +21,13 @@ protocol UserSessionSource {
 }
 
 final class UserSessionSourceImpl: UserSessionSource {
-    private let userDefaults = UserDefaults.standard
+    private let userDefaults: UserDefaults
     private let store: SecureStore
     
-    init(store: SecureStore = KeychainSecureStore()) {
+    init(store: SecureStore = KeychainSecureStore(),
+         userDefaults: UserDefaults = UserDefaults.standard) {
         self.store = store
+        self.userDefaults = userDefaults
     }
 
     func save(user: UserData) throws {

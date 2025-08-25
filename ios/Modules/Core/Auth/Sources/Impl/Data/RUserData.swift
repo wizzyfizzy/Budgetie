@@ -18,20 +18,12 @@ struct RUserData: Codable, Equatable {
     }
 }
 
-struct AuthResponse: Codable {
+struct RAuthResponse: Codable {
     let message: String
     let user: RUserData
     let token: String
 }
 
-struct AuthResponseForgotPassword: Codable {
+struct RAuthResponseForgotPassword: Codable {
     let message: String
-}
-
-enum AuthAPIError: Error {
-    case invalidCredentials
-    case userExists
-    case userNotFound
-    case missingFields
-    case unknown
 }

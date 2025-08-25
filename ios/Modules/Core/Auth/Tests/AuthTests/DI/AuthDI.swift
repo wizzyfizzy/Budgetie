@@ -32,5 +32,17 @@ final class AuthDITests: XCTestCase {
         let authDI = AuthDI(dependencies: dependencies)
         
         XCTAssertNotNil(authDI.resolve(BTLogger.self))
+        
+        XCTAssertNotNil(authDI.resolve(UserSessionSource.self))
+        XCTAssertNotNil(authDI.resolve(AuthAPISource.self))
+        
+        XCTAssertNotNil(authDI.resolve(UserSessionRepo.self))
+        XCTAssertNotNil(authDI.resolve(AuthAPIRepo.self))
+
+        XCTAssertNotNil(authDI.resolve(ClearUserSessionUC.self))
+        XCTAssertNotNil(authDI.resolve(SaveUserSessionUC.self))
+        XCTAssertNotNil(authDI.resolve(LoginUserUC.self))
+        XCTAssertNotNil(authDI.resolve(SignUpUserUC.self))
+        XCTAssertNotNil(authDI.resolve(ForgotPasswordUC.self))
     }
 }

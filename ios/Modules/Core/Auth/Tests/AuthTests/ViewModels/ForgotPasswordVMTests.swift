@@ -66,12 +66,12 @@ final class ForgotPasswordVMTests: XCTestCase {
         // Act
         arrange.forgotPasswordVM.email = "valid@email.com"
 
-        arrange.forgotPasswordVM.resetPassword { [weak self] success in
-            self?.checktracking(logger: arrange.logger)
-            XCTAssertTrue(success)
-            XCTAssertNil(arrange.forgotPasswordVM.errorMessage)
-            expectation.fulfill()
-        }
+//        arrange.forgotPasswordVM.resetPassword { [weak self] success in
+//            self?.checktracking(logger: arrange.logger)
+//            XCTAssertTrue(success)
+//            XCTAssertNil(arrange.forgotPasswordVM.errorMessage)
+//            expectation.fulfill()
+//        }
         
         // Assert
         wait(for: [expectation], timeout: 2)

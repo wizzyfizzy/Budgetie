@@ -18,7 +18,8 @@ let package = Package(
         .package(name: "AppLogging", path: "../../Shared/AppLogging"),
         .package(name: "AppNavigation", path: "../../Shared/AppNavigation"),
         .package(name: "DIModule", path: "../../Shared/DIModule"),
-        .package(name: "UIComponents", path: "../../Shared/UIComponents")
+        .package(name: "UIComponents", path: "../../Shared/UIComponents"),
+        .package(name: "BTRestClient", path: "../../Shared/BTRestClient")
     ],
     targets: [
         .target(
@@ -34,6 +35,7 @@ let package = Package(
                 "AppLogging",
                 "DIModule",
                 "UIComponents",
+                "BTRestClient",
                 .product(name: "AppNavigationAPI", package: "AppNavigation")
             ],
             path: "Sources/Impl/"),
@@ -48,7 +50,8 @@ let package = Package(
             dependencies: ["Auth",
                            "DIModule",
                            .product(name: "AppNavigationMocks", package: "AppNavigation"),
-                           .product(name: "AppLoggingMocks", package: "AppLogging")
+                           .product(name: "AppLoggingMocks", package: "AppLogging"),
+                           .product(name: "BTRestClientMocks", package: "BTRestClient")
                           ],
             path: "Tests/AuthTests")
     ]

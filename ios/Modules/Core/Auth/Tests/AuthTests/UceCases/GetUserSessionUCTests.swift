@@ -24,7 +24,7 @@ final class GetUserSessionUCTests: XCTestCase {
     func testExecute() {
         // Arrange
         let arrange = arrange()
-        let user = UserData(id: "42", email: "test@test.gr", fullName: "Kris")
+        let user = UserData(id: "42", email: "test@test.gr", name: "Kris", token: "123")
         arrange.repo.stub.getUser_UserData = { user }
         
         // Act
@@ -35,6 +35,6 @@ final class GetUserSessionUCTests: XCTestCase {
         XCTAssertEqual(loadedUser, user)
         XCTAssertEqual(loadedUser?.id, user.id)
         XCTAssertEqual(loadedUser?.email, user.email)
-        XCTAssertEqual(loadedUser?.fullName, user.fullName)
+        XCTAssertEqual(loadedUser?.name, user.name)
     }
 }

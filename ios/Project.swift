@@ -14,6 +14,7 @@ let projectPackages: [Package] = [
     .local(path: "Modules/Features/Onboarding"),
     .local(path: "Modules/Shared/AppLogging"),
     .local(path: "Modules/Shared/AppNavigation"),
+    .local(path: "Modules/Shared/BTRestClient"),
     .local(path: "Modules/Shared/DIModule"),
     .local(path: "Modules/Shared/UIComponents")
 ]
@@ -22,6 +23,7 @@ let projectPackages: [Package] = [
 let sharedMoldules: [TargetDependency] = [
     .package(product: "AppLogging"),
     .package(product: "AppNavigation"),
+    .package(product: "BTRestClient"),
     .package(product: "DIModule"),
     .package(product: "UIComponents")
 ]

@@ -28,6 +28,7 @@ final class UserSessionRepoImpl: UserSessionRepo {
 
     func saveUser(_ user: UserData) throws {
         try localSource.save(user: user)
+        userSubject.send(user)
     }
     
     func getUser() -> UserData? {
@@ -41,13 +42,6 @@ final class UserSessionRepoImpl: UserSessionRepo {
     
     func clearUser() {
         localSource.clear()
-    }
-}
-
-final class SessionManager: ObservableObject {
-    @Published private(set) var user: UserData?
-    
-    func update(user: UserData?) {
-        self.user = user
+        userSubject.send(nil)
     }
 }
