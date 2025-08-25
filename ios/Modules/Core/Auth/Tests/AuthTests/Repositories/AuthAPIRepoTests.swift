@@ -23,53 +23,52 @@ final class AuthAPIRepoTests: XCTestCase {
 
     func testLoginCall() async throws {
         // Arrange
-        let arrange = arrange()
-        arrange.source.stub.loginEmailPassword_Async_UserData = { userData async throws -> UserData in
-            let (email, password) = userData
+        let (repo, source) = arrange()
+        source.stub.loginEmailPassword_Async_UserData = { _ async throws -> UserData in
             return self.user
         }
 
         // Act
-        let result = try await arrange.repo.login(email: "test@test.gr", password: "1234")
+        let result = try await repo.login(email: "test@test.gr", password: "1234")
         
         // Assert
         XCTAssertEqual(result, user)
-        XCTAssertEqual(arrange.source.verify.loginEmailPassword_Async_UserData.count, 1)
-        XCTAssertEqual(arrange.source.verify.loginEmailPassword_Async_UserData.first?.email, "test@test.gr")
+        XCTAssertEqual(source.verify.loginEmailPassword_Async_UserData.count, 1)
+        XCTAssertEqual(source.verify.loginEmailPassword_Async_UserData.first?.email, "test@test.gr")
     }
     
     func testSignUpCall() async throws {
         // Arrange
-        let arrange = arrange()
-        arrange.source.stub.signupNameEmailPassword_Async_UserData = { userData async throws -> UserData in
-            let (name, email, password) = userData
+        let (repo, source) = arrange()
+        source.stub.signupNameEmailPassword_Async_UserData = { 
+        _ async throws -> UserData in
             return self.user
         }
 
         // Act
-        let result = try await arrange.repo.signup(name: "Kris", email: "test@test.gr", password: "1234")
+        let result = try await repo.signup(name: "Kris", email: "test@test.gr", password: "1234")
         
         // Assert
         XCTAssertEqual(result, user)
-        XCTAssertEqual(arrange.source.verify.signupNameEmailPassword_Async_UserData.count, 1)
-        XCTAssertEqual(arrange.source.verify.signupNameEmailPassword_Async_UserData.first?.name, "Kris")
-        XCTAssertEqual(arrange.source.verify.signupNameEmailPassword_Async_UserData.first?.email, "test@test.gr")
+        XCTAssertEqual(source.verify.signupNameEmailPassword_Async_UserData.count, 1)
+        XCTAssertEqual(source.verify.signupNameEmailPassword_Async_UserData.first?.name, "Kris")
+        XCTAssertEqual(source.verify.signupNameEmailPassword_Async_UserData.first?.email, "test@test.gr")
     }
     
     func testForgotPasswordCall() async throws {
         // Arrange
-        let arrange = arrange()
+        let (repo, source) = arrange()
         let expectedMessage = "Password reset email sent"
-        arrange.source.stub.forgotPasswordEmail_Async_String = { _ async throws -> String in
+        source.stub.forgotPasswordEmail_Async_String = { _ async throws -> String in
             return expectedMessage
         }
         
         // Act
-        let message = try await arrange.repo.forgotPassword(email: "test@test.gr")
+        let message = try await repo.forgotPassword(email: "test@test.gr")
         
         // Assert
         XCTAssertEqual(message, expectedMessage)
-        XCTAssertEqual(arrange.source.verify.forgotPasswordEmail_Async_String.count, 1)
-        XCTAssertEqual(arrange.source.verify.forgotPasswordEmail_Async_String.first, "test@test.gr")
+        XCTAssertEqual(source.verify.forgotPasswordEmail_Async_String.count, 1)
+        XCTAssertEqual(source.verify.forgotPasswordEmail_Async_String.first, "test@test.gr")
     }
 }

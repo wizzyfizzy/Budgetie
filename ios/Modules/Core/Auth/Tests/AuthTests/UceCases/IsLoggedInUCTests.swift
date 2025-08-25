@@ -11,32 +11,29 @@ import AuthAPI
 import DIModule
 import Combine
 
-final class GetUserSessionUCTests: XCTestCase {
-    private func arrange() -> (getUserUC: GetUserSessionUC,
+final class IsLoggedInUCTests: XCTestCase {
+    private func arrange() -> (isLoggedInUC: IsLoggedInUC,
                                repo: UserSessionRepoMock) {
         
         let repo = UserSessionRepoMock()
         AuthDI.shared = DIContainer()
         AuthDI.shared.register(UserSessionRepo.self) { _ in repo }
         
-        return (GetUserSessionUCImpl(), repo)
+        return (IsLoggedInUCImpl(), repo)
     }
     private let user = UserData(id: "42", email: "test@test.gr", name: "Kris", token: "123")
-
+    
     func testExecute_WithUser() {
         // Arrange
         let (useCase, repo) = arrange()
         repo.stub.getUser_UserData = { self.user }
         
         // Act
-        let receivedUser = useCase.execute()
+        let result = useCase.execute()
         
         // Assert
+        XCTAssertTrue(result)
         XCTAssertEqual(repo.verify.getUser_UserData.count, 1)
-        XCTAssertEqual(receivedUser, user)
-        XCTAssertEqual(receivedUser?.id, user.id)
-        XCTAssertEqual(receivedUser?.email, user.email)
-        XCTAssertEqual(receivedUser?.name, user.name)
     }
     
     func testExecute_NoUser() {
@@ -45,11 +42,11 @@ final class GetUserSessionUCTests: XCTestCase {
         repo.stub.getUser_UserData = { nil }
         
         // Act
-        let receivedUser = useCase.execute()
+        let result = useCase.execute()
         
         // Assert
+        XCTAssertFalse(result)
         XCTAssertEqual(repo.verify.getUser_UserData.count, 1)
-        XCTAssertNil(receivedUser)
     }
     
     func testExecutePublisher_WithUser() {
@@ -61,17 +58,17 @@ final class GetUserSessionUCTests: XCTestCase {
         
         // Act
         let exp = expectation(description: "Publisher emits user")
-        var receivedUser: UserData?
+        var result: Bool?
         
         let cancellable = useCase.executePublisher()
             .sink { value in
-                receivedUser = value
+                result = value
                 exp.fulfill()
             }
         
         // Assert
         wait(for: [exp], timeout: 1)
-        XCTAssertEqual(receivedUser, user)
+        XCTAssertTrue(result ?? false)
         XCTAssertEqual(repo.verify.getUserPublisher_Pub_UserData_Never.count, 1)
         cancellable.cancel()
     }
@@ -82,34 +79,21 @@ final class GetUserSessionUCTests: XCTestCase {
         repo.stub.getUserPublisher_Pub_UserData_Never = {
             Just(nil).eraseToAnyPublisher()
         }
-        
+
         // Act
-        let exp = expectation(description: "Publisher emits nil")
-        var received: UserData?
+        let exp = expectation(description: "Publisher emits false")
+        var result: Bool?
         
         let cancellable = useCase.executePublisher()
             .sink { value in
-                received = value
+                result = value
                 exp.fulfill()
             }
         
         // Assert
         wait(for: [exp], timeout: 1)
-        XCTAssertNil(received)
+        XCTAssertFalse(result ?? true)
         XCTAssertEqual(repo.verify.getUserPublisher_Pub_UserData_Never.count, 1)
         cancellable.cancel()
-    }
-
-    func testExecute_CalledMultipleTimes() {
-        // Arrange
-        let (useCase, repo) = arrange()
-        repo.stub.getUser_UserData = { self.user }
-        
-        // Act
-        _ = useCase.execute()
-        _ = useCase.execute()
-        
-        // Assert
-        XCTAssertEqual(repo.verify.getUser_UserData.count, 2)
     }
 }

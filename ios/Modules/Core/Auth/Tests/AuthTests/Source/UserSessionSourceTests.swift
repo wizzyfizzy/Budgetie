@@ -30,103 +30,103 @@ final class UserSessionSourceTests: XCTestCase {
 
     func testLoadUserWithoutSaveReturnsNil() {
         // Arrange
-        let arrange = arrange()
-        
+        let (source, _, _) = arrange()
+
         // Act
-        let loadedUser = arrange.source.loadUser()
+        let receivedUser = source.loadUser()
         
         // Assert
-        XCTAssertNil(loadedUser)
+        XCTAssertNil(receivedUser)
     }
     
     func testLoadUserKeychain() throws {
         // Arrange
-        let arrange = arrange()
-        
+        let (_, store, _) = arrange()
+
         // Act
-        try arrange.store.save(user, key: key)
-        let loadedUser = arrange.store.load(key, as: UserData.self)
+        try store.save(user, key: key)
+        let receivedUser = store.load(key, as: UserData.self)
         
         // Assert
-        XCTAssertNotNil(loadedUser)
-        XCTAssertEqual(loadedUser, user)
-        XCTAssertEqual(loadedUser?.id, "123")
-        XCTAssertEqual(loadedUser?.email, "test@test.gr")
-        XCTAssertEqual(loadedUser?.name, "Kris")
+        XCTAssertNotNil(receivedUser)
+        XCTAssertEqual(receivedUser, user)
+        XCTAssertEqual(receivedUser?.id, "123")
+        XCTAssertEqual(receivedUser?.email, "test@test.gr")
+        XCTAssertEqual(receivedUser?.name, "Kris")
     }
     
     func testSaveOverwritesPreviousUser() throws {
         // Arrange
-        let arrange = arrange()
+        let (source, _, _) = arrange()
         let user1 = UserData(id: "1", email: "a@test.com", name: "A", token: "111")
         let user2 = UserData(id: "2", email: "b@test.com", name: "B", token: "222")
 
         // Act
-        try arrange.source.save(user: user1)
-        try arrange.source.save(user: user2)
+        try source.save(user: user1)
+        try source.save(user: user2)
 
         // Assert
-        let loaded = arrange.source.loadUser()
+        let loaded = source.loadUser()
         XCTAssertEqual(loaded, user2)
     }
     
     func testClearUserKeychain() throws {
         // Arrange
-        let arrange = arrange()
-        
+        let (source, store, _) = arrange()
+
         // Act
-        try arrange.store.save(user, key: key)
-        arrange.store.delete(key)
-        let loadedUser = arrange.source.loadUser()
+        try store.save(user, key: key)
+        store.delete(key)
+        let receivedUser = source.loadUser()
         
         // Assert
-        XCTAssertNil(loadedUser)
+        XCTAssertNil(receivedUser)
     }
     
     func testClearWithoutSaveDoesNotCrash() {
         // Arrange
-        let arrange = arrange()
-        
+        let (source, _, _) = arrange()
+
         // Act
-        arrange.source.clear()
+        source.clear()
         
         // Assert
-        XCTAssertNil(arrange.source.loadUser())
+        XCTAssertNil(source.loadUser())
     }
 
     func testSaveAndRetrieveUserSession() throws {
         // Arrange
-        let arrange = arrange()
-        
-        try arrange.source.save(user: user)
+        let (source, _, _) = arrange()
 
-        let loadedUser = arrange.source.loadUser()
-        XCTAssertNotNil(loadedUser)
-        XCTAssertEqual(loadedUser?.id, "123")
-        XCTAssertEqual(loadedUser?.email, "test@test.gr")
-        XCTAssertEqual(loadedUser?.name, "Kris")
+        try source.save(user: user)
+
+        let receivedUser = source.loadUser()
+        XCTAssertNotNil(receivedUser)
+        XCTAssertEqual(receivedUser?.id, "123")
+        XCTAssertEqual(receivedUser?.email, "test@test.gr")
+        XCTAssertEqual(receivedUser?.name, "Kris")
     }
     
     func testClearUserKeSession() throws {
         // Arrange
-        let arrange = arrange()
-        
+        let (source, _, _) = arrange()
+
         // Act
-        try arrange.source.save(user: user)
-        arrange.source.clear()
-        let loadedUser = arrange.source.loadUser()
+        try source.save(user: user)
+        source.clear()
+        let receivedUser = source.loadUser()
         
         // Assert
-        XCTAssertNil(loadedUser)
+        XCTAssertNil(receivedUser)
     }
     
     func testUserDefaultsFlagUpdatesCorrectly() throws {
-        let arrange = arrange()
+        let (source, _, userDefaults) = arrange()
 
-        try arrange.source.save(user: user)
-        XCTAssertTrue(arrange.userDefaults.isUserLoggedIn)
+        try source.save(user: user)
+        XCTAssertTrue(userDefaults.isUserLoggedIn)
 
-        arrange.source.clear()
-        XCTAssertFalse(arrange.userDefaults.isUserLoggedIn)
+        source.clear()
+        XCTAssertFalse(userDefaults.isUserLoggedIn)
     }
 }

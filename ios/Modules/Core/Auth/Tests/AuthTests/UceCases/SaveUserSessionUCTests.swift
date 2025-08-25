@@ -24,29 +24,43 @@ final class SaveUserSessionUCTests: XCTestCase {
     
     func testExecute() throws {
         // Arrange
-        let arrange = arrange()
+        let (useCase, repo) = arrange()
         let user = UserData(id: "42", email: "test@test.gr", name: "Kris", token: "123")
-        arrange.repo.stub.saveUser_Void = { _ in return () }
+        repo.stub.saveUser_Void = { _ in return () }
 
         // Act
-        try arrange.saveUserUC.execute(user: user)
+        try useCase.execute(user: user)
         
         // Assert
-        XCTAssertEqual(arrange.repo.verify.saveUser_Void.count, 1)
-        XCTAssertEqual(arrange.repo.verify.saveUser_Void.first, user)
-        XCTAssertEqual(arrange.repo.verify.saveUser_Void.first?.id, user.id)
-        XCTAssertEqual(arrange.repo.verify.saveUser_Void.first?.email, user.email)
-        XCTAssertEqual(arrange.repo.verify.saveUser_Void.first?.name, user.name)
-//        XCTAssertEqual(AppState.shared.userID, user.id)
+        XCTAssertEqual(repo.verify.saveUser_Void.count, 1)
+        XCTAssertEqual(repo.verify.saveUser_Void.first, user)
+        XCTAssertEqual(repo.verify.saveUser_Void.first?.id, user.id)
+        XCTAssertEqual(repo.verify.saveUser_Void.first?.email, user.email)
+        XCTAssertEqual(repo.verify.saveUser_Void.first?.name, user.name)
     }
     
-    func testExecute_throwError() throws {
+    func testExecute_Error() throws {
         // Arrange
-        let arrange = arrange()
+        let (useCase, repo) = arrange()
         let user = UserData(id: "42", email: "test@test.gr", name: "Kris", token: "123")
-        arrange.repo.stub.saveUser_Void = { _ in throw NSError(domain: "Test", code: 1) }
+        repo.stub.saveUser_Void = { _ in throw NSError(domain: "Test", code: 1) }
 
         // Act + Assert
-        XCTAssertThrowsError(try arrange.saveUserUC.execute(user: user))
+        XCTAssertThrowsError(try useCase.execute(user: user))
     }
+    
+    func testExecute_MultipleCalls() throws {
+        let (useCase, repo) = arrange()
+        let user1 = UserData(id: "1", email: "a@test.gr", name: "A", token: "tok1")
+        let user2 = UserData(id: "2", email: "b@test.gr", name: "B", token: "tok2")
+        repo.stub.saveUser_Void = { _ in }
+        
+        try useCase.execute(user: user1)
+        try useCase.execute(user: user2)
+        
+        XCTAssertEqual(repo.verify.saveUser_Void.count, 2)
+        XCTAssertEqual(repo.verify.saveUser_Void[0], user1)
+        XCTAssertEqual(repo.verify.saveUser_Void[1], user2)
+    }
+
 }

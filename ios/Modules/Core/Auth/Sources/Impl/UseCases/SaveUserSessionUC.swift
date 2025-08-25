@@ -20,10 +20,8 @@ protocol SaveUserSessionUC {
 
 class SaveUserSessionUCImpl: SaveUserSessionUC {
     @Injected private var repo: UserSessionRepo
-//    private let appState = AppState.shared
 
     func execute(user: UserData) throws {
         try repo.saveUser(user)
-//        appState.userID = user.id
     }
 }

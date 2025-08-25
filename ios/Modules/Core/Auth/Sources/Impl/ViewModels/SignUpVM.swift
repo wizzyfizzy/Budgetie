@@ -29,7 +29,7 @@ final class SignUpVM: ObservableObject {
     @Published var isSecure: Bool = true
     @Published var isSecureConfirm: Bool = true
     @Published var isLoading: Bool = false
-    @Published var isSignUpButtonEnabled: Bool = false
+    @Published var isSignUpButtonEnabled: Bool = true
     @Published private(set) var errorMessage: String?
     @Published var shouldDismissView: Bool = false
     @Published var alert: BTAlert?
@@ -42,11 +42,6 @@ final class SignUpVM: ObservableObject {
         setupBindings()
     }
     
-    // MARK: - Computed Properties
-    var isFormValid: Bool {
-        return errorMessage == nil
-    }
-    
     // MARK: - Public
     func trackView() {
         logger.log(.debug, fileName: fileName, "TrackingView: \(TrackingView.authSignUpScreen)")
@@ -54,7 +49,7 @@ final class SignUpVM: ObservableObject {
     
     @MainActor
     func signUp() async {
-        guard isFormValid, !isLoading else { return }
+        guard isSignUpButtonEnabled, !isLoading else { return }
         trackAction(TrackingAction.tapSignUp, email: email)
         isLoading = true
         defer { isLoading = false }
@@ -63,7 +58,6 @@ final class SignUpVM: ObservableObject {
         do {
             let loggedUser = try await signUpUserUC.execute(name: name, email: email, password: password)
             signUpSuccess(userData: loggedUser)
-            shouldDismissView = true
         } catch HTTPError.userExists {
             logger.log(.error, fileName: fileName, "This user already exists, in signUp")
             alert = .error("Sign Up failed", "This user already exists")
@@ -99,6 +93,7 @@ private extension SignUpVM {
         do {
             try saveUserSessionUC.execute(user: userData)
             trackAction(TrackingAction.completedSignUp, userId: userData.id)
+            shouldDismissView = true
         } catch {
             logger.log(.error, fileName: fileName, "Failed to save session in signUpSuccess")
             alert = .error("Error", "Failed to signUp. Please try again later")

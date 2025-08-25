@@ -16,10 +16,8 @@ protocol ClearUserSessionUC {
 
 class ClearUserSessionUCImpl: ClearUserSessionUC {
     @Injected private var repo: UserSessionRepo
-//    private let appState = AppState.shared
 
     func execute() {
         repo.clearUser()
-//        appState.userID = nil
     }
 }

@@ -40,11 +40,6 @@ final class LoginVM: ObservableObject {
         setupBindings()
     }
     
-    // MARK: - Computed Properties
-    var isFormValid: Bool {
-        return errorMessage == nil
-    }
-    
     // MARK: - Public
     func trackView() {
         logger.log(.debug, fileName: fileName, "TrackingView: \(TrackingView.authSignInScreen)")
@@ -76,7 +71,7 @@ final class LoginVM: ObservableObject {
     
     @MainActor
     func login() async {
-        guard isFormValid, !isLoading else { return }
+        guard isLoginButtonEnabled, !isLoading else { return }
         trackAction(TrackingAction.tapSignIn, email: email)
         _ = await performLogin(email: email, password: password)
     }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public enum BTAlert: Identifiable {
+public enum BTAlert: Identifiable, Equatable {
     public var id: String {
         switch self {
         case .success(_, let message):

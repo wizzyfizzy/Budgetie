@@ -23,14 +23,34 @@ final class ClearUserSessionUCTests: XCTestCase {
         
     func testExecute() {
         // Arrange
-        let arrange = arrange()
-//        AppState.shared.userID = "42"
-        
+        let (useCase, repo) = arrange()
+
         // Act
-        arrange.clearUC.execute()
+        useCase.execute()
         
         // Assert
-        XCTAssertEqual(arrange.repo.verify.clearUser_Void.count, 1)
-//        XCTAssertNil(AppState.shared.userID)
+        XCTAssertEqual(repo.verify.clearUser_Void.count, 1)
     }
+    
+    func testExecute_MultipleCalls() {
+        // Arrange
+        let (useCase, repo) = arrange()
+
+        // Act
+        useCase.execute()
+        useCase.execute()
+        
+        // Assert
+        XCTAssertEqual(repo.verify.clearUser_Void.count, 2)
+    }
+    
+    func testExecute_NoCallBeforeExecute() {
+        // Arrange
+        let (_, repo) = arrange()
+
+        // Assert
+        XCTAssertTrue(repo.verify.clearUser_Void.isEmpty)
+    }
+
+
 }
