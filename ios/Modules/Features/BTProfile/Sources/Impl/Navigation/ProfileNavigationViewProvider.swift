@@ -17,7 +17,7 @@ public enum ProfileNavigationViewProvider {
         // The builder closure is @escaping internally in the registry because
         // it will be stored and called later when the navigation is triggered.
         registry.registerView(ProfileNavData.self) { _ in
-            AnyView(ProfileView())
+            AnyView(ProfileFlowView())
         }
     }
 }
@@ -26,6 +26,6 @@ public final class ProfileViewBuilderImpl: ProfileViewBuilder {
     public init() {}
 
     public func buildView(data: ProfileNavData?) -> AnyView {
-        AnyView(ProfileView())
+        AnyView(ProfileFlowView())
     }
 }

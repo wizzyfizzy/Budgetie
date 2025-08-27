@@ -17,7 +17,8 @@ let package = Package(
         .package(name: "AppLogging", path: "../../Shared/AppLogging"),
         .package(name: "AppNavigation", path: "../../Shared/AppNavigation"),
         .package(name: "DIModule", path: "../../Shared/DIModule"),
-        .package(name: "UIComponents", path: "../../Shared/UIComponents")
+        .package(name: "UIComponents", path: "../../Shared/UIComponents"),
+        .package(name: "Auth", path: "../../Core/Auth")
     ],
     targets: [
         .target(
@@ -33,7 +34,8 @@ let package = Package(
                 "AppLogging",
                 "DIModule",
                 "UIComponents",
-                .product(name: "AppNavigationAPI", package: "AppNavigation")
+                .product(name: "AppNavigationAPI", package: "AppNavigation"),
+                .product(name: "AuthAPI", package: "Auth")
             ],
             path: "Sources/Impl/"),
         .testTarget(

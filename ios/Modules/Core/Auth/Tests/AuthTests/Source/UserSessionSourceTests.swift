@@ -119,14 +119,4 @@ final class UserSessionSourceTests: XCTestCase {
         // Assert
         XCTAssertNil(receivedUser)
     }
-    
-    func testUserDefaultsFlagUpdatesCorrectly() throws {
-        let (source, _, userDefaults) = arrange()
-
-        try source.save(user: user)
-        XCTAssertTrue(userDefaults.isUserLoggedIn)
-
-        source.clear()
-        XCTAssertFalse(userDefaults.isUserLoggedIn)
-    }
 }

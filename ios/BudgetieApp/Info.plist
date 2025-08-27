@@ -15,5 +15,12 @@
         <key>UIImageName</key>
         <string></string>
     </dict>
+    <key>CFBundleLocalizations</key>
+    <array>
+        <string>en</string>
+        <string>el</string>
+    </array>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>en</string>
 </dict>
 </plist>

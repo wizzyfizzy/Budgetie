@@ -13,7 +13,6 @@ struct LoginView: View {
     @Binding var path: [AuthRoute]
     @StateObject private var loginVM: LoginVM = LoginVM()
     @Environment(\.dismiss) private var dismiss
-//    @EnvironmentObject private var appState: AppState
 
     init(path: Binding<[AuthRoute]>) {
         _path = path
@@ -52,13 +51,13 @@ struct LoginView: View {
                 .scaledToFit()
                 .frame(height: imageHeight)
                 .accessibilityHidden(true)
-            
-            Text(TextKeys.textAuthWelcomeBack.localized())
+
+            Text(LocalizedStringKey(TextKeys.textAuthWelcomeBack))
                 .font(.appTitle.bold())
                 .multilineTextAlignment(.center)
                 .accessibilityAddTraits(.isHeader)
             
-            Text(TextKeys.textAuthSignIn.localized())
+            Text(LocalizedStringKey(TextKeys.textAuthSignIn))
                 .font(.appBody)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)

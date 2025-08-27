@@ -13,7 +13,6 @@ struct SignUpView: View {
     @Binding var path: [AuthRoute]
     @Binding var shouldDismiss: Bool
     @StateObject private var signUpVM: SignUpVM = SignUpVM()
-//    @EnvironmentObject private var appState: AppState
     
     private let imageHeight: CGFloat = 140
 

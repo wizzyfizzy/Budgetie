@@ -58,8 +58,8 @@ final class IsLoggedInUCTests: XCTestCase {
         
         // Act
         let exp = expectation(description: "Publisher emits user")
-        var result: Bool?
-        
+        var result = false
+
         let cancellable = useCase.executePublisher()
             .sink { value in
                 result = value
@@ -68,7 +68,7 @@ final class IsLoggedInUCTests: XCTestCase {
         
         // Assert
         wait(for: [exp], timeout: 1)
-        XCTAssertTrue(result ?? false)
+        XCTAssertTrue(result)
         XCTAssertEqual(repo.verify.getUserPublisher_Pub_UserData_Never.count, 1)
         cancellable.cancel()
     }
@@ -82,7 +82,7 @@ final class IsLoggedInUCTests: XCTestCase {
 
         // Act
         let exp = expectation(description: "Publisher emits false")
-        var result: Bool?
+        var result = true
         
         let cancellable = useCase.executePublisher()
             .sink { value in
@@ -92,7 +92,7 @@ final class IsLoggedInUCTests: XCTestCase {
         
         // Assert
         wait(for: [exp], timeout: 1)
-        XCTAssertFalse(result ?? true)
+        XCTAssertFalse(result)
         XCTAssertEqual(repo.verify.getUserPublisher_Pub_UserData_Never.count, 1)
         cancellable.cancel()
     }

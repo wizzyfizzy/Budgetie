@@ -74,7 +74,7 @@ public struct GradientButton: View {
                         .frame(width: IconSize.spaceM, height: IconSize.spaceM)
                         .foregroundColor(.btWhite)
                 }
-                Text(text)
+                Text(LocalizedStringKey(text))
                     .font(.appButton)
                     .foregroundColor(.btWhite)
             }

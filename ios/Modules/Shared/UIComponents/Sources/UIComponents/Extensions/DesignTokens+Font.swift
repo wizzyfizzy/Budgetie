@@ -13,6 +13,10 @@ public extension Font {
         scaledUIFont(size: 26, weight: .bold, textStyle: .title1)
     }
     
+    static var appTitle2: Font {
+        scaledUIFont(size: 20, weight: .bold, textStyle: .headline)
+    }
+    
     // MARK: - Body
     static var appBody: Font {
         scaledUIFont(size: 17, weight: .regular, textStyle: .body)

@@ -11,7 +11,8 @@ import UIComponents
 @main
 struct BudgetieApp: App {
     @State private var showLaunch = true
-//    @StateObject var appState = AppState()
+    @AppStorage(UserDefaults.Keys.isDarkModeEnabledKey) private var darkMode: Bool = UserDefaults.standard.isDarkModeEnabled
+    @AppStorage(UserDefaults.Keys.appLanguageKey) private var language: String = UserDefaults.standard.appLanguage
 
     init() {
         BTAppDI.setUp()
@@ -23,7 +24,8 @@ struct BudgetieApp: App {
                 LaunchScreenView(showLaunch: $showLaunch)
             } else {
                 HomeView(navContext: BTAppDI.shared.resolve(NavigationContext.self))
-//                    .environmentObject(appState)
+                    .preferredColorScheme(darkMode ? .dark : .light)
+                    .environment(\.locale, Locale(identifier: language))
             }
         }
     }

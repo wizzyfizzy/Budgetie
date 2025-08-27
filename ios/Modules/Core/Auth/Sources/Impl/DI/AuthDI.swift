@@ -47,7 +47,6 @@ final class AuthDI: DIContainer {
     }
     
     private func registerUceCases() {
-        register(ClearUserSessionUC.self) { _ in ClearUserSessionUCImpl()}
         register(SaveUserSessionUC.self) { _ in SaveUserSessionUCImpl()}
         register(LoginUserUC.self) { _ in LoginUserUCImpl()}
         register(SignUpUserUC.self) { _ in SignUpUserUCImpl()}

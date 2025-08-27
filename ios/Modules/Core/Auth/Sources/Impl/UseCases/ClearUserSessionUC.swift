@@ -6,18 +6,14 @@
 //
 
 import UIComponents
+import AuthAPI
 
-// sourcery: AutoMockable
-/// Handles clearing the current user session.
-protocol ClearUserSessionUC {
-    /// Clears the current user session.
-    func execute()
-}
-
-class ClearUserSessionUCImpl: ClearUserSessionUC {
+public class LogoutUserUCImpl: LogoutUserUC {
     @Injected private var repo: UserSessionRepo
 
-    func execute() {
-        repo.clearUser()
+    public init() {}
+
+    public func execute() {
+        repo.logoutUser()
     }
 }

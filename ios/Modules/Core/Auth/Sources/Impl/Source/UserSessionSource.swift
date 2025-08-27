@@ -33,16 +33,14 @@ final class UserSessionSourceImpl: UserSessionSource {
     func save(user: UserData) throws {
         // Save to Keychain
         try store.save(user, key: KeychainKeys.loggedInUser)
-        userDefaults.isUserLoggedIn = true
     }
     
     func loadUser() -> UserData? {
-        guard userDefaults.isUserLoggedIn else { return nil }
         return store.load(KeychainKeys.loggedInUser, as: UserData.self)
     }
     
     func clear() {
-        userDefaults.isUserLoggedIn = false
+        userDefaults.clearAll()
         // Delete from Keychain
         store.delete(KeychainKeys.loggedInUser)
     }

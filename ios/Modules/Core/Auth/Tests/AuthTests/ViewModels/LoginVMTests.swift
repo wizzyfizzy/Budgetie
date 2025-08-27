@@ -13,7 +13,7 @@ import AppLoggingMocks
 import DIModule
 import BTRestClientAPI
 
-final class viewModelTests: XCTestCase {
+final class LoginVMTests: XCTestCase {
     private func arrange() -> (viewModel: LoginVM,
                                loginUserUC: LoginUserUCMock,
                                saveUserUC: SaveUserSessionUCMock,
@@ -321,7 +321,6 @@ final class viewModelTests: XCTestCase {
         
         // Act
         await viewModel.login()
-        
         
         // Assert
         XCTAssertEqual(viewModel.alert, .error("Login Error", "Something went wrong. Please try again later"))

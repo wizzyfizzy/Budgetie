@@ -32,7 +32,7 @@ final class AuthAPISourceTests: XCTestCase {
         let expectedMessage = "Reset email sent"
         let token = "123"
 
-        restClient.stub = { path, method, body, headers in
+        restClient.stub = { path, method, _, _ in
             XCTAssertEqual(path, .login)
             XCTAssertEqual(method, .post)
             return RAuthResponse(message: expectedMessage,
@@ -58,7 +58,7 @@ final class AuthAPISourceTests: XCTestCase {
         let expectedMessage = "Reset email sent"
         let token = "123"
 
-        restClient.stub = { path, method, body, headers in
+        restClient.stub = { path, method, _, _ in
             XCTAssertEqual(path, .signup)
             XCTAssertEqual(method, .post)
             return RAuthResponse(message: expectedMessage,
@@ -82,7 +82,7 @@ final class AuthAPISourceTests: XCTestCase {
         // Arrange
         let (source, restClient) = arrange()
         let expectedMessage = "Reset email sent"
-        restClient.stub = { path, method, body, headers in
+        restClient.stub = { path, method, _, _ in
             XCTAssertEqual(path, .forgotPassword)
             XCTAssertEqual(method, .post)
             return RAuthResponseForgotPassword(message: expectedMessage)

@@ -29,10 +29,9 @@ struct HomeView: View {
             tabsView
         }
         .onAppear {
-            navigateToUC.execute(data: AuthAPI.AuthFlowNavData(), type: .sheet)
-//            if shouldShowOnboardingUC.execute() {
-//                navigateToUC.execute(data: OnboardingAPI.OnboardingNavData(), type: .sheet)
-//            }
+            if shouldShowOnboardingUC.execute() {
+                navigateToUC.execute(data: OnboardingAPI.OnboardingNavData(), type: .sheet)
+            }
         }
         .sheet(item: $navContext.sheetView) { wrapper in
             wrapper.view
@@ -46,39 +45,43 @@ struct HomeView: View {
             MyBudgetNavigationViewProvider.buildView(data: MyBudgetNavData(userId: "123"))
                 .tabItem {
                     Label {
-                        Text(TextKeys.textTabTitle1.localized())
+                        Text(LocalizedStringKey(TextKeys.textTabTitle1))
                     } icon: {
                         Image(ImageKeys.imageTab1)
                             .renderingMode(.template)
                     }
                 }
+
             SubscriptionsNavigationViewProvider.buildView(data: SubscriptionsNavData(userId: "123"))
                 .tabItem {
                     Label {
-                        Text(TextKeys.textTabTitle2.localized())
+                        Text(LocalizedStringKey(TextKeys.textTabTitle2))
                     } icon: {
                         Image(ImageKeys.imageTab2)
                             .renderingMode(.template)
                     }
                 }
+
             TransactionsNavigationViewProvider.buildView(data: TransactionsNavData(userId: "123"))
                 .tabItem {
                     Label {
-                        Text(TextKeys.textTabTitle3.localized())
+                        Text(LocalizedStringKey(TextKeys.textTabTitle3))
                     } icon: {
                         Image(ImageKeys.imageTab3)
                             .renderingMode(.template)
                     }
                 }
+
             ProfileNavigationViewProvider.buildView(data: ProfileNavData(userId: "123"))
                 .tabItem {
                     Label {
-                        Text(TextKeys.textTabTitle4.localized())
+                        Text(LocalizedStringKey(TextKeys.textTabTitle4))
                     } icon: {
                         Image(ImageKeys.imageTab4)
                             .renderingMode(.template)
                     }
                 }
+
         }
         .tint(.btGreen)
     }

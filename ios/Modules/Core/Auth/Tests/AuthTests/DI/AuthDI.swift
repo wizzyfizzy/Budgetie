@@ -8,6 +8,7 @@
 @testable import Auth
 import AppLogging
 import DIModule
+import DIModule
 import XCTest
 
 final class AuthDITests: XCTestCase {
@@ -39,7 +40,6 @@ final class AuthDITests: XCTestCase {
         XCTAssertNotNil(authDI.resolve(UserSessionRepo.self))
         XCTAssertNotNil(authDI.resolve(AuthAPIRepo.self))
 
-        XCTAssertNotNil(authDI.resolve(ClearUserSessionUC.self))
         XCTAssertNotNil(authDI.resolve(SaveUserSessionUC.self))
         XCTAssertNotNil(authDI.resolve(LoginUserUC.self))
         XCTAssertNotNil(authDI.resolve(SignUpUserUC.self))

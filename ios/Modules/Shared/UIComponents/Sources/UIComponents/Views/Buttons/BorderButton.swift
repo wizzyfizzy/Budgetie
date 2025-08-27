@@ -86,7 +86,7 @@ public struct BorderButton: View {
                         .frame(width: IconSize.spaceM, height: IconSize.spaceM)
                         .foregroundColor(color)
                 }
-                Text(text)
+                Text(LocalizedStringKey(text))
                     .font(.appButton)
                     .foregroundColor(color)
             }

@@ -25,7 +25,7 @@ final class AuthAPIRepoTests: XCTestCase {
         // Arrange
         let (repo, source) = arrange()
         source.stub.loginEmailPassword_Async_UserData = { _ async throws -> UserData in
-            return self.user
+            self.user
         }
 
         // Act
@@ -40,9 +40,8 @@ final class AuthAPIRepoTests: XCTestCase {
     func testSignUpCall() async throws {
         // Arrange
         let (repo, source) = arrange()
-        source.stub.signupNameEmailPassword_Async_UserData = { 
-        _ async throws -> UserData in
-            return self.user
+        source.stub.signupNameEmailPassword_Async_UserData = { _ async throws -> UserData in
+            self.user
         }
 
         // Act
@@ -60,7 +59,7 @@ final class AuthAPIRepoTests: XCTestCase {
         let (repo, source) = arrange()
         let expectedMessage = "Password reset email sent"
         source.stub.forgotPasswordEmail_Async_String = { _ async throws -> String in
-            return expectedMessage
+            expectedMessage
         }
         
         // Act

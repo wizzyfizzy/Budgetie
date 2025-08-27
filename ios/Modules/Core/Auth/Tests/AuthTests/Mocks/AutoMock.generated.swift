@@ -97,25 +97,6 @@ internal final class AuthAPISourceMock: AuthAPISource {
         return try await stub((email))
     }
 }
-internal final class ClearUserSessionUCMock: ClearUserSessionUC {
-
-    internal init() {}
-
-    // MARK: - Stub
-    internal final class Stub {
-    }
-
-    // MARK: - Verify
-    internal final class Verify {
-        internal var execute_Void: [Void] = []
-    }
-
-    internal let stub = Stub()
-    internal let verify = Verify()
-     func execute() {
-        verify.execute_Void.append(())
-    }
-}
 internal final class ForgotPasswordUCMock: ForgotPasswordUC {
 
     internal init() {}
@@ -229,7 +210,7 @@ internal final class UserSessionRepoMock: UserSessionRepo {
         internal var saveUser_Void: [UserData] = []
         internal var getUser_UserData: [Void] = []
         internal var getUserPublisher_Pub_UserData_Never: [Void] = []
-        internal var clearUser_Void: [Void] = []
+        internal var logoutUser_Void: [Void] = []
     }
 
     internal let stub = Stub()
@@ -256,8 +237,8 @@ internal final class UserSessionRepoMock: UserSessionRepo {
         }
         return stub()
     }
-     func clearUser() {
-        verify.clearUser_Void.append(())
+     func logoutUser() {
+        verify.logoutUser_Void.append(())
     }
 }
 internal final class UserSessionSourceMock: UserSessionSource {

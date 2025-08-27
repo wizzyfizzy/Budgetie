@@ -29,13 +29,13 @@ public struct OnboardingView: View {
                             .scaledToFit()
                             .frame(height: imageHeight)
                         
-                        Text(step.title)
+                        Text(LocalizedStringKey(step.title))
                             .font(.appTitle)
                             .foregroundColor(.btBlack)
                             .frame(maxWidth: .infinity, alignment: .center)
                             .multilineTextAlignment(.center)
                         
-                        Text(step.description)
+                        Text(LocalizedStringKey(step.description))
                             .font(.appBody)
                             .foregroundColor(.btBlack)
                             .frame(maxWidth: .infinity, alignment: .leading)

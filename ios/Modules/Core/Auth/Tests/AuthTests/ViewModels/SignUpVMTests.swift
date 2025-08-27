@@ -5,6 +5,8 @@
 //  No part of this software may be copied, modified, or distributed without prior written permission.
 //
 
+// swiftlint:disable type_body_length
+// swiftlint:disable file_length
 import XCTest
 @testable import Auth
 import AuthAPI
@@ -237,7 +239,6 @@ final class SignUpVMTests: XCTestCase {
         XCTAssertEqual(viewModel.errorMessage, "Passwords do not match.")
         cancellable.cancel()
     }
-    
     
     func testPasswordValidation_ValidPasswords() {
         // Arrange

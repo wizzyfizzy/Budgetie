@@ -82,13 +82,13 @@ final class UserSessionRepoTests: XCTestCase {
         cancellable.cancel()
     }
     
-    func testClearUser() {
+    func testLogoutUser() {
         // Arrange
         let (repo, source) = arrange()
         source.stub.loadUser_UserData = { nil }
         
         // Act
-        repo.clearUser()
+        repo.logoutUser()
         let receivedUser = source.loadUser()
         
         // Assert
@@ -96,7 +96,7 @@ final class UserSessionRepoTests: XCTestCase {
         XCTAssertNil(receivedUser)
     }
     
-    func testClearUserUpdatesPublisher() {
+    func testLogoutUserUpdatesPublisher() {
         // Arrange
         let (repo, source) = arrange()
         source.stub.loadUser_UserData = { nil }
@@ -110,7 +110,7 @@ final class UserSessionRepoTests: XCTestCase {
             }
      
         // Act
-        repo.clearUser()
+        repo.logoutUser()
 
         // Assert
         wait(for: [expectation], timeout: 1.0)

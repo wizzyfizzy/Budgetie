@@ -9,6 +9,7 @@ import Combine
 import AppLogging
 import Foundation
 import UIComponents
+import SwiftUI
 
 final class OnboardingVM: ObservableObject {
     @Published var currentStep: Int = 0
@@ -20,20 +21,20 @@ final class OnboardingVM: ObservableObject {
     private let fileName = "OnboardingVM"
     
     let onboardingSteps = [
-        OnboardingStep(imageName: ImageKeys.imageOnboarding1, 
-                       title: TextKeys.textOnboardingTitle1.localized(),
-                       description: TextKeys.textOnboardingDescription1.localized()),
+        OnboardingStep(imageName: ImageKeys.imageOnboarding1,
+                       title: TextKeys.textOnboardingTitle1,
+                       description: TextKeys.textOnboardingDescription1),
         OnboardingStep(imageName: ImageKeys.imageOnboarding2,
-                       title: TextKeys.textOnboardingTitle2.localized(),
-                       description: TextKeys.textOnboardingDescription2.localized()),
+                       title: TextKeys.textOnboardingTitle2,
+                       description: TextKeys.textOnboardingDescription2),
         OnboardingStep(imageName: ImageKeys.imageOnboarding3,
-                       title: TextKeys.textOnboardingTitle3.localized(),
-                       description: TextKeys.textOnboardingDescription3.localized())
+                       title: TextKeys.textOnboardingTitle3,
+                       description: TextKeys.textOnboardingDescription3)
     ]
     
-    let textButtonSkip = TextKeys.textButtonSkip.localized()
-    let textButtonNext = TextKeys.textButtonNext.localized()
-    let textButtonGetStarted = TextKeys.textButtonGetStarted.localized()
+    let textButtonSkip = TextKeys.textButtonSkip
+    let textButtonNext = TextKeys.textButtonNext
+    let textButtonGetStarted = TextKeys.textButtonGetStarted
     
     var isLastStep: Bool {
         currentStep == onboardingSteps.count - 1

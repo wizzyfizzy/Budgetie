@@ -19,7 +19,7 @@ protocol UserSessionRepo {
     /// Returns a publisher that emits the current user data whenever it changes.
     func getUserPublisher() -> AnyPublisher<UserData?, Never>
     /// Clears the current user session.
-    func clearUser()
+    func logoutUser()
 }
 
 final class UserSessionRepoImpl: UserSessionRepo {
@@ -40,7 +40,7 @@ final class UserSessionRepoImpl: UserSessionRepo {
         return userSubject.eraseToAnyPublisher()
     }
     
-    func clearUser() {
+    func logoutUser() {
         localSource.clear()
         userSubject.send(nil)
     }

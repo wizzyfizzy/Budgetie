@@ -11,14 +11,14 @@ import AuthAPI
 import DIModule
 import UIComponents
 
-final class ClearUserSessionUCTests: XCTestCase {
-    private func arrange() -> (clearUC: ClearUserSessionUC,
+final class LogoutUserUCTests: XCTestCase {
+    private func arrange() -> (logoutUC: LogoutUserUC,
                                repo: UserSessionRepoMock) {
         let repo = UserSessionRepoMock()
         AuthDI.shared = DIContainer()
         AuthDI.shared.register(UserSessionRepo.self) { _ in repo }
         
-        return (ClearUserSessionUCImpl(), repo)
+        return (LogoutUserUCImpl(), repo)
     }
         
     func testExecute() {
@@ -29,7 +29,7 @@ final class ClearUserSessionUCTests: XCTestCase {
         useCase.execute()
         
         // Assert
-        XCTAssertEqual(repo.verify.clearUser_Void.count, 1)
+        XCTAssertEqual(repo.verify.logoutUser_Void.count, 1)
     }
     
     func testExecute_MultipleCalls() {
@@ -41,7 +41,7 @@ final class ClearUserSessionUCTests: XCTestCase {
         useCase.execute()
         
         // Assert
-        XCTAssertEqual(repo.verify.clearUser_Void.count, 2)
+        XCTAssertEqual(repo.verify.logoutUser_Void.count, 2)
     }
     
     func testExecute_NoCallBeforeExecute() {
@@ -49,8 +49,6 @@ final class ClearUserSessionUCTests: XCTestCase {
         let (_, repo) = arrange()
 
         // Assert
-        XCTAssertTrue(repo.verify.clearUser_Void.isEmpty)
+        XCTAssertTrue(repo.verify.logoutUser_Void.isEmpty)
     }
-
-
 }

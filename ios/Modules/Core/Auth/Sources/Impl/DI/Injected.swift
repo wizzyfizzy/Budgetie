@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// Resolves the injected type using the `OnboardingDI.shared` resolver.
+/// Resolves the injected type using the `Auth.shared` resolver.
 @propertyWrapper
 struct Injected<T> {
     private var value: T

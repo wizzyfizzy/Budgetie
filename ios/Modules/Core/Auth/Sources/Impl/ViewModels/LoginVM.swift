@@ -44,6 +44,7 @@ final class LoginVM: ObservableObject {
     func trackView() {
         logger.log(.debug, fileName: fileName, "TrackingView: \(TrackingView.authSignInScreen)")
     }
+    
     func onTapCreateAccount() {
         logger.log(.debug, fileName: fileName, "TrackingView: \(TrackingAction.tapCreateAccount)")
     }

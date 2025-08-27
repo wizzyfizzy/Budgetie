@@ -78,3 +78,22 @@ public final class IsLoggedInUCMock: IsLoggedInUC {
         return stub()
     }
 }
+public final class LogoutUserUCMock: LogoutUserUC {
+
+    public init() {}
+
+    // MARK: - Stub
+    public final class Stub {
+    }
+
+    // MARK: - Verify
+    public final class Verify {
+        public var execute_Void: [Void] = []
+    }
+
+    public let stub = Stub()
+    public let verify = Verify()
+    public func execute() {
+        verify.execute_Void.append(())
+    }
+}

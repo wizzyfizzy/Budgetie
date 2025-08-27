@@ -50,6 +50,8 @@ final class BTAppDI: DIContainer {
 
             initAuth()
             registerAuth()
+            
+            initBTProfile()
             initOnboarding()
             registerOnboarding()
         }

@@ -7,17 +7,22 @@
 
 import SwiftUI
 import UIComponents
+import AuthAPI
 
 public struct ProfileView: View {
+    @Binding var path: [ProfileRoute]
+    
+    @StateObject private var viewModel: ProfileVM = ProfileVM()
+    
+    init(path: Binding<[ProfileRoute]>) {
+        _path = path
+    }
+    
     public var body: some View {
-        VStack {
-            Spacer()
-            Text("Profile")
-                .font(.appTitle)
-                .foregroundColor(.btBlack)
-                .frame(maxWidth: .infinity, alignment: .center)
-                .multilineTextAlignment(.center)
-            Spacer()
+        if viewModel.isLoggedIn, let user = viewModel.userData {
+            LoggedInProfileView(path: $path, viewModel: viewModel, user: user)
+        } else {
+            LoggedOutProfileView()
         }
     }
 }

@@ -1,0 +1,834 @@
+{
+    "sourceLanguage" : "en",
+    "strings" : {
+        "auth_error_wrong_credentials" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Λάθος email ή κωδικός. Δοκίμασε ξανά."
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Wrong email or password. Please try again."
+                    }
+                }
+            }
+        },
+        "auth_sign_in" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Συνδέσου για να κρατήσεις τον προϋπολογισμό σου συγχρονισμένο"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Sign in to keep your budget in sync"
+                    }
+                }
+            }
+        },
+        "auth_welcome_back" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Καλώς ήρθες ξανά"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Welcome back"
+                    }
+                }
+            }
+        },
+        "Budget it with style!" : {
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Budget it with style!"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Budget it with style!"
+                    }
+                }
+            }
+        },
+        "button_getStarted" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Ξεκίνα"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Get Started"
+                    }
+                }
+            }
+        },
+        "button_next" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Επόμενο"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Next"
+                    }
+                }
+            }
+        },
+        "button_skip" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Παράλειψη"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Skip"
+                    }
+                }
+            }
+        },
+        "Master your money!" : {
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Master your money!"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Master your money!"
+                    }
+                }
+            }
+        },
+        "onboarding_step1_description" : {
+            "comment" : "Welcome",
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Παρακολούθησε τα μηνιαία έξοδά σου. Έλεγξε τα χρήματά σου με στυλ!"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Monitor your monthly expenses. Master your money! Budget it with style!"
+                    }
+                }
+            }
+        },
+        "onboarding_step1_title" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Καλωσήρθες στο Budgetie"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Welcome to Budgetie"
+                    }
+                }
+            }
+        },
+        "onboarding_step2_description" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Χρησιμοποίησε τα Swift Charts για να αναλύσεις τις δαπάνες σου."
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Use Swift Charts to analyze your spending patterns."
+                    }
+                }
+            }
+        },
+        "onboarding_step2_title" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Παρακολούθησε τις συνδρομές σου"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Track your subscriptions"
+                    }
+                }
+            }
+        },
+        "onboarding_step3_description" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Ανακάλυψε έξυπνους τρόπους διαχείρισης με βοήθεια από AI."
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Discover smarter ways to manage your budget with AI-powered tips."
+                    }
+                }
+            }
+        },
+        "onboarding_step3_title" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Μάθε και βελτίωσε τον προϋπολογισμό σου"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Learn and improve your budget"
+                    }
+                }
+            }
+        },
+        "profile_app_version" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Έκδοση Εφαρμογής"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "App Version"
+                    }
+                }
+            }
+        },
+        "profile_dark_mode" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Σκούρο Θέμα"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Dark Mode"
+                    }
+                }
+            }
+        },
+        "profile_device_app" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Συσκευή / Εφαρμογή"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Device / App"
+                    }
+                }
+            }
+        },
+        "profile_device_name" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Όνομα Συσκευής"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Device Name"
+                    }
+                }
+            }
+        },
+        "profile_faq" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Συχνές Ερωτήσεις"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "FAQ"
+                    }
+                }
+            }
+        },
+        "profile_faq_accessibility_question": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "Question" } },
+                "el": { "stringUnit": { "state": "translated", "value": "Ερώτηση" } }
+            }
+        },
+        "profile_faq_accessibility_answer": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "Answer" } },
+                "el": { "stringUnit": { "state": "translated", "value": "Απάντηση" } }
+            }
+        },
+        "profile_faq_getting_started_title": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "Getting Started" } },
+                "el": { "stringUnit": { "state": "translated", "value": "Εισαγωγή" } }
+            }
+        },
+        "profile_faq_getting_started_question1": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "How do I create an account?" } },
+                "el": { "stringUnit": { "state": "translated", "value": "Πώς δημιουργώ λογαριασμό;" } }
+            }
+        },
+        "profile_faq_getting_started_answer1": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "Tap on 'Sign Up' in the login screen and enter your name, email, and password. You can also use Sign in with Apple." } },
+                "el": { "stringUnit": { "state": "translated", "value": "Πάτησε το 'Εγγραφή' στην οθόνη σύνδεσης και εισάγετε το όνομά σου, email και κωδικό. Μπορείς επίσης να χρησιμοποιήσεις Σύνδεση με Apple." } }
+            }
+        },
+        "profile_faq_getting_started_question2": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "How do I reset my password?" } },
+                "el": { "stringUnit": { "state": "translated", "value": "Πώς επαναφέρω τον κωδικό μου;" } }
+            }
+        },
+        "profile_faq_getting_started_answer2": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "On the login screen, tap 'Forgot Password' and enter your email. We’ll send you a reset link." } },
+                "el": { "stringUnit": { "state": "translated", "value": "Στην οθόνη σύνδεσης, πάτησε 'Ξέχασα τον κωδικό' και εισάγετε το email σου. Θα σου στείλουμε σύνδεσμο επαναφοράς." } }
+            }
+        },
+        "profile_faq_subscriptions_title": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "Subscriptions & Expenses" } },
+                "el": { "stringUnit": { "state": "translated", "value": "Συνδρομές & Έξοδα" } }
+            }
+        },
+        "profile_faq_subscriptions_question1": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "How do I add a subscription?" } },
+                "el": { "stringUnit": { "state": "translated", "value": "Πώς προσθέτω μια συνδρομή;" } }
+            }
+        },
+        "profile_faq_subscriptions_answer1": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "Go to the Subscriptions tab, tap the + button, and fill in the details such as name, cost, and renewal date." } },
+                "el": { "stringUnit": { "state": "translated", "value": "Πήγαινε στην καρτέλα Συνδρομές, πάτησε το κουμπί + και συμπλήρωσε τα στοιχεία όπως όνομα, κόστος και ημερομηνία ανανέωσης." } }
+            }
+        },
+        "profile_faq_subscriptions_question2": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "How do I edit or cancel a subscription?" } },
+                "el": { "stringUnit": { "state": "translated", "value": "Πώς μπορώ να επεξεργαστώ ή να ακυρώσω μια συνδρομή;" } }
+            }
+        },
+        "profile_faq_subscriptions_answer2": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "Tap on the subscription you want to change, then select 'Edit' or 'Delete' from the options." } },
+                "el": { "stringUnit": { "state": "translated", "value": "Πάτησε στη συνδρομή που θέλεις να αλλάξεις και μετά επέλεξε 'Επεξεργασία' ή 'Διαγραφή' από τις επιλογές." } }
+            }
+        },
+        "profile_faq_subscriptions_question3": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "Can I set reminders for bills?" } },
+                "el": { "stringUnit": { "state": "translated", "value": "Μπορώ να ορίσω υπενθυμίσεις για τους λογαριασμούς;" } }
+            }
+        },
+        "profile_faq_subscriptions_answer3": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "Yes. In Settings > Notifications you can enable reminders and choose a time that works best for you." } },
+                "el": { "stringUnit": { "state": "translated", "value": "Ναι. Στις Ρυθμίσεις > Ειδοποιήσεις μπορείς να ενεργοποιήσεις υπενθυμίσεις και να επιλέξεις την ώρα που σου ταιριάζει." } }
+            }
+        },
+        "profile_faq_features_title": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "Features" } },
+                "el": { "stringUnit": { "state": "translated", "value": "Δυνατότητες" } }
+            }
+        },
+        "profile_faq_features_question1": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "How do I scan a receipt?" } },
+                "el": { "stringUnit": { "state": "translated", "value": "Πώς μπορώ να σαρώσω μια απόδειξη;" } }
+            }
+        },
+        "profile_faq_features_answer1": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "Go to Transactions, tap the camera icon, and scan your receipt. Budgetie will automatically recognize and add the details." } },
+                "el": { "stringUnit": { "state": "translated", "value": "Πήγαινε στα Έξοδα, πάτησε το εικονίδιο της κάμερας και σάρωσε την απόδειξή σου. Το Budgetie θα αναγνωρίσει και θα προσθέσει αυτόματα τις λεπτομέρειες." } }
+            }
+        },
+        "profile_faq_features_question2": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "Can I analyze my spending?" } },
+                "el": { "stringUnit": { "state": "translated", "value": "Μπορώ να αναλύσω τις δαπάνες μου;" } }
+            }
+        },
+        "profile_faq_features_answer2": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "Yes. The Analytics tab uses charts and AI suggestions to help you understand and optimize your spending." } },
+                "el": { "stringUnit": { "state": "translated", "value": "Ναι. Η καρτέλα Αναλύσεις χρησιμοποιεί γραφήματα και προτάσεις AI για να σε βοηθήσει να κατανοήσεις και να βελτιστοποιήσεις τις δαπάνες σου." } }
+            }
+        },
+        "profile_faq_features_question3": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "Does Budgetie work on Apple Watch?" } },
+                "el": { "stringUnit": { "state": "translated", "value": "Το Budgetie λειτουργεί στο Apple Watch;" } }
+            }
+        },
+        "profile_faq_features_answer3": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "Yes. You can quickly log expenses and view your balance from the companion Watch app." } },
+                "el": { "stringUnit": { "state": "translated", "value": "Ναι. Μπορείς να καταγράψεις γρήγορα έξοδα και να δεις το υπόλοιπό σου από την εφαρμογή Watch." } }
+            }
+        },
+        "profile_faq_security_title": {
+          "extractionState": "manual",
+          "localizations": {
+            "en": { "stringUnit": { "state": "translated", "value": "Security & Data" } },
+            "el": { "stringUnit": { "state": "translated", "value": "Ασφάλεια & Δεδομένα" } }
+          }
+        },
+        "profile_faq_security_question1": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "Where is my data stored?" } },
+                "el": { "stringUnit": { "state": "translated", "value": "Πού αποθηκεύονται τα δεδομένα μου;" } }
+            }
+        },
+        "profile_faq_security_answer1": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "Your data is securely stored on your device using iCloud Keychain and can be synced safely across your devices." } },
+                "el": { "stringUnit": { "state": "translated", "value": "Τα δεδομένα σου αποθηκεύονται με ασφάλεια στη συσκευή σου χρησιμοποιώντας το iCloud Keychain και μπορούν να συγχρονιστούν με ασφάλεια σε όλες τις συσκευές σου." } }
+            }
+        },
+        "profile_faq_security_question2": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "Is my payment information safe?" } },
+                "el": { "stringUnit": { "state": "translated", "value": "Είναι ασφαλείς οι πληροφορίες πληρωμής μου;" } }
+            }
+        },
+        "profile_faq_security_answer2": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "Yes. Payments are processed through Braintree with full PCI compliance. We never store your card details." } },
+                "el": { "stringUnit": { "state": "translated", "value": "Ναι. Οι πληρωμές γίνονται μέσω Braintree με πλήρη συμμόρφωση PCI. Δεν αποθηκεύουμε ποτέ τα στοιχεία της κάρτας σου." } }
+            }
+        },
+        "profile_faq_security_question3": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "Can I export my data?" } },
+                "el": { "stringUnit": { "state": "translated", "value": "Μπορώ να εξάγω τα δεδομένα μου;" } }
+            }
+        },
+        "profile_faq_security_answer3": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": { "stringUnit": { "state": "translated", "value": "Yes. Go to Settings > Export Data to download your transactions in CSV format." } },
+                "el": { "stringUnit": { "state": "translated", "value": "Ναι. Πήγαινε στις Ρυθμίσεις > Εξαγωγή Δεδομένων για να κατεβάσεις τις συναλλαγές σου σε μορφή CSV." } }
+            }
+        },
+        "profile_help_legal" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Βοήθεια & Νομικά"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Help & Legal"
+                    }
+                }
+            }
+        },
+        "profile_notifications" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Notifications"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Ειδοποιήσεις"
+                    }
+                }
+            }
+        },
+        "profile_enable_notifications": {
+          "extractionState": "manual",
+          "localizations": {
+            "en": { "stringUnit": { "state": "translated", "value": "Enable Notifications" } },
+            "el": { "stringUnit": { "state": "translated", "value": "Ενεργοποίηση ειδοποιήσεων" } }
+          }
+        },
+        "profile_reminder_time": {
+          "extractionState": "manual",
+          "localizations": {
+            "en": { "stringUnit": { "state": "translated", "value": "Reminder Time" } },
+            "el": { "stringUnit": { "state": "translated", "value": "Ώρα υπενθύμισης" } }
+          }
+        },
+        "profile_notification_preferences": {
+          "extractionState": "manual",
+          "localizations": {
+            "en": { "stringUnit": { "state": "translated", "value": "Notification Preferences" } },
+            "el": { "stringUnit": { "state": "translated", "value": "Προτιμήσεις ειδοποιήσεων" } }
+          }
+        },
+        "profile_language" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Γλώσσα"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Language"
+                    }
+                }
+            }
+        },
+        "profile_language_english" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Αγγλικά"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "English"
+                    }
+                }
+            }
+        },
+        "profile_language_greek" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Ελληνικά"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Greek"
+                    }
+                }
+            }
+        },
+        "profile_logout" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Αποσύνδεση"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Logout"
+                    }
+                }
+            }
+        },
+        "profile_privacy_policy" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Πολιτική Απορρήτου"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Privacy Policy"
+                    }
+                }
+            }
+        },
+        "profile_privacy_policy_accessibility" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Περιεχόμενο Πολιτικής Απορρήτου"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Privacy Policy content"
+                    }
+                }
+            }
+        },
+        "profile_privacy_policy_content" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value": "Η ιδιωτικότητά σας είναι σημαντική για εμάς. Δείτε πώς το Budgetie διαχειρίζεται τα δεδομένα σας:\n\n1. Τα προσωπικά σας δεδομένα αποθηκεύονται με ασφάλεια στη συσκευή σας και συγχρονίζονται μέσω iCloud, αν είναι ενεργοποιημένο.\n2. Δεν πωλούμε ή μοιραζόμαστε τα δεδομένα σας με τρίτους.\n3. Τα δεδομένα πληρωμών επεξεργάζονται με ασφάλεια μέσω Braintree. Το Budgetie δεν αποθηκεύει ποτέ τα στοιχεία της κάρτας σας.\n4. Μπορείτε να εξάγετε ή να διαγράψετε τα δεδομένα σας οποιαδήποτε στιγμή από το μενού Ρυθμίσεις."
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value": "Your privacy is important to us. Here’s how Budgetie handles your data:\n\n1. Your personal data is stored securely on your device and synced through iCloud if enabled.\n2. We do not sell or share your data with third parties.\n3. Payment data is processed securely via Braintree. Budgetie never stores your card details.\n4. You can export or delete your data anytime from the Settings menu."
+                    }
+                }
+            }
+        },
+        "profile_settings" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Ρυθμίσεις"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Settings"
+                    }
+                }
+            }
+        },
+        "profile_terms_of_service" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Όροι Χρήσης"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Terms of Service"
+                    }
+                }
+            }
+        },
+        "profile_terms_of_service_accessibility" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Περιεχόμενο Όρων Χρήσης"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Terms of Service content"
+                    }
+                }
+            }
+        },
+        "profile_terms_of_service_content" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value": "Καλώς ήρθατε στο Budgetie! Χρησιμοποιώντας την εφαρμογή μας, συμφωνείτε με τους παρακάτω όρους:\n\n1. Το Budgetie σας βοηθά να διαχειρίζεστε τις συνδρομές και τα έξοδά σας, αλλά δεν παρέχει οικονομικές συμβουλές.\n2. Είστε υπεύθυνοι για την ακρίβεια των πληροφοριών που εισάγετε.\n3. Μπορεί να ενημερώνουμε αυτούς τους όρους περιοδικά. Η συνεχής χρήση του Budgetie σημαίνει ότι αποδέχεστε τις ενημερώσεις.\n4. Μην καταχράστε την εφαρμογή ή προσπαθήσετε να διακόψετε τις υπηρεσίες της."
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value": "Welcome to Budgetie! By using our app, you agree to the following terms:\n\n1. Budgetie helps you manage your subscriptions and expenses, but does not provide financial advice.\n2. You are responsible for the accuracy of the information you enter.\n3. We may update these terms occasionally. Continued use of Budgetie means you accept the updates.\n4. Do not misuse the app or attempt to disrupt its services."
+                    }
+                }
+            }
+        },
+        "tab_title1" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Το Budget μου"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "My Budget"
+                    }
+                }
+            }
+        },
+        "tab_title2" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Συνδρομές"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Subscriptions"
+                    }
+                }
+            }
+        },
+        "tab_title3" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Έξοδα"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Transactions"
+                    }
+                }
+            }
+        },
+        "tab_title4" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Προφίλ"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Profile"
+                    }
+                }
+            }
+        }
+    },
+    "version" : "1.0"
+}
