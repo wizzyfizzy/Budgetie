@@ -8,7 +8,6 @@
 @testable import Auth
 import AppLogging
 import DIModule
-import DIModule
 import XCTest
 
 final class AuthDITests: XCTestCase {

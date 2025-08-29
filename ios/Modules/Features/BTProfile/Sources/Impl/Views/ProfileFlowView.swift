@@ -15,18 +15,19 @@ enum ProfileRoute: Hashable {
 
 struct ProfileFlowView: View {
     @State private var path: [ProfileRoute] = []
-    
+    @StateObject private var viewModel = ProfileVM()
+
     var body: some View {
         NavigationStack(path: $path) {
-            ProfileView(path: $path)
+            ProfileView(path: $path, viewModel: viewModel)
                 .navigationDestination(for: ProfileRoute.self) { route in
                     switch route {
                     case .faq:
-                        FAQView()
+                        FAQView(viewModel: viewModel)
                     case .privacy:
-                        PrivacyPolicyView()
+                        PrivacyPolicyView(viewModel: viewModel)
                     case .terms:
-                        TermsOfServiceView()
+                        TermsOfServiceView(viewModel: viewModel)
                     }
                 }
         }

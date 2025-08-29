@@ -13,5 +13,5 @@ struct ProfileSettings: Codable {
     let notificationsEnabled: Bool
     let reminderTime: Date
     let appVersion: String
-    let phoneDevice: String
+    let deviceName: String
 }

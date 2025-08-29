@@ -39,7 +39,9 @@ struct LoginView: View {
             loginVM.trackView()
         }
         .alert(item: $loginVM.alert) { alert in
-            alert.toAlert { }
+            alert.toAlert(dismissAction: {
+                loginVM.alert = nil
+            })
         }
     }
     

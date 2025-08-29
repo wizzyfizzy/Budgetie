@@ -35,7 +35,6 @@ struct HomeView: View {
         }
         .sheet(item: $navContext.sheetView) { wrapper in
             wrapper.view
-                .interactiveDismissDisabled(true)
         }
     }
      

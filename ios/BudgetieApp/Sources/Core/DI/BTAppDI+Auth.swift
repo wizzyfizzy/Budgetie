@@ -13,7 +13,7 @@ import BTRestClient
 extension BTAppDI {
     func initAuth() {
         let dependencies = Auth.Dependencies(logger: { logger(module: "Auth") },
-                                             restClient: { GenericHTTPClient() })
+                                             restClient: { self.resolve() })
         AuthInitializer.initialize(dependencies: dependencies)
     }
     

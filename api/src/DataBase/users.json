@@ -16,5 +16,11 @@
     "name": "Matzi",
     "email": "test@matzi.gr",
     "password": "$2b$10$YkQwf2WIgOvsw/QIsD8a5OuK769rCb1.958rJ9gVtsShF6ojevaVi"
+  },
+  {
+    "id": "41d90bb8-a5a8-4db5-9a43-3ab91161ea9b",
+    "name": "Tester",
+    "email": "test@matzi2.gr",
+    "password": "$2b$10$UdtJbgKl.jlA82JYeOnLXOQoKlnaTCeickW2yxPvgf1Ps7PifJMIq"
   }
 ]

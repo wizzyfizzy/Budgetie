@@ -9,8 +9,9 @@ import SwiftUI
 import UIComponents
 
 struct DeviceSectionView: View {
-    var appVersion: String = "1.0.0"
-    
+    var appVersion: String
+    var deviceName: String
+
     var body: some View {
         SectionCard(title: TextKeys.textProfileDeviceApp) {
             HStack {
@@ -30,7 +31,7 @@ struct DeviceSectionView: View {
                     .font(.appBody)
                     .foregroundColor(.btBlack)
                 Spacer()
-                Text(UIDevice.current.name)
+                Text(deviceName)
                     .foregroundStyle(.secondary)
             }
             .padding(.vertical, Spacing.spaceM)

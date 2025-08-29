@@ -24,20 +24,22 @@ protocol UserSessionRepo {
 
 final class UserSessionRepoImpl: UserSessionRepo {
     @Injected private var localSource: UserSessionSource
-    private let userSubject = CurrentValueSubject<UserData?, Never>(nil)
-
+    private lazy var userSubject: CurrentValueSubject<UserData?, Never> = {
+        let currentUser = localSource.loadUser()
+        return CurrentValueSubject<UserData?, Never>(currentUser)
+    }()
+    
     func saveUser(_ user: UserData) throws {
         try localSource.save(user: user)
         userSubject.send(user)
     }
     
     func getUser() -> UserData? {
-        localSource.loadUser()
+        userSubject.value
     }
     
     func getUserPublisher() -> AnyPublisher<UserData?, Never> {
-        userSubject.send(localSource.loadUser())
-        return userSubject.eraseToAnyPublisher()
+        userSubject.eraseToAnyPublisher()
     }
     
     func logoutUser() {

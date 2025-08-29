@@ -22,13 +22,28 @@ extension UserDefaults {
         public static let reminderTimeKey = "reminderTime"
     }
     
-    // Delete all useerDefaults
-    public func clearAll() {
-            if let bundle = Bundle.main.bundleIdentifier {
-                removePersistentDomain(forName: bundle)
+    /// Clears all UserDefaults except for the specified keys.
+    public func clearAllKeepSettings() {
+        let keysToKeep = [Keys.isDarkModeEnabledKey, Keys.appLanguageKey, Keys.notificationsEnabledKey, Keys.reminderTimeKey]
+        
+        // Temporarily save the values for keys we want to keep
+        var savedValues: [String: Any] = [:]
+        for key in keysToKeep {
+            if let value = object(forKey: key) {
+                savedValues[key] = value
             }
-            synchronize()
         }
+        
+        // Remove all user defaults
+        if let bundle = Bundle.main.bundleIdentifier {
+            removePersistentDomain(forName: bundle)
+        }
+        
+        // Restore the saved keys
+        for (key, value) in savedValues {
+            set(value, forKey: key)
+        }
+    }
     
     /// Stores or retrieves if user completed the onboarding
     public var isOnboardingCompleted: Bool {
@@ -48,7 +63,7 @@ extension UserDefaults {
         set {
             set(newValue, forKey: Keys.isDarkModeEnabledKey)
         }
-    }    
+    }
     
     /// Stores or retrieves the selected language ("EN" / "GR" κλπ).
     public var appLanguage: String {
@@ -68,7 +83,7 @@ extension UserDefaults {
         set {
             set(newValue, forKey: Keys.notificationsEnabledKey)
         }
-    }    
+    }
     
     /// Stores or retrieves the date of reminder
     public var reminderTime: Date {

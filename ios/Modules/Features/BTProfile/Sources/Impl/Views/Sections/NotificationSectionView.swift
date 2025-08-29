@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftUI
 import UIComponents
 
 struct NotificationSectionView: View {

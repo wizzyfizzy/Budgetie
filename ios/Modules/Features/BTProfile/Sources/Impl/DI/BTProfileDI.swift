@@ -8,6 +8,7 @@
 import DIModule
 import AppLogging
 import AuthAPI
+import AppNavigationAPI
 
 final class BTProfileDI: DIContainer {
     static var shared = DIContainer()
@@ -25,23 +26,26 @@ final class BTProfileDI: DIContainer {
         BTProfileDI.shared = self
         guard !isEmpty else { return }
 
-//        registerSources()
-//        registerRepo()
-//        registerUceCases()
+        registerRepo()
+        registerUceCases()
         
         if let dep = dependencies {
             registerDependencies(dep)
         }
-
-    }
-
-    private func registerSources() {
     }
 
     private func registerRepo() {
+        register(ProfileSettingsRepo.self) { _ in ProfileSettingsRepoImpl() }
     }
     
     private func registerUceCases() {
+        register(GetProfileSettingsUC.self) { _ in GetProfileSettingsUCImpl() }
+        register(UpdateDarkModeUC.self) { _ in UpdateDarkModeUCImpl() }
+        register(UpdateLanguageUC.self) { _ in UpdateLanguageUCImpl() }
+        register(UpdateNotificationsUC.self) { _ in UpdateNotificationsUCImpl() }
+        register(UpdateReminderTimeUC.self) { _ in UpdateReminderTimeUCImpl() }
+        register(TrackEventUC.self) { _ in TrackEventUCImpl() }
+        register(TrackViewUC.self) { _ in TrackViewUCImpl() }
     }
     
     // MARK: Register Dependencies
@@ -50,5 +54,6 @@ final class BTProfileDI: DIContainer {
         register(IsLoggedInUC.self) { _ in dependencies.auth.isLoggedInUC() }
         register(GetUserSessionUC.self) { _ in dependencies.auth.getUserSessionUC() }
         register(LogoutUserUC.self) { _ in dependencies.auth.logoutUserUC() }
+        register(AppNavigateToUC.self) { _ in dependencies.navigation.appNavigateToUC() }
     }
 }

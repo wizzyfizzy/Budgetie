@@ -261,7 +261,7 @@
                 "el" : {
                     "stringUnit" : {
                         "state" : "translated",
-                        "value" : "Σκούρο Θέμα"
+                        "value" : "Σκούρο θέμα"
                     }
                 },
                 "en" : {
@@ -312,7 +312,7 @@
                 "el" : {
                     "stringUnit" : {
                         "state" : "translated",
-                        "value" : "Συχνές Ερωτήσεις"
+                        "value" : "Συχνές ερωτήσεις"
                     }
                 },
                 "en" : {
@@ -539,13 +539,13 @@
         "profile_notifications" : {
             "extractionState" : "manual",
             "localizations" : {
-                "el" : {
+                "en" : {
                     "stringUnit" : {
                         "state" : "translated",
                         "value" : "Notifications"
                     }
                 },
-                "en" : {
+                "el" : {
                     "stringUnit" : {
                         "state" : "translated",
                         "value" : "Ειδοποιήσεις"
@@ -638,6 +638,40 @@
                     "stringUnit" : {
                         "state" : "translated",
                         "value" : "Logout"
+                    }
+                }
+            }
+        },
+        "profile_logout_alert" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Θέλετε σίγουρα να αποσυνδεθείτε;"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Are you sure you want to log out?"
+                    }
+                }
+            }
+        },
+        "profile_logout_accessibility" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Θέλετε σίγουρα να αποσυνδεθείτε;"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Πατήστε για να αποσυνδεθείτε από τον λογαριασμό σας"
                     }
                 }
             }
@@ -757,6 +791,74 @@
                     "stringUnit" : {
                         "state" : "translated",
                         "value": "Welcome to Budgetie! By using our app, you agree to the following terms:\n\n1. Budgetie helps you manage your subscriptions and expenses, but does not provide financial advice.\n2. You are responsible for the accuracy of the information you enter.\n3. We may update these terms occasionally. Continued use of Budgetie means you accept the updates.\n4. Do not misuse the app or attempt to disrupt its services."
+                    }
+                }
+            }
+        },
+        "profile_login_message" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Συνδέσου για να ξεκλειδώσεις το προφίλ σου και να διαχειριστείς τις ρυθμίσεις σου."
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Sign in to unlock your profile and manage your settings."
+                    }
+                }
+            }
+        },
+        "profile_login_accessibility" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Πρέπει να συνδεθείς για να ξεκλειδώσεις το προφίλ σου και να διαχειριστείς τις ρυθμίσεις σου."
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "You need to sign in to unlock your profile and manage your settings"
+                    }
+                }
+            }
+        },
+        "text_button_login" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Σύνδεση"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Login"
+                    }
+                }
+            }
+        },
+        "text_button_login_accessibility" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "el" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Πατήστε για να συνδεθείτε στο λογαριασμό σας."
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Tap to sign in to your account"
                     }
                 }
             }

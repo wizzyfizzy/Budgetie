@@ -11,18 +11,14 @@ import AuthAPI
 
 public struct ProfileView: View {
     @Binding var path: [ProfileRoute]
-    
-    @StateObject private var viewModel: ProfileVM = ProfileVM()
-    
-    init(path: Binding<[ProfileRoute]>) {
-        _path = path
-    }
+    @ObservedObject var viewModel: ProfileVM
     
     public var body: some View {
         if viewModel.isLoggedIn, let user = viewModel.userData {
             LoggedInProfileView(path: $path, viewModel: viewModel, user: user)
         } else {
-            LoggedOutProfileView()
+            LoggedOutProfileView(path: $path, viewModel: viewModel)
         }
+
     }
 }

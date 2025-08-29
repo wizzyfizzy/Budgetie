@@ -40,7 +40,7 @@ final class UserSessionSourceImpl: UserSessionSource {
     }
     
     func clear() {
-        userDefaults.clearAll()
+        userDefaults.clearAllKeepSettings()
         // Delete from Keychain
         store.delete(KeychainKeys.loggedInUser)
     }

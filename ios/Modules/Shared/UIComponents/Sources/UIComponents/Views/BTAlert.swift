@@ -24,25 +24,29 @@ public enum BTAlert: Identifiable, Equatable {
     case info(String, String)
     
     /// Provides the corresponding SwiftUI Alert
-    public func toAlert(dismissAction: (() -> Void)? = nil) -> Alert {
+    public func toAlert(
+        dismissAction: (() -> Void)? = nil,
+        primaryButtonAction: (() -> Void)? = nil,
+        secondaryButtonAction: (() -> Void)? = nil) -> Alert {
         switch self {
         case .success(let title, let message):
             return Alert(
-                title: Text(title),
-                message: Text(message),
+                title: Text(LocalizedStringKey(title)),
+                message: Text(LocalizedStringKey(message)),
                 dismissButton: .default(Text("OK"), action: dismissAction)
             )
         case .error(let title, let message):
             return Alert(
-                title: Text(title),
-                message: Text(message),
+                title: Text(LocalizedStringKey(title)),
+                message: Text(LocalizedStringKey(message)),
                 dismissButton: .default(Text("OK"), action: dismissAction)
             )
         case .info(let title, let message):
             return Alert(
-                title: Text(title),
-                message: Text(message),
-                dismissButton: .default(Text("OK"), action: dismissAction)
+                title: Text(LocalizedStringKey(title)),
+                message: Text(LocalizedStringKey(message)),
+                primaryButton: .default(Text("Yes"), action: primaryButtonAction),
+                secondaryButton: .cancel(Text("Cancel"), action: secondaryButtonAction)
             )
         }
     }

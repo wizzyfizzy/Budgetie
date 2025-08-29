@@ -7,10 +7,12 @@
 
 import AppLogging
 import AuthAPI
+import AppNavigationAPI
 
 public struct Dependencies {
     let logger: () -> BTLogger
     let auth: Auth
+    let navigation: Navigation
     
     public struct Auth {
         let isLoggedInUC: () -> IsLoggedInUC
@@ -24,12 +26,21 @@ public struct Dependencies {
             self.getUserSessionUC = getUserSessionUC
             self.logoutUserUC = logoutUserUC
         }
+    }  
+    
+    public struct Navigation {
+        let appNavigateToUC: () -> AppNavigateToUC
+        
+        public init(appNavigateToUC: @escaping () -> AppNavigateToUC) {
+            self.appNavigateToUC = appNavigateToUC
+        }
     }
     
     public init(logger: @escaping () -> BTLogger,
-                auth: Auth) {
+                auth: Auth,
+                navigation: Navigation) {
         self.logger = logger
         self.auth = auth
+        self.navigation = navigation
     }
-    
 }

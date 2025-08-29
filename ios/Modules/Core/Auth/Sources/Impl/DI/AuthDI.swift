@@ -37,26 +37,25 @@ final class AuthDI: DIContainer {
     }
 
     private func registerSources() {
-        register(UserSessionSource.self) { _ in UserSessionSourceImpl()}
         register(AuthAPISource.self) { _ in AuthAPISourceImpl()}
+        register(UserSessionSource.self) { _ in UserSessionSourceImpl()}
     }
 
     private func registerRepo() {
-        register(UserSessionRepo.self) { _ in UserSessionRepoImpl()}
         register(AuthAPIRepo.self) { _ in AuthAPIRepoImpl()}
+        register(UserSessionRepo.self, instance: UserSessionRepoImpl())
     }
     
     private func registerUceCases() {
-        register(SaveUserSessionUC.self) { _ in SaveUserSessionUCImpl()}
         register(LoginUserUC.self) { _ in LoginUserUCImpl()}
-        register(SignUpUserUC.self) { _ in SignUpUserUCImpl()}
         register(ForgotPasswordUC.self) { _ in ForgotPasswordUCImpl()}
+        register(SaveUserSessionUC.self) { _ in SaveUserSessionUCImpl()}
+        register(SignUpUserUC.self) { _ in SignUpUserUCImpl()}
     }
     
     // MARK: Register Dependencies
     private func registerDependencies(_ dependencies: Dependencies) {
         register(BTLogger.self) { _ in logger(module: "Auth") }
         register(HTTPClient.self) { _ in dependencies.restClient() }
-
     }
 }

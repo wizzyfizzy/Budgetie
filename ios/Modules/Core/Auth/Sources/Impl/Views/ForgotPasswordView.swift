@@ -32,16 +32,11 @@ struct ForgotPasswordView: View {
             forgotPasswordVM.trackView()
         }
         .alert(item: $forgotPasswordVM.alert) { alert in
-            alert.toAlert {
+            alert.toAlert(dismissAction: {
                 if case .success = alert {
-                    // dismiss only for success
-//                    if !path.isEmpty {
-//                        path.removeLast()
-//                    }
                     dismiss()
-
                 }
-            }
+            })
         }
     }
     

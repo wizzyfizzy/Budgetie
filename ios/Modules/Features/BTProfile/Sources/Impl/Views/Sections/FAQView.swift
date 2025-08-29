@@ -21,6 +21,8 @@ struct FAQSection: Identifiable {
 
 // MARK: - View
 struct FAQView: View {
+    @ObservedObject var viewModel: ProfileVM
+
     private let sections: [FAQSection] = [
         FAQSection(
             title: TextKeys.textProfileFaqGettingStartedTitle,
@@ -119,5 +121,8 @@ struct FAQView: View {
             }
         }
         .navigationTitle(LocalizedStringKey(TextKeys.textProfileFAQ))
+        .onAppear {
+            viewModel.trackView(TrackingView.profileFAQScreen)
+        }
     }
 }

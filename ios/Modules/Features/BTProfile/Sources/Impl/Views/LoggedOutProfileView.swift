@@ -7,48 +7,89 @@
 
 import SwiftUI
 import UIComponents
-import AuthAPI
 
 struct LoggedOutProfileView: View {
+    @Binding var path: [ProfileRoute]
+    @ObservedObject private var viewModel: ProfileVM
+
+    init(path: Binding<[ProfileRoute]>,
+         viewModel: ProfileVM) {
+        _path = path
+        self.viewModel = viewModel
+    }
     
     var body: some View {
-        VStack(spacing: 32) {
-            Spacer()
+        
+        ScrollView {
+            VStack(spacing: Spacing.spaceXL) {
+                
+                // MARK: User Card
+                LoggedOutCardView(viewModel: viewModel)
+                
+                // MARK: Section - Settings
+                SettingsSectionView(darkMode: $viewModel.isDarkMode,
+                                    language: $viewModel.language)
+                
+                // MARK: Section - Notifications
+                NotificationSectionView(path: $path,
+                                        notificationsEnabled: $viewModel.notificationsEnabled,
+                                        reminderTime: $viewModel.notificationsReminderTime)
+                
+                // MARK: Section - Help & Legal
+                HelpSectionView(path: $path)
+
+                // MARK: Section - Device
+                DeviceSectionView(appVersion: viewModel.appVersion, deviceName: viewModel.deviceName)
+                    .padding(.bottom, Spacing.spaceM)
             
+                Spacer()
+            }
+            .padding(Spacing.spaceXL)
+        }
+        .navigationTitle("Profile")
+        .onAppear {
+            viewModel.trackView(TrackingView.profileLoggedOutScreen)
+        }
+    }
+}
+
+struct LoggedOutCardView: View {
+    private let imageSize: CGFloat = 80.0
+    @ObservedObject private var viewModel: ProfileVM
+    
+    init(viewModel: ProfileVM) {
+        self.viewModel = viewModel
+    }
+    
+    var body: some View {
+        VStack(spacing: Spacing.spaceM) {
             Image(systemName: "lock.circle.fill")
                 .resizable()
                 .scaledToFit()
+                .foregroundColor(.btGray)
                 .frame(width: 120, height: 120)
-                .foregroundStyle(.gray.opacity(0.7))
                 .accessibilityHidden(true)
             
-            Text("Sign in to unlock your profile and manage your settings.")
-                .font(.title3)
+            Text(LocalizedStringKey(TextKeys.textProfileLoginMessage))
+                .font(.appBody)
+                .foregroundColor(.btBlack)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(.secondary)
                 .padding(.horizontal)
-                .accessibilityLabel("You need to sign in to unlock your profile and manage your settings")
+                .accessibilityLabel(LocalizedStringKey(TextKeys.textProfileLoginAccessibility))
             
-            Button {
-//                navigateToUC.execute(data: AuthAPI.AuthFlowNavData(), type: .sheet)
-            } label: {
-                Text("Login")
-                    .font(.headline)
-                    .frame(maxWidth: .infinity)
+            GradientButton(text: TextKeys.textButtonLogin) {
+                viewModel.onTapLogin()
             }
-            .buttonStyle(.borderedProminent)
-            .tint(.green)
-            .padding(.horizontal, 40)
-            .accessibilityLabel("Login")
-            .accessibilityHint("Tap to sign in to your account")
-            
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal)
+            .accessibilityLabel(LocalizedStringKey(TextKeys.textButtonLogin))
+            .accessibilityHint(LocalizedStringKey(TextKeys.textButtonLoginAccessibility))
             Spacer()
         }
         .padding()
-        .navigationTitle("Profile")
-//        .sheet(item: $navContext.sheetView) { wrapper in
-//            wrapper.view
-//                .interactiveDismissDisabled(true)
-//        }
+        .frame(maxWidth: .infinity)
+        .background(Color.btCardBg)
+        .cornerRadius(CornerRadius.spaceL)
+        .shadow(.large)
     }
 }

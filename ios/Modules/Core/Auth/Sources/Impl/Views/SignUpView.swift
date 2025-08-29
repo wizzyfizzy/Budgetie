@@ -38,7 +38,9 @@ struct SignUpView: View {
             signUpVM.trackView()
         }
         .alert(item: $signUpVM.alert) { alert in
-            alert.toAlert { }
+            alert.toAlert(dismissAction: {
+                signUpVM.alert = nil
+            })      
         }
     }
     

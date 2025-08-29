@@ -9,6 +9,7 @@ import UIComponents
 
 struct TermsOfServiceView: View {
     private let termsText = LocalizedStringKey(TextKeys.textProfileTermsOfServiceContent)
+    @ObservedObject var viewModel: ProfileVM
 
     var body: some View {
         ScrollView {
@@ -28,5 +29,8 @@ struct TermsOfServiceView: View {
             .padding()
         }
         .navigationTitle(LocalizedStringKey(TextKeys.textProfileTermsOfService))
+        .onAppear {
+            viewModel.trackView(TrackingView.profileTermsOfServiceScreen)
+        }
     }
 }

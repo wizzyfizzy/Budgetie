@@ -1,21 +1,26 @@
+//
+//  Copyright © 2025 Budgetie
+//
+//  All rights reserved.
+//  No part of this software may be copied, modified, or distributed without prior written permission.
+//
 
-import UIComponents
-
+import Foundation
+import SwiftUI
+ 
 // sourcery: AutoMockable
-/// Handles the "Forgot Password" feature.
+/// Use case for updating the preferred application language.
+/// Persists the new language selection in the repository.
 protocol UpdateLanguageUC {
-    /// Sends a reset password email.
-    /// - Parameters:
-    ///   - email: User's email.
-    /// - Returns: A success message string.
-    /// - Throws: Errors if the email is invalid or the network call fails.
-//    func execute() async throws -> String
+    /// Executes the use case to update the language.
+    /// - Parameter language: The ISO code of the language (e.g., `"en"`, `"el"`).
+    func execute(language: String)
 }
 
-class UpdateLanguageUCImpl: UpdateLanguageUC {
-//    @Injected private var repo: AuthAPIRepo
-
-//    func execute(email: String) async throws -> String {
-//        try await repo.forgotPassword(email: email)
-//    }
+final class UpdateLanguageUCImpl: UpdateLanguageUC {
+    @Injected private var repo: ProfileSettingsRepo
+    
+    func execute(language: String) {
+        repo.updateLanguage(language)
+    }
 }

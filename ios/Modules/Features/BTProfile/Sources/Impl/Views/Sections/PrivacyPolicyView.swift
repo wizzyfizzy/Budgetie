@@ -9,6 +9,7 @@ import UIComponents
 
 struct PrivacyPolicyView: View {
     private let privacyText = LocalizedStringKey(TextKeys.textProfilePrivacyPolicyContent)
+    @ObservedObject var viewModel: ProfileVM
 
     var body: some View {
         ScrollView {
@@ -28,5 +29,8 @@ struct PrivacyPolicyView: View {
             .padding()
         }
         .navigationTitle(LocalizedStringKey(TextKeys.textProfilePrivacyPolicy))
+        .onAppear {
+            viewModel.trackView(TrackingView.profilePrivacyPolicyScreen)
+        }
     }
 }

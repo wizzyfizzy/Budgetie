@@ -11,8 +11,7 @@ import AuthAPI
 
 struct LoggedInProfileView: View {
     @Binding var path: [ProfileRoute]
-    @ObservedObject private var viewModel: ProfileVM = ProfileVM()
-
+    @ObservedObject private var viewModel: ProfileVM
     let user: UserData
     
     init(path: Binding<[ProfileRoute]>,
@@ -43,7 +42,7 @@ struct LoggedInProfileView: View {
                 HelpSectionView(path: $path)
 
                 // MARK: Section - Device
-                DeviceSectionView(appVersion: "1.0.0")
+                DeviceSectionView(appVersion: viewModel.appVersion, deviceName: viewModel.deviceName)
                     .padding(.bottom, Spacing.spaceM)
                 // MARK: Logout Button
                 logoutButton
@@ -53,6 +52,9 @@ struct LoggedInProfileView: View {
             .padding(Spacing.spaceXL)
         }
         .navigationTitle("Profile")
+        .onAppear {
+            viewModel.trackView(TrackingView.profileLoggedInScreen)
+        }
     }
     
     @ViewBuilder
@@ -60,11 +62,21 @@ struct LoggedInProfileView: View {
         BorderButton(
             text: TextKeys.textProfileLogout,
             color: .btBlue) {
-                // alert
+                viewModel.onTapLogout()
         }
         .frame(maxWidth: .infinity)
-        .accessibilityLabel("Logout")
-        .accessibilityHint("Tap to log out of your account")
+        .accessibilityLabel(LocalizedStringKey(TextKeys.textProfileLogout))
+        .accessibilityHint(LocalizedStringKey(TextKeys.textProfileLogoutAccessibility))
+        .alert(item: $viewModel.alert) { alert in
+            alert.toAlert(
+                primaryButtonAction: {
+                    viewModel.onActionLogout()
+                },
+                secondaryButtonAction: {
+                    viewModel.onCancelLogout()
+                }
+            )
+        }
     }
 }
 
