@@ -6,11 +6,15 @@
 //
 
 import AppLogging
+import Foundation
 
 public struct Dependencies {
-    public let logger: () -> BTLogger
-    
-    public init(logger: @escaping () -> BTLogger) {
+    let logger: () -> BTLogger
+    let userDefaults: UserDefaults
+
+    public init(logger: @escaping () -> BTLogger,
+                userDefaults: UserDefaults) {
         self.logger = logger
+        self.userDefaults = userDefaults
     }
 }

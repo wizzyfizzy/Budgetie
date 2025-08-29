@@ -26,12 +26,11 @@ final class BTProfileDI: DIContainer {
         BTProfileDI.shared = self
         guard !isEmpty else { return }
 
-        registerRepo()
-        registerUceCases()
-        
         if let dep = dependencies {
             registerDependencies(dep)
         }
+        registerRepo()
+        registerUceCases()
     }
 
     private func registerRepo() {

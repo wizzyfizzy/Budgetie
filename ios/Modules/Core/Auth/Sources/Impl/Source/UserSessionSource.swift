@@ -21,14 +21,8 @@ protocol UserSessionSource {
 }
 
 final class UserSessionSourceImpl: UserSessionSource {
-    private let userDefaults: UserDefaults
-    private let store: SecureStore
-    
-    init(store: SecureStore = KeychainSecureStore(),
-         userDefaults: UserDefaults = UserDefaults.standard) {
-        self.store = store
-        self.userDefaults = userDefaults
-    }
+    @Injected private var store: SecureStore
+    @Injected private var userDefaults: UserDefaults
 
     func save(user: UserData) throws {
         // Save to Keychain

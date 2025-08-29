@@ -9,11 +9,16 @@ import AuthAPI
 import Auth
 import AppLogging
 import BTRestClient
+import UIComponents
+import Foundation
 
 extension BTAppDI {
     func initAuth() {
         let dependencies = Auth.Dependencies(logger: { logger(module: "Auth") },
-                                             restClient: { self.resolve() })
+                                             restClient: { self.resolve() },
+                                             keyChain: KeychainSecureStore(),
+                                             userDefaults: UserDefaults.standard)
+        
         AuthInitializer.initialize(dependencies: dependencies)
     }
     

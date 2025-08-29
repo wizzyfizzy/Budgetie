@@ -7,14 +7,22 @@
 
 import AppLogging
 import BTRestClientAPI
+import Foundation
+import UIComponents
 
 public struct Dependencies {
-    public let logger: () -> BTLogger
-    public let restClient: () -> HTTPClient
-    
+    let logger: () -> BTLogger
+    let restClient: () -> HTTPClient
+    let keyChain: SecureStore
+    let userDefaults: UserDefaults
+
     public init(logger: @escaping () -> BTLogger,
-                restClient: @escaping () -> HTTPClient) {
+                restClient: @escaping () -> HTTPClient,
+                keyChain: SecureStore,
+                userDefaults: UserDefaults) {
         self.logger = logger
         self.restClient = restClient
+        self.keyChain = keyChain
+        self.userDefaults = userDefaults
     }
 }

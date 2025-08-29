@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UIComponents
 
 // sourcery: AutoMockable
 protocol OnboardingSource {
@@ -15,11 +14,7 @@ protocol OnboardingSource {
 }
 
 struct OnboardingSourceImpl: OnboardingSource {
-    private let userDefaults: UserDefaults
-
-    init(userDefaults: UserDefaults = UserDefaults.standard) {
-        self.userDefaults = userDefaults
-    }
+    @Injected private var userDefaults: UserDefaults
 
     func hasSeenOnboarding() -> Bool {
         userDefaults.isOnboardingCompleted

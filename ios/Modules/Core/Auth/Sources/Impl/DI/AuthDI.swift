@@ -9,6 +9,8 @@ import DIModule
 import AppLogging
 import AuthAPI
 import BTRestClientAPI
+import Foundation
+import UIComponents
 
 final class AuthDI: DIContainer {
     static var shared = DIContainer()
@@ -25,15 +27,13 @@ final class AuthDI: DIContainer {
 
         AuthDI.shared = self
         guard !isEmpty else { return }
-
-        registerSources()
-        registerRepo()
-        registerUceCases()
         
         if let dep = dependencies {
             registerDependencies(dep)
         }
-
+        registerSources()
+        registerRepo()
+        registerUceCases()
     }
 
     private func registerSources() {
@@ -57,5 +57,7 @@ final class AuthDI: DIContainer {
     private func registerDependencies(_ dependencies: Dependencies) {
         register(BTLogger.self) { _ in logger(module: "Auth") }
         register(HTTPClient.self) { _ in dependencies.restClient() }
+        register(SecureStore.self) { _ in dependencies.keyChain }
+        register(UserDefaults.self) { _ in dependencies.userDefaults }
     }
 }

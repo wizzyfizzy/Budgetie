@@ -8,10 +8,13 @@
 import OnboardingAPI
 import Onboarding
 import AppLogging
+import Foundation
 
 extension BTAppDI {
     func initOnboarding() {
-        let dependencies = Onboarding.Dependencies(logger: { logger(module: "Onboarding") })
+        let dependencies = Onboarding.Dependencies(logger: { logger(module: "Onboarding") },
+                                                   userDefaults: UserDefaults.standard)
+        
         OnboardingInitializer.initialize(dependencies: dependencies)
     }
     

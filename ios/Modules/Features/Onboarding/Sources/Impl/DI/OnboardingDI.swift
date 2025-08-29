@@ -7,6 +7,7 @@
 
 import DIModule
 import AppLogging
+import Foundation
 
 final class OnboardingDI: DIContainer {
     static var shared = DIContainer()
@@ -23,15 +24,13 @@ final class OnboardingDI: DIContainer {
 
         OnboardingDI.shared = self
         guard !isEmpty else { return }
-
+        
+        if let dep = dependencies {
+            registerDependencies(dep)
+        }
         registerSources()
         registerRepo()
         registerUceCases()
-        
-        if dependencies != nil {
-            registerLogging()
-        }
-
     }
 
     private func registerSources() {
@@ -47,7 +46,8 @@ final class OnboardingDI: DIContainer {
     }
     
     // MARK: Register Dependencies
-    private func registerLogging() {
+    private func registerDependencies(_ dependencies: Dependencies) {
         register(BTLogger.self) { _ in logger(module: "Onboarding") }
+        register(UserDefaults.self) { _ in dependencies.userDefaults }
     }
 }
