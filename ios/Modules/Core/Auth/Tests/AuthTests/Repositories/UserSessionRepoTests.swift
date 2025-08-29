@@ -25,6 +25,7 @@ final class UserSessionRepoTests: XCTestCase {
     func testSaveUser() throws {
         // Arrange
         let (repo, source) = arrange()
+        source.stub.loadUser_UserData = { self.user }
         source.stub.saveUser_Void = { _ in return () }
         
         // Act

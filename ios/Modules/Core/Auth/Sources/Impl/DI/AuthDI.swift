@@ -16,31 +16,25 @@ final class AuthDI: DIContainer {
     static var shared = DIContainer()
     let isEmpty: Bool
     
-    static func empty() -> AuthDI {
-        AuthDI(empty: true, dependencies: nil)
-    }
-
     init(empty: Bool = false,
-         dependencies: Dependencies?) {
+         dependencies: Dependencies) {
         isEmpty = empty
         super.init()
-
+        
         AuthDI.shared = self
         guard !isEmpty else { return }
         
-        if let dep = dependencies {
-            registerDependencies(dep)
-        }
+        registerDependencies(dependencies)
         registerSources()
         registerRepo()
         registerUceCases()
     }
-
+    
     private func registerSources() {
         register(AuthAPISource.self) { _ in AuthAPISourceImpl()}
         register(UserSessionSource.self) { _ in UserSessionSourceImpl()}
     }
-
+    
     private func registerRepo() {
         register(AuthAPIRepo.self) { _ in AuthAPIRepoImpl()}
         register(UserSessionRepo.self, instance: UserSessionRepoImpl())

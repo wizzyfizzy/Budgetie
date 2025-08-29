@@ -8,15 +8,16 @@
 @testable import Onboarding
 import UIComponents
 import XCTest
+import DIModule
 
 final class OnboardingSourceTests: XCTestCase {
     private func arrange() -> (source: OnboardingSource,
                                userDefaults: UserDefaults) {
-        let suiteName = "OnboardingSourceTests"
 
-        let userDefaults = UserDefaults(suiteName: suiteName) ?? UserDefaults.standard
-        userDefaults.removePersistentDomain(forName: suiteName)
-        let source = OnboardingSourceImpl(userDefaults: userDefaults)
+        let userDefaults = Dependencies.mock().userDefaults
+        OnboardingDI.shared = DIContainer()
+        OnboardingDI.shared.register(UserDefaults.self) { _ in userDefaults }
+        let source = OnboardingSourceImpl()
 
         return (source,
                 userDefaults)

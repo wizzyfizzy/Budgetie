@@ -9,20 +9,19 @@ import XCTest
 @testable import Auth
 import AuthAPI
 import UIComponents
+import DIModule
 
 final class UserSessionSourceTests: XCTestCase {
     private func arrange() -> (source: UserSessionSource,
                                store: SecureStore,
                                userDefaults: UserDefaults) {
-        
-        let suiteName = "UserSessionSourceTests"
-        let userDefaults = UserDefaults(suiteName: suiteName) ?? UserDefaults.standard
-        userDefaults.removePersistentDomain(forName: suiteName)
-        
-        let store: SecureStore = KeychainSecureStoreMock()
-        let source = UserSessionSourceImpl(store: store, userDefaults: userDefaults)
+        let store = Dependencies.mock().keyChain
+        let userDefaults = Dependencies.mock().userDefaults
+        AuthDI.shared = DIContainer()
+        AuthDI.shared.register(SecureStore.self) { _ in store }
+        AuthDI.shared.register(UserDefaults.self) { _ in userDefaults }
        
-        return (source, store, userDefaults)
+        return (UserSessionSourceImpl(), store, userDefaults)
     }
     
     private let user = UserData(id: "123", email: "test@test.gr", name: "Kris", token: "123")

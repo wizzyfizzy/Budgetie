@@ -9,9 +9,17 @@
 import AppLogging
 import DIModule
 import XCTest
+import BTRestClientAPI
+import UIComponents
+
+extension AuthDI {
+    static func empty() -> AuthDI {
+        AuthDI(empty: true,
+               dependencies: Dependencies.mock())
+    }
+}
 
 final class AuthDITests: XCTestCase {
-
     func testSetShared() {
         AuthDI.shared = DIContainer()
         XCTAssertFalse(AuthDI.shared is AuthDI)
@@ -23,7 +31,8 @@ final class AuthDITests: XCTestCase {
         let emptyDI = AuthDI.empty()
         XCTAssertTrue(emptyDI.isEmpty)
 
-        let authDI = AuthDI(dependencies: nil)
+        let authDI = AuthDI(empty: false,
+                            dependencies: Dependencies.mock())
         XCTAssertFalse(authDI.isEmpty)
     }
     
@@ -32,7 +41,10 @@ final class AuthDITests: XCTestCase {
         let authDI = AuthDI(dependencies: dependencies)
         
         XCTAssertNotNil(authDI.resolve(BTLogger.self))
-        
+        XCTAssertNotNil(authDI.resolve(HTTPClient.self))
+        XCTAssertNotNil(authDI.resolve(SecureStore.self))
+        XCTAssertNotNil(authDI.resolve(UserDefaults.self))
+
         XCTAssertNotNil(authDI.resolve(UserSessionSource.self))
         XCTAssertNotNil(authDI.resolve(AuthAPISource.self))
         

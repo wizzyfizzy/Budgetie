@@ -8,10 +8,17 @@
 import Auth
 import AppLoggingMocks
 import BTRestClientMocks
+import Foundation
+import UIComponents
 
 extension Dependencies {
     static func mock() -> Dependencies {
+        let suiteName = "AuthTests"
+        let userDefaults = UserDefaults(suiteName: suiteName) ?? UserDefaults.standard
+        userDefaults.removePersistentDomain(forName: suiteName)
         return Dependencies(logger: { BTLoggerMock() },
-                            restClient: { BTRestClientMocks() })
+                            restClient: { BTRestClientMocks() },
+                            keyChain: KeychainSecureStoreMock(),
+                            userDefaults: userDefaults)
     }
 }

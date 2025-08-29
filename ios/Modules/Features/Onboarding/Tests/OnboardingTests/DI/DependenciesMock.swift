@@ -7,9 +7,14 @@
 
 import Onboarding
 import AppLoggingMocks
+import Foundation
 
 extension Dependencies {
     static func mock() -> Dependencies {
-        return Dependencies(logger: { BTLoggerMock() })
+        let suiteName = "OnboardingTests"
+        let userDefaults = UserDefaults(suiteName: suiteName) ?? UserDefaults.standard
+        userDefaults.removePersistentDomain(forName: suiteName)
+        return Dependencies(logger: { BTLoggerMock() },
+                            userDefaults: userDefaults)
     }
 }

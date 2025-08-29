@@ -32,5 +32,6 @@ final class OnboardingDITests: XCTestCase {
         let onboardingDI = OnboardingDI(dependencies: dependencies)
         
         XCTAssertNotNil(onboardingDI.resolve(BTLogger.self))
+        XCTAssertNotNil(onboardingDI.resolve(UserDefaults.self))
     }
 }
